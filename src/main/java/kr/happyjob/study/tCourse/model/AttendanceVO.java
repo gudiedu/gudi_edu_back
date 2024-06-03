@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AttendanceDTO {
+public class AttendanceVO {
 	
 	private int attendance_no; //출결번호
 	private String loginID; //아이디

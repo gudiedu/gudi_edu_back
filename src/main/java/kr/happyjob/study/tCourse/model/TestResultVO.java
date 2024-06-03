@@ -9,15 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class EnrollmentDTO {
+public class TestResultVO {
 	
-	private int enrollment_no; //수강번호
-	private int course_no; //강의번호
-	private String loginID; //아이디
-	private int enrollment_confirmed; //승인여부
-	
-	
-	
-	
+	private int result_no;
+	private int course_no;
+	private String loginID;
+	private int result_score;
 
 }

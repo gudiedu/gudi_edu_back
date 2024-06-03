@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CourseDetailDTO {
+public class EnrollmentVO {
 	
-	private int course_detail_no; //강의주차수번호
+	private int enrollment_no; //수강번호
 	private int course_no; //강의번호
-	private int course_detail_week_no; //주차수
-	private String course_detail_goal; //학습목표
-	private String course_detail_content; //학습내용
+	private String loginID; //아이디
+	private int enrollment_confirmed; //승인여부
+	
 	
 	
 	

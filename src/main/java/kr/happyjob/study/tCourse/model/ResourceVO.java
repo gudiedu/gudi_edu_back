@@ -1,7 +1,5 @@
 package kr.happyjob.study.tCourse.model;
 
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,14 +9,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SurveyAnswerDTO {
+public class ResourceVO {
 	
+	private int resource_no;
 	private int course_no;
 	private String loginID;
-	private int survey_no;
-	private int survey_question_no;
-	private int question_choiced;
-	private int choice_no;
-	private String written_answer;
+	private String resource_title;
+	private String resource_content;
+	private String resource_created_at;
+	private String resource_edited_at;
+	private String resouce_writer;
+	private String resource_editor;
 
 }
