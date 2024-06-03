@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TestResultDTO {
+public class TestSubmissionVO {
 	
-	private int result_no;
+	private int submission_no;
 	private int course_no;
-	private String loginID;
+	private int test_no;
+	private String answer_selected;
 	private int result_score;
+	private String loginID;
 
 }

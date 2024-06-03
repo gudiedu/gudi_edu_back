@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CourseDTO {
+public class CourseVO {
 	
 	
 	private int course_no; // 강의번호

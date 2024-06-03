@@ -10,15 +10,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class QuestionDTO {
+public class QuestionReplyVO {
 	
-    private int question_no;         
-    private int course_no;      
+    private int reply_no;
+    private int question_no;             
     private String loginID;
-    private int file_no;
-    private String question_title;   
-    private String question_content; 
+    private int file_no;   
+    private int course_no;   
+    private String reply_content; 
     private String name;            
-    private String question_created_at;
+    private String reply_created_at;
+
 
 }
