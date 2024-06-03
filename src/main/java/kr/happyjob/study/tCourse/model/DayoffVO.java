@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DayoffDTO {
+public class DayoffVO {
 	
 	private int dayoff_no; //휴일번호
 	private String dayoff_date; //휴일날짜
