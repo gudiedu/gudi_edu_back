@@ -1,4 +1,4 @@
-package kr.happyjob.study.classroom.model;
+package kr.happyjob.study.sAlert.model;
 
 public class SQuestionReplyModel {
 
