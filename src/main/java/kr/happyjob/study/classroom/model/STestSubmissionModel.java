@@ -7,6 +7,7 @@ public class STestSubmissionModel {
 	private int test_no;
 	private String answer_selected;
 	private int result_score;
+	
 	public int getSubmission_no() {
 		return submission_no;
 	}
