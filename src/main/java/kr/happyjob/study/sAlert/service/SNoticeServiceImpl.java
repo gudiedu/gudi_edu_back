@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.happyjob.study.sAlert.dao.SNoticeDao;
-import kr.happyjob.study.sAlert.model.SNoticeModel;
+import kr.happyjob.study.sAlert.model.SNoticeDto;
 
 @Service
 public class SNoticeServiceImpl implements SNoticeService {
@@ -16,7 +16,7 @@ public class SNoticeServiceImpl implements SNoticeService {
 	SNoticeDao sNoticeDao;
 	
 	/** 공지사항 목록 조회 */
-	public List<SNoticeModel> sListNotice(Map<String, Object> paramMap) throws Exception {
+	public List<SNoticeDto> sListNotice(Map<String, Object> paramMap) throws Exception {
 		
 		return sNoticeDao.sListNotice(paramMap);
 	}

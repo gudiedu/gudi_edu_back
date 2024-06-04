@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import kr.happyjob.study.sAlert.model.SNoticeModel;
+import kr.happyjob.study.sAlert.model.SNoticeDto;
 import kr.happyjob.study.sAlert.service.SNoticeService;
 
 @Controller
@@ -39,7 +39,7 @@ public class SNoticeController {
 	      
 	      Map<String, Object> returnMap = new HashMap<String, Object>();
 	      
-	      List<SNoticeModel> listData = sNoticeService.sListNotice(paramMap);
+	      List<SNoticeDto> listData = sNoticeService.sListNotice(paramMap);
 //	      int totalCnt = sampleNoticeService.totalCntNotice(paramMap);
 	      
 	      returnMap.put("listData", listData);
