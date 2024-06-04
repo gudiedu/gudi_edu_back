@@ -12,10 +12,6 @@ public class SNoticeDto extends SNoticeModel {
 	public String getUser_type() {
 		return sUserInfo.getUser_type();
 	}
-
-	public void setUser_type(String user_type) {
-		sUserInfo.setUser_type(user_type);
-	}
 	
 	public int getFile_no() {
 		return sFile.getFile_no();

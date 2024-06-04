@@ -1,6 +1,6 @@
 package kr.happyjob.study.classroom.model;
 
-public class STestSubmission {
+public class STestSubmissionModel {
 	
 	private int submission_no;
 	private int course_no;

@@ -1,12 +1,14 @@
 package kr.happyjob.study.sAlert.dto;
 
 import kr.happyjob.study.sAlert.model.SFileModel;
-import kr.happyjob.study.sAlert.model.SNoticeModel;
+import kr.happyjob.study.sAlert.model.SQuestionModel;
+import kr.happyjob.study.sAlert.model.SQuestionReplyModel;
 import kr.happyjob.study.sAlert.model.SUserInfoModel;
 
-public class SNoticeDto extends SNoticeModel {
+public class SQnaDto extends SQuestionModel {
 	
 	private SUserInfoModel sUserInfo = new SUserInfoModel();
+	private SQuestionReplyModel sQuestionReply = new SQuestionReplyModel();
 	private SFileModel sFile = new SFileModel();
 	
 	// sUserInfo Getter & Setter
@@ -14,12 +16,61 @@ public class SNoticeDto extends SNoticeModel {
 		return sUserInfo.getUser_type();
 	}
 	
+	// sQuestionReply Getter & Setter
+	public int getReply_no() {
+		return sQuestionReply.getReply_no();
+	}
+
+	public void setReply_no(int reply_no) {
+		sQuestionReply.setReply_no(reply_no);
+	}
+
+	public int getQuestion_no() {
+		return sQuestionReply.getQuestion_no();
+	}
+
+	public void setQuestion_no(int question_no) {
+		sQuestionReply.setQuestion_no(question_no);;
+	}
+
+	public int getCategory_no() {
+		return sQuestionReply.getCategory_no();
+	}
+
+	public void setCategory_no(int category_no) {
+		sQuestionReply.setCategory_no(category_no);
+	}
+
+	public int getAttachment_no() {
+		return sQuestionReply.getAttachment_no();
+	}
+
+	public void setAttachment_no(int attachment_no) {
+		sQuestionReply.setAttachment_no(attachment_no);
+	}
+
+	public String getReply_content() {
+		return sQuestionReply.getReply_content();
+	}
+
+	public void setReply_content(String reply_content) {
+		sQuestionReply.setReply_content(reply_content);
+	}
+
 	public String getName() {
-		return sUserInfo.getName();
+		return sQuestionReply.getName();
 	}
 
 	public void setName(String name) {
-		sUserInfo.setName(name);;
+		sQuestionReply.setName(name);
+	}
+
+	public String getReply_created_at() {
+		return sQuestionReply.getReply_created_at();
+	}
+
+	public void setReply_created_at(String reply_created_at) {
+		sQuestionReply.setReply_created_at(reply_created_at);
 	}
 	
 	// sFile Getter & Setter

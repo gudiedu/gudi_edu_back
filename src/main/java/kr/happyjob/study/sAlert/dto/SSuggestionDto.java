@@ -1,12 +1,14 @@
 package kr.happyjob.study.sAlert.dto;
 
 import kr.happyjob.study.sAlert.model.SFileModel;
-import kr.happyjob.study.sAlert.model.SNoticeModel;
+import kr.happyjob.study.sAlert.model.SSuggestionModel;
+import kr.happyjob.study.sAlert.model.SSuggestionReplyModel;
 import kr.happyjob.study.sAlert.model.SUserInfoModel;
 
-public class SNoticeDto extends SNoticeModel {
+public class SSuggestionDto extends SSuggestionModel {
 	
 	private SUserInfoModel sUserInfo = new SUserInfoModel();
+	private SSuggestionReplyModel sSuggestionReply = new SSuggestionReplyModel();
 	private SFileModel sFile = new SFileModel();
 	
 	// sUserInfo Getter & Setter
@@ -20,6 +22,47 @@ public class SNoticeDto extends SNoticeModel {
 
 	public void setName(String name) {
 		sUserInfo.setName(name);;
+	}
+	
+	// sSuggestionReply Getter & Setter
+	public int getSuggestion_reply_no() {
+		return sSuggestionReply.getSuggestion_reply_no();
+	}
+
+	public void setSuggestion_reply_no(int suggestion_reply_no) {
+		sSuggestionReply.setSuggestion_reply_no(suggestion_reply_no);
+	}
+
+	public int getSuggestion_no() {
+		return sSuggestionReply.getSuggestion_no();
+	}
+
+	public void setSuggestion_no(int suggestion_no) {
+		sSuggestionReply.setSuggestion_no(suggestion_no);
+	}
+
+	public String getSuggestion_reply_content() {
+		return sSuggestionReply.getSuggestion_reply_content();
+	}
+
+	public void setSuggestion_reply_content(String suggestion_reply_content) {
+		sSuggestionReply.setSuggestion_reply_content(suggestion_reply_content);
+	}
+
+	public String getSuggestion_reply_created_at() {
+		return sSuggestionReply.getSuggestion_reply_created_at();
+	}
+
+	public void setSuggestion_reply_created_at(String suggestion_reply_created_at) {
+		sSuggestionReply.setSuggestion_reply_created_at(suggestion_reply_created_at);
+	}
+
+	public int getAttachment_no() {
+		return sSuggestionReply.getAttachment_no();
+	}
+
+	public void setAttachment_no(int attachment_no) {
+		sSuggestionReply.setAttachment_no(attachment_no);
 	}
 	
 	// sFile Getter & Setter
