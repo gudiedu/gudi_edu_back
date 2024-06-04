@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.happyjob.study.tCourse.dao.QuestionDao"> 
+
+<!-- qna 목록 조회 -->
+	<select id="listquestion" resultType="kr.happyjob.study.tCourse.model.QuestionVO">
+		/*kr.happyjob.study.tCourse.dao.questionDao.listquestion*/
+		
+        select q.question_no
+             , q.course_no
+             , q.loginID
+             , q.file_no
+             , q.question_title
+             , q.question_content
+             , q.name
+             , DATE_FORMAT(q.question_created_at, '%Y-%m-%d') as q_regdate
+             , ui.name as writer
+       from tb_question q
+              inner join tb_userinfo ui on ui.loginID = q.loginID
+              <where>
+                <if test="(stitle != null) and (!stitle.equals(''))">
+                     and q.question_title like concat('%',#{stitle},'%')
+                </if>
+         
+              </where>
+				ORDER BY q.created_date DESC
+    			LIMIT #{startPoint}, #{pageSize}
+	</select>
+	
+	<!-- 그룹코드 목록 총 갯수 조회 -->
+	<select id="totalcntquestion" resultType="int">
+		/*kr.happyjob.study.tCourse.dao.questionDao.totalcntquestion*/
+		
+      select count(*)
+       from tb_question q
+              inner join tb_userinfo ui on ui.loginID = q.loginID
+              <where>
+                <if test="(stitle != null) and (!stitle.equals(''))">
+                     and q.question_title like concat('%',#{stitle},'%')
+                </if>
+              
+              </where>
+	</select>
+	
+	
+	<select id="selectquestion"  resultType="kr.happyjob.study.tCourse.model.QuestionVO">
+	   /*kr.happyjob.study.tCourse.dao.questionDao.selectquestion*/
+       select q.question_no
+             , q.course_no
+             , q.loginID
+             , q.file_no
+             , q.question_title
+             , q.question_content
+             , q.name
+             , DATE_FORMAT(q.question_created_at, '%Y-%m-%d') as q_regdate
+             , ui.name as writer
+       from tb_question q
+              inner join tb_userinfo ui on ui.loginID = q.loginID
+	  where q.question_no = #{questionNo}
+	</select>
+	
+	
+	<!--   <insert id="insertquestion">
+	    <selectKey keyProperty="selmotice" resultType="int" order="BEFORE"> 
+	   	     SELECT IFNULL(MAX(ntc_no),0) +1  FROM tb_question
+	    </selectKey>
+	       
+	    insert into tb_question
+	                 (  
+	                    ntc_no
+                      , loginID
+                      , ntc_title
+                      , ntc_content
+                      , ntc_regdate
+                    ) values (
+                       #{selmotice}
+                     , #{loginID}
+                     , #{questionTitle}
+                     , #{questionContent}
+                     , now()
+                    )
+	</insert>  -->
+	
+	<update id="updatequestion" >
+	     update tb_question
+	          set loginID = #{loginID}
+                 , question_title = #{questionTitle}
+                 , question_content = #{questionContent}
+                 , question_regdate = now()
+	     where question_no = #{questionNo}
+	</update>
+	
+	<delete id="deletequestion">
+	    delete from tb_question
+	    where question_no = #{questionNo}
+	</delete>
+	
+	</mapper>
