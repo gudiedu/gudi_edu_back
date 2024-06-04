@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.happyjob.study.sAlert.dao.SNoticeDao;
-import kr.happyjob.study.sAlert.model.SNoticeDto;
+import kr.happyjob.study.sAlert.dto.SNoticeDto;
 
 @Service
 public class SNoticeServiceImpl implements SNoticeService {

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import kr.happyjob.study.sAlert.model.SNoticeDto;
+import kr.happyjob.study.sAlert.dto.SNoticeDto;
 import kr.happyjob.study.sAlert.service.SNoticeService;
 
 @Controller

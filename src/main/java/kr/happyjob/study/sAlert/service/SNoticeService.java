@@ -3,7 +3,7 @@ package kr.happyjob.study.sAlert.service;
 import java.util.List;
 import java.util.Map;
 
-import kr.happyjob.study.sAlert.model.SNoticeDto;
+import kr.happyjob.study.sAlert.dto.SNoticeDto;
 
 public interface SNoticeService {
 	
