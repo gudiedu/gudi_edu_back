@@ -6,6 +6,7 @@ public class SEnrollmentModel {
 	private int course_no;
 	private String loginID;
 	private boolean enrollment_confirmed;
+	
 	public int getEnrollment_no() {
 		return enrollment_no;
 	}

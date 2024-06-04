@@ -1,12 +1,13 @@
 package kr.happyjob.study.classroom.model;
 
-public class STestSubmission {
+public class STestSubmissionModel {
 	
 	private int submission_no;
 	private int course_no;
 	private int test_no;
 	private String answer_selected;
 	private int result_score;
+	
 	public int getSubmission_no() {
 		return submission_no;
 	}

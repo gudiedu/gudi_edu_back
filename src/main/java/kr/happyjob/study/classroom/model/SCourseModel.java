@@ -12,6 +12,7 @@ public class SCourseModel {
 	private String course_start_date;
 	private String course_end_date;
 	private String course_status;
+	
 	public int getCourse_no() {
 		return course_no;
 	}
