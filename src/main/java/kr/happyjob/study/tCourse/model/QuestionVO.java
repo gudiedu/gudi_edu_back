@@ -21,5 +21,6 @@ public class QuestionVO {
     private String name;            
     private String question_created_at;
 //    private String writer;
-
+    private int reply_no;
+    private String reply_content;
 }

@@ -60,12 +60,12 @@ public class QuestionController {
 	      
 	      Map<String, Object> returnmap = new HashMap<String, Object>();
 	      
-	      List<QuestionVO> listdate = questionService.listquestion(paramMap);
+	      List<QuestionVO> listdata = questionService.listquestion(paramMap);
 	      
 	      
 	      int totalcnt = questionService.totalcntquestion(paramMap);
 	      
-	      returnmap.put("listdate",listdate);
+	      returnmap.put("listdata",listdata);
 	      returnmap.put("totalcnt",totalcnt);
 	      
 	      logger.info("+ End " + className + ".listquestion");

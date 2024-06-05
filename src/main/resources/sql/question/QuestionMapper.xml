@@ -7,17 +7,27 @@
 	<select id="listquestion" resultType="kr.happyjob.study.tCourse.model.QuestionVO">
 		/*kr.happyjob.study.tCourse.dao.questionDao.listquestion*/
 		
-        select q.question_no
+        select 
+        
+        	   c.course_name
+        	 , q.question_no
              , q.course_no
              , q.loginID
              , q.file_no
              , q.question_title
              , q.question_content
              , q.name
+             , r.reply_no
+  			 , r.reply_content
              , DATE_FORMAT(q.question_created_at, '%Y-%m-%d') as question_created_at
              <!-- , ui.name as writer -->
+     
        from tb_question q
+       
               inner join tb_userinfo ui on ui.loginID = q.loginID
+              left outer join tb_question_reply r on q.question_no = r.question_no
+              inner join tb_course c ON c.course_no = q.course_no
+              
               <where>
                 <if test="(stitle != null) and (!stitle.equals(''))">
                      and q.question_title like concat('%',#{stitle},'%')
