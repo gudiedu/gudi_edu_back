@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import kr.happyjob.study.sampletest.model.SamplenoticeModel;
+
 import kr.happyjob.study.tCourse.model.QuestionVO;
 import kr.happyjob.study.tCourse.service.QuestionService;
 
@@ -39,9 +39,9 @@ public class QuestionController {
 	   private final String className = this.getClass().toString();
 	   
 	   
-	   @RequestMapping("listnquestion.do")
+	   @RequestMapping("listquestion.do")
 	   @ResponseBody
-	   public Map<String, Object> listnotice(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	   public Map<String, Object> listquestion(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 	         HttpServletResponse response, HttpSession session) throws Exception {
 	      
 	      logger.info("+ Start " + className + ".listquestion");
@@ -49,23 +49,26 @@ public class QuestionController {
 	      
 	      // 1 page : 0  2 page : 10   
 	      
-	      int currentpage = Integer.parseInt((String) paramMap.get("currentpage"));
-	      int pagesize = Integer.parseInt((String) paramMap.get("pagesize"));
+	      int currentpage = Integer.parseInt((String) paramMap.get("currentPage"));
+	      int pagesize = Integer.parseInt((String) paramMap.get("pageSize"));
 	      int startpoint = (currentpage - 1) * pagesize;
 	      
 	      paramMap.put("pagesize", pagesize);
 	      paramMap.put("startpoint", startpoint);
+	      paramMap.put("pageSize", Integer.parseInt((String) paramMap.get("pageSize")));
 	      
 	      
 	      Map<String, Object> returnmap = new HashMap<String, Object>();
 	      
 	      List<QuestionVO> listdate = questionService.listquestion(paramMap);
+	      
+	      
 	      int totalcnt = questionService.totalcntquestion(paramMap);
 	      
 	      returnmap.put("listdate",listdate);
 	      returnmap.put("totalcnt",totalcnt);
 	      
-	      logger.info("+ End " + className + ".listnotice");
+	      logger.info("+ End " + className + ".listquestion");
 
 	      return returnmap;
 	   }
@@ -124,7 +127,7 @@ public class QuestionController {
 	      returnmap.put("result",sqlreturn);
 	      returnmap.put("resultmsg",resultmsg);
 	      
-	      logger.info("+ End " + className + ".savenotice");
+	      logger.info("+ End " + className + ".savequestion");
 
 	      return returnmap;
 	   }

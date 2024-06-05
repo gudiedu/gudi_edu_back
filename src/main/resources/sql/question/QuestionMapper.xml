@@ -14,8 +14,8 @@
              , q.question_title
              , q.question_content
              , q.name
-             , DATE_FORMAT(q.question_created_at, '%Y-%m-%d') as q_regdate
-             , ui.name as writer
+             , DATE_FORMAT(q.question_created_at, '%Y-%m-%d') as question_created_at
+             <!-- , ui.name as writer -->
        from tb_question q
               inner join tb_userinfo ui on ui.loginID = q.loginID
               <where>
@@ -24,8 +24,8 @@
                 </if>
          
               </where>
-				ORDER BY q.created_date DESC
-    			LIMIT #{startPoint}, #{pageSize}
+				ORDER BY q.question_created_at DESC
+    			LIMIT #{startpoint}, #{pageSize}
 	</select>
 	
 	<!-- 그룹코드 목록 총 갯수 조회 -->
