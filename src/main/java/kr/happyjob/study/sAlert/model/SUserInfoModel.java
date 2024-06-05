@@ -10,6 +10,10 @@ public class SUserInfoModel {
 		return user_type;
 	}
 
+	public void setUser_type(String user_type) {
+		this.user_type = user_type;
+	}
+
 	public String getName() {
 		return name;
 	}

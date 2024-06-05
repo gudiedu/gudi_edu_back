@@ -14,6 +14,10 @@ public class SNoticeDto extends SNoticeModel {
 		return sUserInfo.getUser_type();
 	}
 	
+	public void setUser_type(String user_type) {
+		sUserInfo.setUser_type(user_type);
+	}
+	
 	public String getName() {
 		return sUserInfo.getName();
 	}
