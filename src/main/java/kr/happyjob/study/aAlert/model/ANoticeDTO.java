@@ -2,9 +2,11 @@ package kr.happyjob.study.aAlert.model;
 
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@RequiredArgsConstructor
 public class ANoticeDTO {
 	
 	// 공지사항 번호

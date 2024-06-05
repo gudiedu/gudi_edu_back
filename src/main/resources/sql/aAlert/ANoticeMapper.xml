@@ -86,5 +86,12 @@
 		, #{fileInfo.fileExtension}
 		)
 	</insert>
+	
+	
+	
+	<delete id="deleteNotice">
+		DELETE FROM tb_notice
+		WHERE notice_no = #{notice_no}	
+	</delete>
 
 </mapper>

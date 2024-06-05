@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.happyjob.study.aAlert.dao.ANoticeDAO;
+import kr.happyjob.study.aAlert.model.AFileDTO;
 import kr.happyjob.study.aAlert.model.ANoticeDTO;
 import kr.happyjob.study.common.comnUtils.FileUtilCho;
 import lombok.RequiredArgsConstructor;
@@ -61,9 +62,15 @@ public class ANoticeServiceImpl implements ANoticeService {
 		} else {
 			int file_no = aNoticeDAO.saveFile(paramMap);
 			paramMap.put("file_no", file_no);
+			logger.info(file_no);
 			paramMap.put("fileExits","Y");
 		}
 		
 		return aNoticeDAO.insertNotice(paramMap);
+	}
+	
+	@Override
+	public int deleteNotice(Map<String, Object> paramMap) throws Exception {
+		return aNoticeDAO.deleteNotice(paramMap);
 	}
 }

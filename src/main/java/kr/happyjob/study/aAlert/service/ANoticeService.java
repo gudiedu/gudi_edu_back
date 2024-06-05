@@ -13,4 +13,6 @@ public interface ANoticeService {
 	public Map<String, Object> selectNotice(Map<String, Object> paramMap);
 	
 	public int insertNotice(Map<String, Object> paramMap, HttpServletRequest request) throws Exception;
+	
+	public int deleteNotice(Map<String, Object> paramMap) throws Exception;
 }

@@ -46,4 +46,10 @@ public class ANoticeController {
 		aNoticeService.insertNotice(paramMap, request);
 	}
 	
+	//임시 URL
+	@RequestMapping("/aAlert/notice/delete")
+	public void deleteNotice(@RequestParam Map<String, Object> paramMap) throws Exception{
+		aNoticeService.deleteNotice(paramMap);
+	}
+	
 }
