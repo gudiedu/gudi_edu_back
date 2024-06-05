@@ -16,6 +16,10 @@ public class SSuggestionDto extends SSuggestionModel {
 		return sUserInfo.getUser_type();
 	}
 	
+	public void setsUserInfo(String user_type) {
+		sUserInfo.setUser_type(user_type);
+	}
+	
 	public String getName() {
 		return sUserInfo.getName();
 	}

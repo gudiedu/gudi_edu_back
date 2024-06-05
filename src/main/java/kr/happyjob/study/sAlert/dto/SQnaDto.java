@@ -1,5 +1,6 @@
 package kr.happyjob.study.sAlert.dto;
 
+import kr.happyjob.study.sAlert.model.SCourseModel;
 import kr.happyjob.study.sAlert.model.SFileModel;
 import kr.happyjob.study.sAlert.model.SQuestionModel;
 import kr.happyjob.study.sAlert.model.SQuestionReplyModel;
@@ -10,12 +11,25 @@ public class SQnaDto extends SQuestionModel {
 	private SUserInfoModel sUserInfo = new SUserInfoModel();
 	private SQuestionReplyModel sQuestionReply = new SQuestionReplyModel();
 	private SFileModel sFile = new SFileModel();
+	private SCourseModel sCourse = new SCourseModel();
 	
 	// sUserInfo Getter & Setter
 	public String getUser_type() {
 		return sUserInfo.getUser_type();
 	}
 	
+	public void setUser_type(String user_type) {
+		sUserInfo.setUser_type(user_type);
+	}
+	
+	public String getName() {
+		return sUserInfo.getName();
+	}
+
+	public void setName(String name) {
+		sUserInfo.setName(name);
+	}
+
 	// sQuestionReply Getter & Setter
 	public int getReply_no() {
 		return sQuestionReply.getReply_no();
@@ -55,14 +69,6 @@ public class SQnaDto extends SQuestionModel {
 
 	public void setReply_content(String reply_content) {
 		sQuestionReply.setReply_content(reply_content);
-	}
-
-	public String getName() {
-		return sQuestionReply.getName();
-	}
-
-	public void setName(String name) {
-		sQuestionReply.setName(name);
 	}
 
 	public String getReply_created_at() {
@@ -129,6 +135,17 @@ public class SQnaDto extends SQuestionModel {
 
 	public void setFile_size(int file_size) {
 		sFile.setFile_size(file_size);
+	}
+	
+	
+	// sCourse Getter & Setter
+
+	public String getCourse_name() {
+		return sCourse.getCourse_name();
+	}
+	
+	public void setCourse_name(String course_name) {
+		sCourse.setCourse_name(course_name);
 	}
 	
 }
