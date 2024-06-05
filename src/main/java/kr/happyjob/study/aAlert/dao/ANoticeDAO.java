@@ -9,4 +9,8 @@ public interface ANoticeDAO {
 	public List<ANoticeDTO> searchNotice(Map<String, Object> paramMap);
 	
 	public Map<String, Object> selectNotice(Map<String, Object> paramMap);
+	
+	public int insertNotice(Map<String, Object> paramMap);
+	
+	public int saveFile(Map<String, Object> paramMap);
 }
