@@ -49,8 +49,6 @@ public class ANoticeController {
 	@RequestMapping("/aAlert/notice/update")
 	public void updateNotice(@RequestParam Map<String, Object> paramMap, HttpSession session, HttpServletRequest request) throws Exception{
 		paramMap.put("loginID", (String)session.getAttribute("loginId"));
-		logger.info(paramMap.get("removeFile"));
-		logger.info(paramMap.get("removeFile").getClass());
 		aNoticeService.updateNotice(paramMap, request);
 	}
 	

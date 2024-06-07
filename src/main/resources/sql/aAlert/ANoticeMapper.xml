@@ -105,12 +105,6 @@
    		 		, file_no = null
    		 </when>
   		</choose>
-		<!-- <if test="fileExits eq 'Y'.toString()">
-			, file_no = #{file_no}
-		</if>
-		<if test="fileExits eq 'Y'.toString()">
-			, #{file_no}
-		</if> -->
 		WHERE 
 		notice_no = #{notice_no}
 	</update>
