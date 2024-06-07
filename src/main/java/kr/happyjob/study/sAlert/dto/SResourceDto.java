@@ -1,18 +1,24 @@
 package kr.happyjob.study.sAlert.dto;
 
+import kr.happyjob.study.sAlert.model.SCourseModel;
 import kr.happyjob.study.sAlert.model.SFileModel;
 import kr.happyjob.study.sAlert.model.SResourceModel;
 import kr.happyjob.study.sAlert.model.SUserInfoModel;
 
-public class SRsourceDto extends SResourceModel {
+public class SResourceDto extends SResourceModel {
 	
 	private SUserInfoModel sUserInfo = new SUserInfoModel();
 	private SResourceModel sResource = new SResourceModel();
+	private SCourseModel sCourse = new SCourseModel();
 	private SFileModel sFile = new SFileModel();
 	
 	// sUserInfo Getter & Setter
 	public String getUser_type() {
 		return sUserInfo.getUser_type();
+	}
+	
+	public void setUser_type(String user_type) {
+		sUserInfo.setUser_type(user_type);
 	}
 	
 	public String getName() {
@@ -94,6 +100,15 @@ public class SRsourceDto extends SResourceModel {
 
 	public void setResource_editor(String resource_editor) {
 		sResource.setResource_editor(resource_editor);;
+	}
+	
+	// sCourse Getter & Setter
+	public String getCourse_name() {
+		return sCourse.getCourse_name();
+	}
+
+	public void setCourse_name(String course_name) {
+		sCourse.setCourse_name(course_name);
 	}
 	
 	// sFile Getter & Setter

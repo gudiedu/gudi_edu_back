@@ -1,0 +1,105 @@
+package kr.happyjob.study.sAlert.model;
+
+public class SCourseModel {
+	
+	private int course_no;
+	
+	private String loginID;
+	
+	private int survey_no;
+	
+	private String course_subject;
+	
+	private String course_name;
+	
+	private int course_quota;
+	
+	private String course_description;
+	
+	private String course_start_date;
+	
+	private String course_end_date;
+	
+	private String course_status;
+
+	public int getCourse_no() {
+		return course_no;
+	}
+
+	public void setCourse_no(int course_no) {
+		this.course_no = course_no;
+	}
+
+	public String getLoginID() {
+		return loginID;
+	}
+
+	public void setLoginID(String loginID) {
+		this.loginID = loginID;
+	}
+
+	public int getSurvey_no() {
+		return survey_no;
+	}
+
+	public void setSurvey_no(int survey_no) {
+		this.survey_no = survey_no;
+	}
+
+	public String getCourse_subject() {
+		return course_subject;
+	}
+
+	public void setCourse_subject(String course_subject) {
+		this.course_subject = course_subject;
+	}
+
+	public String getCourse_name() {
+		return course_name;
+	}
+
+	public void setCourse_name(String course_name) {
+		this.course_name = course_name;
+	}
+
+	public int getCourse_quota() {
+		return course_quota;
+	}
+
+	public void setCourse_quota(int course_quota) {
+		this.course_quota = course_quota;
+	}
+
+	public String getCourse_description() {
+		return course_description;
+	}
+
+	public void setCourse_description(String course_description) {
+		this.course_description = course_description;
+	}
+
+	public String getCourse_start_date() {
+		return course_start_date;
+	}
+
+	public void setCourse_start_date(String course_start_date) {
+		this.course_start_date = course_start_date;
+	}
+
+	public String getCourse_end_date() {
+		return course_end_date;
+	}
+
+	public void setCourse_end_date(String course_end_date) {
+		this.course_end_date = course_end_date;
+	}
+
+	public String getCourse_status() {
+		return course_status;
+	}
+
+	public void setCourse_status(String course_status) {
+		this.course_status = course_status;
+	}
+
+}
