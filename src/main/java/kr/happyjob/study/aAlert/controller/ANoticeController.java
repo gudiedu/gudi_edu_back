@@ -46,6 +46,14 @@ public class ANoticeController {
 		aNoticeService.insertNotice(paramMap, request);
 	}
 	
+	@RequestMapping("/aAlert/notice/update")
+	public void updateNotice(@RequestParam Map<String, Object> paramMap, HttpSession session, HttpServletRequest request) throws Exception{
+		paramMap.put("loginID", (String)session.getAttribute("loginId"));
+		logger.info(paramMap.get("removeFile"));
+		logger.info(paramMap.get("removeFile").getClass());
+		aNoticeService.updateNotice(paramMap, request);
+	}
+	
 	//임시 URL
 	@RequestMapping("/aAlert/notice/delete")
 	public void deleteNotice(@RequestParam Map<String, Object> paramMap) throws Exception{

@@ -68,7 +68,7 @@
 		)
 	</insert>
 
-	<insert id="saveFile" useGeneratedKeys="true" keyProperty="file_no">
+	<insert id="saveFile" parameterType="kr.happyjob.study.aAlert.model.AFileDTO" useGeneratedKeys="true" keyProperty="file_no">
 		INSERT INTO tb_file
 		(
 		file_origin
@@ -79,19 +79,40 @@
 		)
 		VALUES
 		(
-		#{fileInfo.file_nm}
-		, #{fileInfo.vrfile_loc}
-		, #{fileInfo.file_loc}
-		, #{fileInfo.file_Size}
-		, #{fileInfo.fileExtension}
+		#{file_origin}
+		, #{file_local_path}
+		, #{file_server_path}
+		, #{file_size}
+		, #{file_extension}
 		)
 	</insert>
-	
-	
 	
 	<delete id="deleteNotice">
 		DELETE FROM tb_notice
 		WHERE notice_no = #{notice_no}	
 	</delete>
+	
+	<update id="updateNotice" >
+		UPDATE tb_notice
+		SET
+		notice_title = #{notice_title}
+		, notice_content = #{notice_content}
+		<choose>
+   			<when test="fileExits eq 'Y'.toString()">
+  		    	, file_no = #{file_no}
+ 			</when>
+   		 <when test="removeFile eq 'Y'.toString()">
+   		 		, file_no = null
+   		 </when>
+  		</choose>
+		<!-- <if test="fileExits eq 'Y'.toString()">
+			, file_no = #{file_no}
+		</if>
+		<if test="fileExits eq 'Y'.toString()">
+			, #{file_no}
+		</if> -->
+		WHERE 
+		notice_no = #{notice_no}
+	</update>
 
 </mapper>

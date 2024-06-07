@@ -13,7 +13,9 @@ public interface ANoticeDAO {
 	
 	public int insertNotice(Map<String, Object> paramMap);
 	
-	public int saveFile(Map<String, Object> paramMap);
+	public int updateNotice(Map<String, Object> paramMap);
+	
+	public int saveFile(AFileDTO file);
 	
 	public int deleteNotice(Map<String, Object> paramMap);
 }

@@ -49,28 +49,60 @@ public class ANoticeServiceImpl implements ANoticeService {
 	@Override
 	public int insertNotice(Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
 		
-		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
-		
-		String itemFilePath = noticePath + File.separator;
-		FileUtilCho fileUpload = new FileUtilCho(multipartHttpServletRequest, rootPath, virtualRootPath, itemFilePath);
-		Map<String, Object> fileInfo = fileUpload.uploadFiles();
-		
+		Map<String, Object> fileInfo = fileUpload(request);
 		paramMap.put("fileInfo", fileInfo);
 		
-		if(fileInfo.get("file_nm") == null || fileInfo.get("file_nm") == "") {
-			paramMap.put("fileExits","N");
-		} else {
-			int file_no = aNoticeDAO.saveFile(paramMap);
-			paramMap.put("file_no", file_no);
-			logger.info(file_no);
+		if(fileInfo.get("file_nm") != null && fileInfo.get("file_nm") != "") {
+			int fileNo = saveFile(fileInfo);
 			paramMap.put("fileExits","Y");
+			paramMap.put("file_no", fileNo);
 		}
 		
 		return aNoticeDAO.insertNotice(paramMap);
 	}
 	
 	@Override
+	public int updateNotice(Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
+		Map<String, Object> fileInfo = fileUpload(request);
+		paramMap.put("fileInfo", fileInfo);
+		
+		if(fileInfo.get("file_nm") != null && fileInfo.get("file_nm") != "") {
+			int fileNo = saveFile(fileInfo);
+			paramMap.put("fileExits","Y");
+			paramMap.put("file_no", fileNo);
+		}
+		
+		return aNoticeDAO.updateNotice(paramMap);
+	}
+	
+	@Override
 	public int deleteNotice(Map<String, Object> paramMap) throws Exception {
 		return aNoticeDAO.deleteNotice(paramMap);
+	}
+	
+	private Map<String, Object> fileUpload(HttpServletRequest request) throws Exception{
+		
+		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
+		
+		String itemFilePath = noticePath + File.separator;
+		FileUtilCho fileUpload = new FileUtilCho(multipartHttpServletRequest, rootPath, virtualRootPath, itemFilePath);
+		Map<String, Object> fileInfo = fileUpload.uploadFiles();
+		
+		return fileInfo;
+	}
+	
+	private int saveFile(Map<String,Object> fileInfo) throws Exception{
+		
+		AFileDTO file = new AFileDTO();
+		
+		file.setFile_origin(fileInfo.get("file_nm").toString());
+		file.setFile_local_path(fileInfo.get("vrfile_loc").toString());
+		file.setFile_server_path(fileInfo.get("file_loc").toString());
+		file.setFile_extension(fileInfo.get("fileExtension").toString());
+		file.setFile_size(Integer.parseInt(fileInfo.get("file_size").toString()));
+		
+		aNoticeDAO.saveFile(file);
+		
+		return file.getFile_no();
 	}
 }
