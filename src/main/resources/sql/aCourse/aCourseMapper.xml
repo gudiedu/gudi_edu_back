@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.happyjob.study.aCourse.dao.aCourseDao">
+
+   <!-- 공통코드에 있는 강의코드 목록 조회 -->
+   <select id="aCourseList" resultType="kr.happyjob.study.aCourse.model.aCourseModel">
+		/*kr.happyjob.study.aCourse.dao.A_Datail_CodeDao.listcourse*/
+        SELECT	detail_code	
+        	,	detail_name
+        FROM	tb_detail_code
+        WHERE	group_code = 'S1000'
+        ORDER BY detail_code ASC;
+	</select>
+	
+   <!-- 공통코드에 있는 강의코드 추가 -->
+   <insert id="aCourseInsert" parameterType="String">
+   INSERT INTO tb_detail_code(detail_code,group_code,detail_name,use_yn) 
+		SELECT CONCAT('A',CAST(ifnull(max(cast(SUBSTRING(detail_code,2)as unsigned)),99) + 1 as CHAR(3)))
+      ,'S1000'
+      ,#{detail_name}
+      ,'Y'
+  	FROM tb_detail_code
+ 	WHERE group_code = 'S1000';
+ 	</insert>
+ 
+ <!-- 다음 강의코드 추출 -->
+ <select id="codeSelect" resultType="String" >
+	  SELECT CONCAT('A',CAST(ifnull(max(cast(SUBSTRING(detail_code,2)as unsigned)),99) + 1 as CHAR(3))) from tb_detail_code WHERE group_code = 'S1000';
+	</select>
+   <!-- 공통코드에 있는 강의코드 수정 -->
+   
+   <!-- 공통코드에 있는 강의코드 삭제 -->
+     
+
+
+</mapper>
