@@ -31,7 +31,7 @@
 	    	</if>
 	    </where>
 	ORDER BY n.notice_created_at DESC
-	limit #{startPoint}, #{pageSize};
+	limit #{startPoint}, #{pageSize}
 </select>
 
 <!-- 공지사항 총 목록 개수 조회 -->
@@ -77,6 +77,6 @@
 	    tb_userinfo ui ON ui.loginID = n.loginID
 	LEFT OUTER JOIN 
 	    tb_file f ON f.file_no = n.file_no
-	WHERE n.notice_no = #{pNoticeNo};
+	WHERE n.notice_no = #{pNoticeNo}
 </select>
 </mapper>
