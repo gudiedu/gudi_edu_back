@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="kr.happyjob.study.tCourse.dao.QuestionDao"> 
+<mapper namespace="kr.happyjob.study.tCourse.dao.QuestionReplyDao"> 
 
-<!-- qna 목록 조회 -->
-	<select id="listquestion" resultType="kr.happyjob.study.tCourse.model.QuestionVO">
-		/*kr.happyjob.study.tCourse.dao.questionDao.listquestion*/
+<!-- qna 답변 모달 내용 조회 -->
+	<select id="selectquestionreply" resultType="kr.happyjob.study.tCourse.model.QuestionReplyVO">
+		/*kr.happyjob.study.tCourse.dao.questionReplyDao.listquestion*/
 		
         select 
         
@@ -16,17 +16,19 @@
              , q.question_title
              , q.question_content
              , q.name
+             , r.name
              , r.reply_no
   			 , r.reply_content
              , DATE_FORMAT(q.question_created_at, '%Y-%m-%d') as question_created_at
-             <!-- , ui.name as writer -->
+             , DATE_FORMAT(r.reply_created_at, '%Y-%m-%d') as reply_created_at      
      
-       from tb_question q
+       from  tb_question q<!-- tb_question_reply r -->
        
-              inner join tb_userinfo ui on ui.loginID = q.loginID
-              left outer join tb_question_reply r on q.question_no = r.question_no
+              inner join tb_userinfo ui on ui.loginID = r.loginID
+              inner join tb_question_reply r on q.question_no = r.question_no
               inner join tb_course c ON c.course_no = q.course_no
               
+              <!--
               <where>
                 <if test="(stitle != null) and (!stitle.equals(''))">
                      and q.question_title like concat('%',#{stitle},'%')
@@ -34,11 +36,12 @@
          
               </where>
 				ORDER BY q.question_created_at DESC
-    			LIMIT #{startpoint}, #{pageSize}
+    			LIMIT #{startpoint}, #{pageSize}  -->
+    			
 	</select>
 	
 	<!-- 그룹코드 목록 총 갯수 조회 -->
-	<select id="totalcntquestion" resultType="int">
+	<!--<select id="totalcntquestion" resultType="int">
 		/*kr.happyjob.study.tCourse.dao.questionDao.totalcntquestion*/
 		
       select count(*)
@@ -67,42 +70,47 @@
        from tb_question q
               inner join tb_userinfo ui on ui.loginID = q.loginID
 	  where q.question_no = #{questionNo}
-	</select>
+	</select>  -->
 	
 	
-	<!--   <insert id="insertquestion">
-	    <selectKey keyProperty="selmotice" resultType="int" order="BEFORE"> 
-	   	     SELECT IFNULL(MAX(ntc_no),0) +1  FROM tb_question
+	   <insert id="insertquestionreply">
+	    <selectKey keyProperty="selreply" resultType="int" order="BEFORE"> 
+	   	     SELECT IFNULL(MAX(reply_no),0) +1  FROM tb_question_reply
+	   	     FROM tb_question_reply
+             WHERE question_no = #{questionNo}
 	    </selectKey>
 	       
-	    insert into tb_question
+	       
+	       <!-- name어떻게 할지 고민해봐야할듯? -->
+	    insert into tb_question_reply
 	                 (  
-	                    ntc_no
-                      , loginID
-                      , ntc_title
-                      , ntc_content
-                      , ntc_regdate
+	                    reply_no
+	                  , question_no 
+                      , loginID                       
+                      , name                   
+                      , reply_content                    
+                      , reply_regdate
                     ) values (
-                       #{selmotice}
+                       #{selreply}
+                     , #{questionNo}
                      , #{loginID}
-                     , #{questionTitle}
-                     , #{questionContent}
+                     , #{name}
+                     , #{replyContent}
                      , now()
                     )
-	</insert>  -->
+	   </insert>  
 	
-	<update id="updatequestion" >
-	     update tb_question
+	<update id="updatequestionreply" >
+	     update tb_question_reply
 	          set loginID = #{loginID}
-                 , question_title = #{questionTitle}
-                 , question_content = #{questionContent}
-                 , question_regdate = now()
+                 , question_reply_content = #{replyContent}
+                 , question_reply_regdate = now()
 	     where question_no = #{questionNo}
 	</update>
 	
-	<delete id="deletequestion">
-	    delete from tb_question
-	    where question_no = #{questionNo}
+	<delete id="deletequestionreply">
+	    delete from tb_question_reply
+	    where reply_no = #{replyNo}
 	</delete>
 	
 	</mapper>
