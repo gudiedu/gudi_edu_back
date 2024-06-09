@@ -13,6 +13,8 @@
   			DATE_FORMAT(question_created_at, '%Y-%m-%d') as question_created_at,
   			r.reply_no,
   			r.reply_content,
+  			DATE_FORMAT(reply_created_at, '%Y-%m-%d') as reply_created_at,
+  			q.loginID,
   			ui.name
 		FROM
   			tb_question q
@@ -22,8 +24,69 @@
   		INNER JOIN tb_course c ON c.course_no = q.course_no
   		ORDER BY q.question_no DESC;
 	</select>
-
-
+	
+	<!-- Qna 총 갯수 조회 -->
+	<select id="totalCountQna" resultType="int">
+		SELECT
+			count(*)
+		FROM
+  			tb_question
+	</select>
+	
+	<!-- 특정 Qna 조회 -->
+	<select id="sSelectedQna" resultType="kr.happyjob.study.sAlert.dto.SQnaDto">
+		SELECT
+			c.course_name,
+  			q.question_no,
+  			q.question_title,
+  			q.question_content,
+  			DATE_FORMAT(question_created_at, '%Y-%m-%d') as question_created_at,
+  			r.reply_no,
+  			r.reply_content,
+  			ui.name
+		FROM
+  			tb_question q
+  		LEFT OUTER JOIN
+  			tb_question_reply r ON q.question_no = r.question_no
+  		INNER JOIN
+  			tb_userinfo ui ON q.loginID = ui.loginID
+  		INNER JOIN
+  			tb_course c ON c.course_no = q.course_no
+  		WHERE
+  			q.question_no = #{sQuestionNo}
+	</select>
+	
+	<!-- Qna 등록 -->
+	<insert id="sInsertQna">
+		<selectKey keyProperty="sqno" resultType="int" order="BEFORE">
+			SELECT IFNULL(MAX(question_no), 0) + 1 FROM tb_question
+		</selectKey>
+		
+		INSERT INTO tb_question
+					(
+						question_no,
+						loginID,
+						file_no,
+						question_title,
+						question_content,
+						name,
+						question_created_at						
+					) VALUES (
+						#{sqno},
+						#{loginID},
+						#{file_no},
+						#{question_title},
+						#{question_content},
+						#{name},
+						now()
+					)
+	</insert>
+	
+	<!-- Qna 삭제하기 -->
+	<delete id="sDeleteQna">
+		DELETE FROM tb_question
+			WHERE question_no = #{sqno}
+	</delete>
 
 
 </mapper>

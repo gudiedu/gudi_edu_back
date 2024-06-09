@@ -20,5 +20,31 @@ public class SQnaServiceImpl implements SQnaService {
 		
 		return sQnaDao.sListQna(paramMap);
 	}
+	
+	// Qna 1건 조회
+	public SQnaDto sSelectedQna(Map<String, Object> paramMap) throws Exception {
+		
+		return sQnaDao.sSelectedQna(paramMap);
+	}
+	
+	// Qna 목록 카운트 조회
+	public int totalCountQna(Map<String, Object> paramMap) throws Exception{
+		
+		return sQnaDao.totalCountQna(paramMap);
+	
+	}
+	
+	// Qna 등록
+		public int insertQna(Map<String, Object> paramMap) throws Exception{
+			
+			return sQnaDao.insertQna(paramMap);
+		}
+
+	//Qna 삭제
+	public int deleteQna(Map<String, Object> paramMap) throws Exception{
+		
+		return sQnaDao.deleteQna(paramMap);
+		
+	}
 
 }
