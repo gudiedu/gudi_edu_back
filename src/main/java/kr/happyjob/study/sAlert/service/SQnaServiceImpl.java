@@ -3,6 +3,10 @@ package kr.happyjob.study.sAlert.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +19,19 @@ public class SQnaServiceImpl implements SQnaService {
 	@Autowired
 	SQnaDao sQnaDao;
 	
+	// Set logger
+	private final Logger logger = LogManager.getLogger(this.getClass());
+	
 	// Qna 목록 조회
-	public List<SQnaDto> sListQna(Map<String, Object> paramMap) throws Exception {
+	public List<SQnaDto> sQnaList(Map<String, Object> paramMap) throws Exception {
 		
-		return sQnaDao.sListQna(paramMap);
+		return sQnaDao.sQnaList(paramMap);
 	}
 	
 	// Qna 1건 조회
-	public SQnaDto sSelectedQna(Map<String, Object> paramMap) throws Exception {
+	public SQnaDto sQnaSelected(Map<String, Object> paramMap) throws Exception {
 		
-		return sQnaDao.sSelectedQna(paramMap);
+		return sQnaDao.sQnaSelected(paramMap);
 	}
 	
 	// Qna 목록 카운트 조회
@@ -35,16 +42,22 @@ public class SQnaServiceImpl implements SQnaService {
 	}
 	
 	// Qna 등록
-		public int insertQna(Map<String, Object> paramMap) throws Exception{
+	public int sQnaInsert(Map<String, Object> paramMap, HttpServletRequest request) throws Exception{
 			
-			return sQnaDao.insertQna(paramMap);
+			return sQnaDao.sQnaInsert(paramMap);
 		}
 
 	//Qna 삭제
-	public int deleteQna(Map<String, Object> paramMap) throws Exception{
+	public int sQnaDelete(Map<String, Object> paramMap) throws Exception{
 		
-		return sQnaDao.deleteQna(paramMap);
+		return sQnaDao.sQnaDelete(paramMap);
 		
+	}
+	
+	// Qna 답변 조회
+	public SQnaDto sQnaSelectedReply(Map<String, Object> paramMap) throws Exception{
+		
+		return sQnaDao.sQnaSelectedReply(paramMap);
 	}
 
 }

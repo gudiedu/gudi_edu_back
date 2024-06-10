@@ -4,7 +4,7 @@
 <mapper namespace="kr.happyjob.study.sAlert.dao.SQnaDao">
 
 	<!-- Qna 목록 조회 -->
-	<select id="sListQna" resultType="kr.happyjob.study.sAlert.dto.SQnaDto">
+	<select id="sQnaList" resultType="kr.happyjob.study.sAlert.dto.SQnaDto">
 		SELECT
 			c.course_name,
   			q.question_no,
@@ -34,7 +34,7 @@
 	</select>
 	
 	<!-- 특정 Qna 조회 -->
-	<select id="sSelectedQna" resultType="kr.happyjob.study.sAlert.dto.SQnaDto">
+	<select id="sQnaSelected" resultType="kr.happyjob.study.sAlert.dto.SQnaDto">
 		SELECT
 			c.course_name,
   			q.question_no,
@@ -56,8 +56,29 @@
   			q.question_no = #{sQuestionNo}
 	</select>
 	
+	<!-- 특정 Qna Reply 조회 -->
+	<select id="sQnaSelectedReply" resultType="kr.happyjob.study.sAlert.dto.SQnaDto">
+		SELECT
+			c.course_name,
+  			q.question_no,
+  			r.reply_no,
+  			r.reply_content,
+  			DATE_FORMAT(reply_created_at, '%Y-%m-%d') as question_created_at,
+  			ui.name
+		FROM
+  			tb_question q
+  		LEFT OUTER JOIN
+  			tb_question_reply r ON q.question_no = r.question_no
+  		INNER JOIN
+  			tb_userinfo ui ON q.loginID = ui.loginID
+  		INNER JOIN
+  			tb_course c ON c.course_no = q.course_no
+  		WHERE
+  			q.question_no = #{sQuestionNo}
+	</select>
+	
 	<!-- Qna 등록 -->
-	<insert id="sInsertQna">
+	<insert id="sQnaInsert">
 		<selectKey keyProperty="sqno" resultType="int" order="BEFORE">
 			SELECT IFNULL(MAX(question_no), 0) + 1 FROM tb_question
 		</selectKey>
@@ -66,7 +87,6 @@
 					(
 						question_no,
 						loginID,
-						file_no,
 						question_title,
 						question_content,
 						name,
@@ -74,7 +94,6 @@
 					) VALUES (
 						#{sqno},
 						#{loginID},
-						#{file_no},
 						#{question_title},
 						#{question_content},
 						#{name},
@@ -83,9 +102,9 @@
 	</insert>
 	
 	<!-- Qna 삭제하기 -->
-	<delete id="sDeleteQna">
+	<delete id="sQnaDelete">
 		DELETE FROM tb_question
-			WHERE question_no = #{sqno}
+			WHERE question_no = #{sQuestionNo}
 	</delete>
 
 
