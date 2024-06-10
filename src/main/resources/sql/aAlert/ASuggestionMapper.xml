@@ -9,7 +9,6 @@
 		, suggestion_category
 		, suggestion_answered
 		, suggestion_title
-		, suggestion_content
 		, DATE_FORMAT(suggestion_created_at, '%y-%m-%d') as suggestion_created_at
 		FROM tb_suggestion
 		<where>
@@ -19,4 +18,56 @@
 		</where>
 		ORDER BY suggestion_no DESC;
 	</select>
+	
+	<select id="selectSuggestion" resultType="map">
+		SELECT 
+		s.suggestion_no
+		, s.loginID
+		, s.suggestion_category
+		, s.suggestion_title
+		, s.suggestion_content
+		, DATE_FORMAT(s.suggestion_created_at, '%y-%m-%d') as suggestion_created_at
+		, f.file_no
+		, f.file_server_path
+		, f.file_local_path
+		, f.file_origin
+		, f.file_rename
+		, f.file_extension
+		, f.file_size
+		FROM
+		tb_suggestion s 
+		LEFT JOIN tb_file f
+		ON
+		s.file_no = f.file_no
+		WHERE s.suggestion_no = #{suggestion_no}
+	</select>
+	
+	<select id="selectSuggestionReply" resultType="map">
+		SELECT
+		reply.suggestion_reply_content
+		, f.file_server_path
+		, f.file_local_path
+		, f.file_origin
+		, f.file_rename
+		, f.file_extension
+		, f.file_size
+		FROM 
+		tb_suggestion_reply reply
+		LEFT JOIN tb_file f
+		ON
+		reply.file_no = f.file_no
+		WHERE 
+		reply.suggestion_no = #{suggestion_no}
+	</select>
+	
+	<select id="downloadFile" resultType="map"> 
+		SELECT
+		file_server_path
+		, file_origin
+		FROM
+		tb_file
+		WHERE
+		file_no = #{file_no}
+	</select>
+	
 </mapper>
