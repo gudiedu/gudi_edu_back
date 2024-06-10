@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.happyjob.study.tCourse.model.QuestionReplyVO;
+import kr.happyjob.study.tCourse.service.QuestionReplyService;
 
-import kr.happyjob.study.tCourse.model.QuestionVO;
-import kr.happyjob.study.tCourse.service.QuestionService;
 
 
 
@@ -27,58 +27,48 @@ import kr.happyjob.study.tCourse.service.QuestionService;
 
 @Controller
 @RequestMapping("/tCourse/")
-public class QuestionController {
+public class QuestionReplyController {
 
 	@Autowired 
-	QuestionService questionService;
+	QuestionReplyService questionReplyService;
 	
-	   // Set logger
+	 // Set logger
 	   private final Logger logger = LogManager.getLogger(this.getClass());
 
 	   // Get class name for logger
 	   private final String className = this.getClass().toString();
 	   
 	   
-	   @RequestMapping("listquestion.do")
+	   @RequestMapping("listquestionreply.do")
 	   @ResponseBody
 	   public Map<String, Object> listquestion(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 	         HttpServletResponse response, HttpSession session) throws Exception {
 	      
-	      logger.info("+ Start " + className + ".listquestion");
+	      logger.info("+ Start " + className + ".listquestionreply");
 	      logger.info("   - paramMap : " + paramMap);
 	      
 	      // 1 page : 0  2 page : 10   
 	      
-	      int currentpage = Integer.parseInt((String) paramMap.get("currentPage"));
-	      int pagesize = Integer.parseInt((String) paramMap.get("pageSize"));
-	      int startpoint = (currentpage - 1) * pagesize;
-	      
-	      paramMap.put("pagesize", pagesize);
-	      paramMap.put("startpoint", startpoint);
-	      paramMap.put("pageSize", Integer.parseInt((String) paramMap.get("pageSize")));
-	      
-	      
+	     
 	      Map<String, Object> returnmap = new HashMap<String, Object>();
 	      
-	      List<QuestionVO> listdata = questionService.listquestion(paramMap);
+	      List<QuestionReplyVO> listdata = questionReplyService.listquestionreply(paramMap);
 	      
-	      
-	      int totalcnt = questionService.totalcntquestion(paramMap);
 	      
 	      returnmap.put("listdata",listdata);
-	      returnmap.put("totalcnt",totalcnt);
 	      
 	      logger.info("+ End " + className + ".listquestion");
 
 	      return returnmap;
 	   }
+	
 
-	   @RequestMapping("savequestion.do")
+	   @RequestMapping("savequestionreply.do")
 	   @ResponseBody
 	   public Map<String, Object> savequestion(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 	         HttpServletResponse response, HttpSession session) throws Exception {
 	      
-	      logger.info("+ Start " + className + ".savequestion");
+	      logger.info("+ Start " + className + ".savequestionreply");
 	      logger.info("   - paramMap : " + paramMap);
 	      
 	      // 1 page : 0  2 page : 10   
@@ -92,27 +82,31 @@ public class QuestionController {
 	      
 	      Map<String, Object> returnmap = new HashMap<String, Object>();
 	      
-	     /* if("I".equals(action)) {
-	    	  sqlreturn = questionService.insertquestion(paramMap);    	  
-	      } else 
-	    	  */
-	      
-	    	if("U".equals(action)) {
-	    	  sqlreturn = questionService.updatequestion(paramMap);
+	      if("I".equals(action)) {
+	    	  sqlreturn = questionReplyService.insertquestionreply(paramMap);    	  
+	      } else if("U".equals(action)) {
+	    	  sqlreturn = questionReplyService.updatequestionreply(paramMap);
 	      } else if("D".equals(action)) {
-	    	  sqlreturn = questionService.deletequestion(paramMap);
+	    	  sqlreturn = questionReplyService.deletequestionreply(paramMap);
 	      } else {
 	    	  returnmap.put("result",-1);
 	          returnmap.put("resultmsg","잘못된 요청 입니다.");
 	          return returnmap;		
 	      }
 	      
+	      if("I".equals(action)) {
+	    	  if(sqlreturn >= 0) {
+	    	     resultmsg = "저장 되었습니다.";
+	    	  } else {
+	    		 resultmsg = "저장을 실패했습니다.";
+	    	  }
+	      }
 	      
 	      if("U".equals(action)) {
 	    	  if(sqlreturn >= 0) {
 	    	     resultmsg = "수정 되었습니다.";
 	    	  } else {
-	    		 resultmsg = "수정 실패 되었습니다.";
+	    		 resultmsg = "수정을 실패했습니다.";
 	    	  }
 	      }
 	      
@@ -120,7 +114,7 @@ public class QuestionController {
 	    	  if(sqlreturn >= 0) {
 	    	     resultmsg = "삭제 되었습니다.";
 	    	  } else {
-	    		 resultmsg = "식제 실패 되었습니다.";
+	    		 resultmsg = "식제를 실패했습니다.";
 	    	  }
 	      }
 	      
@@ -133,7 +127,7 @@ public class QuestionController {
 	   }
 	   
 	   
-	      @RequestMapping("selectquestion.do")
+	      @RequestMapping("selectquestionreply.do")
 	      @ResponseBody
 	      public Map<String, Object> selectquestion(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 	            HttpServletResponse response, HttpSession session) throws Exception {
@@ -146,11 +140,11 @@ public class QuestionController {
 	         
 	         Map<String, Object> returnmap = new HashMap<String, Object>();      
 	         
-	         QuestionVO sqlreturn = questionService.selectquestion(paramMap); 
+	         QuestionReplyVO sqlreturn = questionReplyService.selectquestionreply(paramMap); 
 	         
 	         returnmap.put("result",sqlreturn);
 	         
-	         logger.info("+ End " + className + ".selectquestion");
+	         logger.info("+ End " + className + ".selectquestionreply");
 
 	         return returnmap;
 	      }  

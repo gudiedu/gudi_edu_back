@@ -1,6 +1,7 @@
 package kr.happyjob.study.tCourse.service;
 
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,9 @@ public interface QuestionReplyService {
 
 	/** qna 답변 모달 조회 */
 	public QuestionReplyVO selectquestionreply(Map<String, Object> paramMap) throws Exception;
+	
+	/** qna 모달 답변부분 리스트로 조회 */
+	public List<QuestionReplyVO> listquestionreply(Map<String, Object> paramMap) throws Exception;
 	
 	/** qna 목록 카운트 조회 */
 	/*public int totalcntquestion(Map<String, Object> paramMap) throws Exception;*/

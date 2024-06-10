@@ -3,12 +3,39 @@
 
 <mapper namespace="kr.happyjob.study.tCourse.dao.QuestionReplyDao"> 
 
-<!-- qna 답변 모달 내용 조회 -->
+
+<!-- qna 답변부분 리스트로 조회 -->
+	<select id="listquestionreply" resultType="kr.happyjob.study.tCourse.model.QuestionReplyVO">
+		/*kr.happyjob.study.tCourse.dao.questionDao.listquestionreply*/
+		SELECt r.*, ui.loginID
+		FROM tb_question_reply r left join tb_userinfo ui on r.loginId = ui.loginID
+		where r.reply_no = #{reply_no} and r.question_no = #{question_no}
+       <!-- select 
+       
+           c.course_no,
+           q.question_no,
+           r.loginID,
+           r.course_no,
+           r.name,
+           r.reply_no,
+           r.reply_content,
+           DATE_FORMAT(r.reply_created_at, '%Y-%m-%d') as reply_created_at
+             , ui.name as writer
+     
+       from tb_question q
+       
+              inner join tb_userinfo ui on ui.loginID = r.loginID
+              left outer join tb_question_reply r on q.question_no = r.question_no
+              inner join tb_course c ON c.course_no = r.course_no
+      where q.question_no = #{question_no} -->
+		</select>
+
+<!-- qna 모달 질문 내용 조회 -->
 	<select id="selectquestionreply" resultType="kr.happyjob.study.tCourse.model.QuestionReplyVO">
 		/*kr.happyjob.study.tCourse.dao.questionReplyDao.listquestion*/
 		
         select 
-        
+       		   c.course_no
         	 , q.question_no
              , q.course_no
              , q.loginID
@@ -38,40 +65,8 @@
 				ORDER BY q.question_created_at DESC
     			LIMIT #{startpoint}, #{pageSize}  -->
     			
+	
 	</select>
-	
-	<!-- 그룹코드 목록 총 갯수 조회 -->
-	<!--<select id="totalcntquestion" resultType="int">
-		/*kr.happyjob.study.tCourse.dao.questionDao.totalcntquestion*/
-		
-      select count(*)
-       from tb_question q
-              inner join tb_userinfo ui on ui.loginID = q.loginID
-              <where>
-                <if test="(stitle != null) and (!stitle.equals(''))">
-                     and q.question_title like concat('%',#{stitle},'%')
-                </if>
-              
-              </where>
-	</select>
-	
-	
-	<select id="selectquestion"  resultType="kr.happyjob.study.tCourse.model.QuestionVO">
-	   /*kr.happyjob.study.tCourse.dao.questionDao.selectquestion*/
-       select q.question_no
-             , q.course_no
-             , q.loginID
-             , q.file_no
-             , q.question_title
-             , q.question_content
-             , q.name
-             , DATE_FORMAT(q.question_created_at, '%Y-%m-%d') as q_regdate
-             , ui.name as writer
-       from tb_question q
-              inner join tb_userinfo ui on ui.loginID = q.loginID
-	  where q.question_no = #{questionNo}
-	</select>  -->
-	
 	
 	   <insert id="insertquestionreply">
 	    <selectKey keyProperty="selreply" resultType="int" order="BEFORE"> 

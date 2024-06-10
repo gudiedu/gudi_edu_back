@@ -30,16 +30,16 @@ public class QuestionReplyServiceImpl implements QuestionReplyService {
 @Autowired
 QuestionReplyDao QuestionReplyDao;
 
-/** qna 하나조회 */
-public QuestionReplyVO selectquestionreply(Map<String, Object> paramMap) throws Exception {
-	 
-	return QuestionReplyDao.selectquestionreply(paramMap);
-}
-/** qna 목록 조회 */
-/*public List<questionreplyVO> listquestionreply(Map<String, Object> paramMap) throws Exception {
+	/** qna 질문 모달  조회 */
+	public QuestionReplyVO selectquestionreply(Map<String, Object> paramMap) throws Exception {
 	
-	return questionreplyDao.listquestionreply(paramMap);
-} */
+		return QuestionReplyDao.selectquestionreply(paramMap);
+ }
+/** qna모달 답변 목록 조회 */
+ public List<QuestionReplyVO> listquestionreply(Map<String, Object> paramMap) throws Exception {
+	
+	return QuestionReplyDao.listquestionreply(paramMap);
+} 
 
 /** qna 목록 카운트 조회 */
 /*public int totalcntquestionreply(Map<String, Object> paramMap) throws Exception {
@@ -47,23 +47,24 @@ public QuestionReplyVO selectquestionreply(Map<String, Object> paramMap) throws 
 	return questionreplyDao.totalcntquestionreply(paramMap);
 }*/
 
-	/** 공지사항 등록 */
+	/** 답변 등록 */
 	public int insertquestionreply(Map<String, Object> paramMap) throws Exception {
+		
 		return QuestionReplyDao.insertquestionreply(paramMap);
-}
+ }
 	
-/** qna 수정 */
-public int updatequestionreply(Map<String, Object> paramMap) throws Exception {
+   /** 답변 수정 */
+	public int updatequestionreply(Map<String, Object> paramMap) throws Exception {
 	 
-	return QuestionReplyDao.updatequestionreply(paramMap);
-}
+		return QuestionReplyDao.updatequestionreply(paramMap);
+ }
 
 
-/** qna 삭제 */
-public int deletequestionreply(Map<String, Object> paramMap) throws Exception {
+   /** 답변 삭제 */
+	public int deletequestionreply(Map<String, Object> paramMap) throws Exception {
 	 
-	return QuestionReplyDao.deletequestionreply(paramMap);
-}
+		return QuestionReplyDao.deletequestionreply(paramMap);
+ }
 }
 
 

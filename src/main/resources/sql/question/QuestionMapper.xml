@@ -7,18 +7,18 @@
 	<select id="listquestion" resultType="kr.happyjob.study.tCourse.model.QuestionVO">
 		/*kr.happyjob.study.tCourse.dao.questionDao.listquestion*/
 		
-        select 
-        
-        	 , q.question_no
-             , q.course_no
-             , q.loginID
-             , q.file_no
-             , q.question_title
-             , q.question_content
-             , q.name
-             , r.reply_no
-  			 , r.reply_content
-             , DATE_FORMAT(q.question_created_at, '%Y-%m-%d') as question_created_at
+       select 
+
+           q.question_no,
+           q.course_no,
+           q.loginID,
+           q.file_no,
+           q.question_title,
+           q.question_content,
+           q.name,
+           r.reply_no,
+           r.reply_content,
+           DATE_FORMAT(q.question_created_at, '%Y-%m-%d') as question_created_at
              <!-- , ui.name as writer -->
      
        from tb_question q
@@ -55,15 +55,17 @@
 	
 	<select id="selectquestion"  resultType="kr.happyjob.study.tCourse.model.QuestionVO">
 	   /*kr.happyjob.study.tCourse.dao.questionDao.selectquestion*/
-       select q.question_no
-             , q.course_no
-             , q.loginID
-             , q.file_no
-             , q.question_title
-             , q.question_content
-             , q.name
-             , DATE_FORMAT(q.question_created_at, '%Y-%m-%d') as q_regdate
-             , ui.name as writer
+       select 
+       
+           q.question_no,
+           q.course_no,
+           q.loginID,
+           q.file_no,
+           q.question_title,
+           q.question_content,
+           q.name,
+           DATE_FORMAT(q.question_created_at, '%Y-%m-%d') as q_regdate,
+            <!-- , ui.name as writer -->
        from tb_question q
               inner join tb_userinfo ui on ui.loginID = q.loginID
 	  where q.question_no = #{questionNo}

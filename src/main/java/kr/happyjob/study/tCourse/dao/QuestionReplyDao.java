@@ -10,11 +10,15 @@ import kr.happyjob.study.tCourse.model.QuestionVO;
 
 public interface QuestionReplyDao{
 	
-	/** qna 답변 모달 조회 */
+	/** qna 모달 질문부분 조회 */
 	public QuestionReplyVO selectquestionreply(Map<String, Object> paramMap) throws Exception;
 	
+	
+	/** qna 목록 조회 */
+	public List<QuestionReplyVO> listquestionreply(Map<String, Object> paramMap) throws Exception;
+	
 	/** qna 목록 카운트 조회 */
-	/*public int totalcntquestion(Map<String, Object> paramMap) throws Exception;*/
+	public int totalcntquestion(Map<String, Object> paramMap) throws Exception;
 	
 	/** qna reply 등록 */
 	public int insertquestionreply(Map<String, Object> paramMap) throws Exception;
