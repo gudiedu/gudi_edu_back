@@ -5,18 +5,88 @@
 
 <!-- 건의사항 목록 조회 -->
 <select id="sSuggestionList" resultType="kr.happyjob.study.sAlert.dto.SSuggestionDto">
-SELECT ui.loginID,
-       ui.name,
-       s.suggestion_no,
-       s.suggestion_category,
-       s.suggestion_answered,
-       s.suggestion_title,
-       s.suggestion_content,
-       DATE_FORMAT(s.suggestion_created_at , '%Y-%m-%d') as suggestion_created_at
-FROM tb_suggestion s
-LEFT OUTER JOIN 
-       tb_userinfo ui ON ui.loginID = s.loginID
+	SELECT ui.loginID,
+	       ui.name,
+	       s.suggestion_no,
+	       s.suggestion_category,
+	       s.suggestion_answered,
+	       s.suggestion_title,
+	       s.suggestion_content,
+	       DATE_FORMAT(s.suggestion_created_at , '%Y-%m-%d') as suggestion_created_at
+	FROM tb_suggestion s
+	LEFT OUTER JOIN 
+	       tb_userinfo ui ON ui.loginID = s.loginID
+	       <where>
+		    	<if test="(stitle != null) and (!stitle.equals(''))">
+		    	and s.suggestion_title like concat('%',#{stitle},'%')
+		    	</if>
+		   </where>
+	ORDER BY s.suggestion_answered DESC
+	limit #{startPoint}, #{pageSize}
 </select>
+
+<!-- 건의사항 총 목록 개수 조회 -->
+<select id="totalCntResource" resultType="int">
+	SELECT count(*)
+	FROM tb_suggestion s
+	INNER JOIN 
+	    tb_userinfo ui ON ui.loginID = s.loginID
+	    <where>
+	    	<if test="(stitle != null) and (!stitle.equals(''))">
+	    	and s.suggestion_title like concat('%',#{stitle},'%')
+	    	</if>
+	    </where>
+</select>
+
+<!-- 건의사항 등록 -->
+<insert id="sInsertSuggestion">
+	INSERT INTO tb_suggestion
+			(
+			suggestion_title
+			, suggestion_content
+			,suggestion_category
+			, loginID
+			, suggestion_created_at
+			<if test="fileExits eq 'Y'.toString()">
+				, file_no
+			</if>
+			)
+			VALUES
+			(
+			#{suggestionTitle}
+			, #{suggestionContent}
+			, #{suggestionCategory}
+			, #{loginID}
+			, now()
+			<if test="fileExits eq 'Y'.toString()">
+				, #{file_no}
+			</if>
+			)
+</insert>
+
+<!-- 건의사항 파일등록 -->
+<!-- useGeneratedKeys: 저장에 성공했을 때 자동증가된 기본키를 반환하겠는가? 기본값 false 
+keyProperty : 반환할 기본키 칼럼의 이름
+parameterType : 리턴된 기본키를 저장할 객체의 주소(여기 상황에서)-->
+<insert id="saveFile" parameterType="kr.happyjob.study.sAlert.dto.SSuggestionDto" useGeneratedKeys="true" keyProperty="file_no">
+	INSERT INTO tb_file
+			(
+			file_origin
+			, file_local_path
+			, file_server_path
+			, file_size
+			, file_extension
+			)
+			VALUES
+			(
+			#{file_origin}
+			, #{file_local_path}
+			, #{file_server_path}
+			, #{file_size}
+			, #{file_extension}
+			)
+</insert>
+
 
 <!-- 건의사항 한 건 조회 -->
 <select id="sSelectSuggestion" resultType="kr.happyjob.study.sAlert.dto.SSuggestionDto">
@@ -28,6 +98,7 @@ SELECT ui.loginID,
        s.suggestion_title,
        s.suggestion_content,
        DATE_FORMAT(s.suggestion_created_at , '%Y-%m-%d') as suggestion_created_at,
+       s.file_no,
        f.file_origin,
        f.file_rename,
        f.file_local_path,
@@ -39,6 +110,29 @@ LEFT OUTER JOIN
     tb_userinfo ui ON ui.loginID = s.loginID
 LEFT OUTER JOIN 
     tb_file f ON f.file_no = s.file_no
-WHERE s.suggestion_no = #{pSuggestionNo};
+WHERE s.suggestion_no = #{pSuggestionNo}
+</select>
+
+<!-- 건의사항 답변 한 건 조회 -->
+<select id="sSelectSuggestionReply" resultType="kr.happyjob.study.sAlert.dto.SSuggestionDto">
+SELECT ui.loginID,
+       ui.name,
+       sr.suggestion_reply_no,
+       sr.suggestion_no,
+       sr.suggestion_reply_content,
+       DATE_FORMAT(sr.suggestion_reply_created_at , '%Y-%m-%d') as suggestion_reply_created_at,
+       sr.file_no,
+       f.file_origin,
+       f.file_rename,
+       f.file_local_path,
+       f.file_server_path,
+       f.file_size,
+       f.file_extension
+FROM tb_suggestion_reply sr
+LEFT OUTER JOIN 
+    tb_userinfo ui ON ui.loginID = sr.loginID
+LEFT OUTER JOIN 
+    tb_file f ON f.file_no = sr.file_no
+WHERE sr.suggestion_no = #{pSuggestionNo}
 </select>
 </mapper>
