@@ -29,6 +29,8 @@ public interface QuestionReplyDao{
 	/** qna reply 삭제 */
 	public int deletequestionreply(Map<String, Object> paramMap) throws Exception;
     
+	
+	
 
 	/** qna 등록  파일 */
 	/*public int insertquestionfile(Map<String, Object> paramMap) throws Exception;*/

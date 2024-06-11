@@ -120,8 +120,17 @@ public class QuestionReplyController {
 			
 					int sqlReturn = 0;
 					String resultMsg = "";
+					
+					String loginID = (String) session.getAttribute("loginId");
+					
+				    paramMap.put("loginID", loginID);
 			
-					paramMap.put("loginID", (String) session.getAttribute("loginId"));
+					
+					logger.info("   - loginID : " + paramMap.get("loginID"));
+				    logger.info("   - reply_no : " + paramMap.get("reply_no"));
+				    logger.info("   - reply_content : " + paramMap.get("reply_content"));
+				    logger.info("   - question_no : " + paramMap.get("question_no")); 
+				    
 					sqlReturn = questionReplyService.updatequestionreply(paramMap, request);
 			
 					if (sqlReturn >= 0) {

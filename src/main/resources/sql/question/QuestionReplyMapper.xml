@@ -109,9 +109,10 @@
 	<update id="updatequestionreply" >
 	     update tb_question_reply
 	          set loginID = #{loginID}
-                 , question_reply_content = #{replyContent}
-                 , question_reply_regdate = now()
-	     where question_no = #{question_no}
+                 , reply_content = #{reply_content}
+                 , reply_created_at = now()
+	     where reply_no = #{reply_no}
+	     	   and question_no = #{question_no}
 	</update>
 	
 	<delete id="deletequestionreply">
