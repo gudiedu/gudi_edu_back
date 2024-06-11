@@ -15,6 +15,9 @@ public interface SSuggestionService {
 	/** 건의사항 등록 */
 	public int sInsertSuggestion(Map<String, Object> paramMap, HttpServletRequest request) throws Exception;
 	
+	/** 건의사항 삭제 */
+	public int sDeleteSuggestion(Map<String, Object> paramMap) throws Exception;
+	
 	/** 건의사항 목록 카운트 조회 */
 	public int totalCntResource(Map<String, Object> paramMap) throws Exception;
 	

@@ -87,6 +87,17 @@ parameterType : 리턴된 기본키를 저장할 객체의 주소(여기 상황�
 			)
 </insert>
 
+<!-- 건의사항 삭제 -->
+<delete id="sDeleteSuggestion">
+    DELETE FROM tb_suggestion 
+    WHERE suggestion_no = #{pSuggestionNo}
+</delete>
+
+<!-- 건의사항 삭제 -->
+<delete id="sDeleteSuggestionReply">
+    DELETE FROM tb_suggestion_reply 
+    WHERE suggestion_no = #{pSuggestionNo}
+</delete>
 
 <!-- 건의사항 한 건 조회 -->
 <select id="sSelectSuggestion" resultType="kr.happyjob.study.sAlert.dto.SSuggestionDto">

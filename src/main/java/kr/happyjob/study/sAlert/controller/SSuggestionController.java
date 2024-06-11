@@ -95,6 +95,35 @@ public class SSuggestionController {
 	      return returnMap;
 	   }
 	
+	@RequestMapping("sDeleteSuggestion.do")
+	@ResponseBody
+	 public Map<String, Object> sDeleteSuggestion(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	         HttpServletResponse response, HttpSession session) throws Exception {
+		  
+		  logger.info("+ Start " + className + ".sDeleteSuggestion");
+	      logger.info("   - paramMap : " + paramMap);
+	      
+	      Map<String, Object> returnMap = new HashMap<String, Object>();
+	      
+	      int sqlReturn = 0;
+	      String resultMsg = "";
+	      
+	      sqlReturn = sSuggestionService.sDeleteSuggestion(paramMap);
+	      
+	      if(sqlReturn >= 0){
+	    	  resultMsg = "삭제 되었습니다.";
+	      }else{
+	    	  resultMsg = "삭제 실패 되었습니다.";
+	      }
+	      
+	      returnMap.put("result", sqlReturn);
+	      returnMap.put("resultMsg", resultMsg);
+	      
+	      logger.info("+ End " + className + ".sDeleteSuggestion");
+	      
+	      return returnMap;
+	   }
+	
 	@RequestMapping("sSelectSuggestion.do")
 	@ResponseBody
 	 public Map<String, Object> sSelectSuggestion(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,

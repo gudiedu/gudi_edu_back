@@ -12,6 +12,12 @@ public interface SSuggestionDao {
 	/** 건의사항 등록 */
 	public int sInsertSuggestion(Map<String, Object> paramMap) throws Exception;
 	
+	/** 건의사항 삭제 */
+	public int sDeleteSuggestion(Map<String, Object> paramMap) throws Exception;
+	
+	/** 건의사항 삭제 */
+	public int sDeleteSuggestionReply(Map<String, Object> paramMap) throws Exception;
+	
 	/** 건의사항 파일등록 */
 	public int saveFile(SSuggestionDto file);
 	

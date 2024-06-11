@@ -55,6 +55,21 @@ public class SSuggestionServiceImpl implements SSuggestionService {
 		return sSuggestionDao.sInsertSuggestion(paramMap);
 	}
 	
+	/** 건의사항 삭제 */
+	public int sDeleteSuggestion(Map<String, Object> paramMap) throws Exception {	
+		
+		// 트랜잭션 처리를 위해, 두 쿼리를 트랜잭션 내에서 실행
+        try {
+            // tb_suggestion_reply 테이블에서 참조된 데이터 삭제
+        	sSuggestionDao.sDeleteSuggestionReply(paramMap);
+            
+            // tb_suggestion 테이블에서 데이터 삭제
+            return sSuggestionDao.sDeleteSuggestion(paramMap);
+        } catch (Exception e) {
+            throw new Exception("삭제 중 오류 발생", e);
+        }
+	}
+	
 	/** 건의사항 파일 등록 */
 	private Map<String, Object> fileUpload(HttpServletRequest request) throws Exception{
 		
