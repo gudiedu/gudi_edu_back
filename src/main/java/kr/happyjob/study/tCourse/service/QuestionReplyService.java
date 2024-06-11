@@ -21,13 +21,14 @@ public interface QuestionReplyService {
 	/*public int totalcntquestion(Map<String, Object> paramMap) throws Exception;*/
 	
 	/** qna reply 등록 */
-	public int insertquestionreply(Map<String, Object> paramMap) throws Exception;
+	public int insertquestionreply(Map<String, Object> paramMap, HttpServletRequest request) throws Exception;
 	
 	/** qna reply 수정 */
-	public int updatequestionreply(Map<String, Object> paramMap) throws Exception;
+	public int updatequestionreply(Map<String, Object> paramMap, HttpServletRequest request) throws Exception;
 	
 	/** qna reply 삭제 */
-	public int deletequestionreply(Map<String, Object> paramMap) throws Exception;
+	public int deletequestionreply(Map<String, Object> paramMap, HttpServletRequest request) throws Exception;
+	
 	
 	/** qna 등록  파일 */
 	/*public int insertquestionfile(Map<String, Object> paramMap) throws Exception;*/

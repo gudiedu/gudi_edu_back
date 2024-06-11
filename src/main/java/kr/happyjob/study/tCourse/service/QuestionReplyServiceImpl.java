@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import kr.happyjob.study.tCourse.dao.QuestionReplyDao;
 import kr.happyjob.study.tCourse.model.QuestionReplyVO;
-import kr.happyjob.study.tCourse.model.QuestionVO;
+
 
 @Service
 public class QuestionReplyServiceImpl implements QuestionReplyService {
@@ -48,23 +48,26 @@ QuestionReplyDao QuestionReplyDao;
 }*/
 
 	/** 답변 등록 */
-	public int insertquestionreply(Map<String, Object> paramMap) throws Exception {
+	public int insertquestionreply(Map<String, Object> paramMap,  HttpServletRequest request) throws Exception {
 		
 		return QuestionReplyDao.insertquestionreply(paramMap);
  }
 	
    /** 답변 수정 */
-	public int updatequestionreply(Map<String, Object> paramMap) throws Exception {
+	public int updatequestionreply(Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
 	 
 		return QuestionReplyDao.updatequestionreply(paramMap);
  }
 
 
    /** 답변 삭제 */
-	public int deletequestionreply(Map<String, Object> paramMap) throws Exception {
-	 
+	public int deletequestionreply(Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
+		logger.info("Service - deletequestionreply - paramMap: " + paramMap);
 		return QuestionReplyDao.deletequestionreply(paramMap);
  }
+	
+	
+	
 }
 
 

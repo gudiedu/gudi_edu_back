@@ -7,9 +7,17 @@
 <!-- qna 답변부분 리스트로 조회 -->
 	<select id="listquestionreply" resultType="kr.happyjob.study.tCourse.model.QuestionReplyVO">
 		/*kr.happyjob.study.tCourse.dao.questionDao.listquestionreply*/
-		SELECt r.*, ui.loginID
-		FROM tb_question_reply r left join tb_userinfo ui on r.loginId = ui.loginID
-		where r.reply_no = #{reply_no} and r.question_no = #{question_no}
+		SELECt 
+		   r.loginID,
+           r.course_no,
+           r.name,
+           r.reply_no,
+           r.reply_content,
+           DATE_FORMAT(r.reply_created_at, '%Y-%m-%d') as reply_created_at,
+		   ui.loginID
+		   
+			from tb_question_reply r left join tb_userinfo ui on r.loginId = ui.loginID
+			where r.question_no = #{question_no}
        <!-- select 
        
            c.course_no,
@@ -70,9 +78,9 @@
 	
 	   <insert id="insertquestionreply">
 	    <selectKey keyProperty="selreply" resultType="int" order="BEFORE"> 
-	   	     SELECT IFNULL(MAX(reply_no),0) +1  FROM tb_question_reply
+	   	     SELECT IFNULL(MAX(reply_no),0) +1 
 	   	     FROM tb_question_reply
-             WHERE question_no = #{questionNo}
+             WHERE question_no = #{question_no}
 	    </selectKey>
 	       
 	       
@@ -84,14 +92,17 @@
                       , loginID                       
                       , name                   
                       , reply_content                    
-                      , reply_regdate
-                    ) values (
+                      , reply_created_at
+                      , course_no
+                    ) 
+                    values (
                        #{selreply}
-                     , #{questionNo}
+                     , #{question_no}
                      , #{loginID}
                      , #{name}
-                     , #{replyContent}
+                     , #{reply_content}
                      , now()
+                     , (SELECT course_no FROM tb_question WHERE question_no = #{question_no})
                     )
 	   </insert>  
 	
@@ -100,12 +111,15 @@
 	          set loginID = #{loginID}
                  , question_reply_content = #{replyContent}
                  , question_reply_regdate = now()
-	     where question_no = #{questionNo}
+	     where question_no = #{question_no}
 	</update>
 	
 	<delete id="deletequestionreply">
 	    delete from tb_question_reply
-	    where reply_no = #{replyNo}
+	    where reply_no = #{reply_no}
 	</delete>
+	
+	
+	
 	
 	</mapper>
