@@ -44,7 +44,9 @@
 	
 	<select id="selectSuggestionReply" resultType="map">
 		SELECT
-		reply.suggestion_reply_content
+		reply.suggestion_reply_no
+		, reply.suggestion_reply_content
+		, f.file_no
 		, f.file_server_path
 		, f.file_local_path
 		, f.file_origin
@@ -69,5 +71,87 @@
 		WHERE
 		file_no = #{file_no}
 	</select>
+	
+	<insert id="insertReply" useGeneratedKeys="true" keyProperty="suggestion_reply_no">
+		INSERT INTO tb_suggestion_reply
+		(
+		suggestion_no
+		, suggestion_reply_content
+		, suggestion_reply_created_at
+		, loginID
+		<if test="fileExits eq 'Y'.toString()">
+			, file_no
+		</if>
+		)
+		VALUES
+		(
+		#{suggestion_no}
+		, #{suggestion_reply_content}
+		, now()
+		, #{loginID}
+		<if test="fileExits eq 'Y'.toString()">
+			, #{file_no}
+		</if>
+		)
+	</insert>
+	
+	<update id="updateReply">
+		UPDATE tb_suggestion_reply
+		SET
+		suggestion_reply_content = #{suggestion_reply_content}
+		<choose>
+   			<when test="fileExits eq 'Y'.toString()">
+  		    	, file_no = #{file_no}
+ 			</when>
+	   		<when test="removeFile eq 'Y'.toString()">
+	   		 	, file_no = null
+	   		</when>
+  		</choose>
+		WHERE 
+		suggestion_reply_no = #{suggestion_reply_no}
+	</update>
+	
+	<delete id="deleteReply">
+		DELETE FROM tb_suggestion_reply
+		WHERE suggestion_reply_no = #{suggestion_reply_no}
+	</delete>
+	<delete id="deleteSuggestion">
+		DELETE FROM tb_suggestion
+		WHERE suggestion_no = #{suggestion_no}
+	</delete>
+	
+	<insert id="saveFile" parameterType="kr.happyjob.study.aAlert.model.AFileDTO" useGeneratedKeys="true" keyProperty="file_no">
+		INSERT INTO tb_file
+		(
+		file_origin
+		, file_local_path
+		, file_server_path
+		, file_size
+		, file_extension
+		)
+		VALUES
+		(
+		#{file_origin}
+		, #{file_local_path}
+		, #{file_server_path}
+		, #{file_size}
+		, #{file_extension}
+		)
+	</insert>
+	
+	<update id="updateSuggestion">
+		UPDATE tb_suggestion
+		SET
+		<choose>
+   			<when test="action eq 'I'.toString()">
+  		    	suggestion_answered = "Y"
+ 			</when>
+	   		<when test="action eq 'D'.toString()">
+	   		 	suggestion_answered = "N"
+	   		</when>
+  		</choose>
+		WHERE
+		suggestion_no = #{suggestion_no}
+	</update>
 	
 </mapper>

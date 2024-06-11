@@ -41,6 +41,28 @@ public class ASuggestionController {
 		return aSuggestionService.selectSuggestion(paramMap);
 	}
 	
+	@RequestMapping("/aSuggestion/reply/new")
+	public void insertReply(@RequestParam Map<String, Object> paramMap, HttpSession session, HttpServletRequest request) throws Exception{
+		paramMap.put("loginID", (String)session.getAttribute("loginId"));
+		aSuggestionService.insertReply(paramMap, request);
+	}
+	
+	@RequestMapping("/aSuggestion/reply/update")
+	public void updateReply(@RequestParam Map<String, Object> paramMap, HttpSession session, HttpServletRequest request) throws Exception{
+		paramMap.put("loginID", (String)session.getAttribute("loginId"));
+		aSuggestionService.updateReply(paramMap, request);
+	}
+	
+	@RequestMapping("aSuggestion/reply/delete")
+	public void deleteReply(@RequestParam Map<String, Object> paramMap, HttpSession session) throws Exception{
+		aSuggestionService.deleteReply(paramMap);
+	}
+	
+	@RequestMapping("aSuggestion/delete")
+	public void deleteSuggestion(@RequestParam Map<String, Object> paramMap, HttpSession session) throws Exception{
+		aSuggestionService.deleteSuggestion(paramMap);
+	}
+	
 	@RequestMapping("/aSuggestion/fileDownload")
 	public void noticeFileDownload(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 	         HttpServletResponse response, HttpSession session) throws Exception {
