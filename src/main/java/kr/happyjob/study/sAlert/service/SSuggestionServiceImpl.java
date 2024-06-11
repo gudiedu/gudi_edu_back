@@ -33,8 +33,8 @@ public class SSuggestionServiceImpl implements SSuggestionService {
 	@Value("${fileUpload.virtualRootPath}")
 	private String virtualRootPath;
 		
-	@Value("${fileUpload.noticePath}")
-	private String noticePath;
+	@Value("${fileUpload.suggestionPath}")
+	private String suggestionPath;
 	
 	/** 건의사항 목록 조회 */
 	public List<SSuggestionDto> sSuggestionList(Map<String, Object> paramMap) throws Exception {
@@ -75,7 +75,7 @@ public class SSuggestionServiceImpl implements SSuggestionService {
 		
 		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
 		
-		String itemFilePath = noticePath + File.separator;
+		String itemFilePath = suggestionPath + File.separator;
 		FileUtilCho fileUpload = new FileUtilCho(multipartHttpServletRequest, rootPath, virtualRootPath, itemFilePath);
 		Map<String, Object> fileInfo = fileUpload.uploadFiles();
 		
