@@ -63,9 +63,9 @@
            q.question_content,
            q.name,
            DATE_FORMAT(q.question_created_at, '%Y-%m-%d') as q_regdate,
-            <!-- , ui.name as writer -->
+            
        from tb_question q
-              inner join tb_userinfo ui on ui.loginID = q.loginID
+              
 	  where q.question_no = #{questionNo}
 	</select>
 	

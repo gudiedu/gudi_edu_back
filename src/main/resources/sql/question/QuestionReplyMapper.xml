@@ -7,7 +7,7 @@
 <!-- qna 답변부분 리스트로 조회 -->
 	<select id="listquestionreply" resultType="kr.happyjob.study.tCourse.model.QuestionReplyVO">
 		/*kr.happyjob.study.tCourse.dao.questionDao.listquestionreply*/
-		SELECt 
+		SELECT
 		   r.loginID,
            r.course_no,
            r.name,
@@ -61,7 +61,7 @@
      
        from  tb_question q<!-- tb_question_reply r -->
        
-              inner join tb_userinfo ui on ui.loginID = r.loginID
+             
               inner join tb_question_reply r on q.question_no = r.question_no
               inner join tb_course c ON c.course_no = q.course_no
               
@@ -87,28 +87,26 @@
 	       
 	       
 	       <!-- name어떻게 할지 고민해봐야할듯? -->
-	    insert into tb_question_reply
-	                 (  
-	                    reply_no
-	                  , question_no 
-                      , loginID                       
-                      , name                   
-                      , reply_content                    
-                      , reply_created_at
-                      , course_no
-                      , is_updated
-                    ) 
-                    values (
-                       #{selreply}
-                     , #{question_no}
-                     , #{loginID}
-                     , #{name}
-                     , #{reply_content}
-                     , now()
-                     , (SELECT course_no FROM tb_question WHERE question_no = #{question_no}
-                     , false
-                    )
-	   </insert>  
+			 INSERT INTO tb_question_reply (
+		        reply_no,
+		        question_no,
+		        loginID,
+		        name,
+		        reply_content,
+		        reply_created_at,
+		        course_no,
+		        is_updated
+		    ) 
+		       VALUES (
+		        #{selreply},
+		        #{question_no},
+		        #{loginID},
+		        (SELECT name FROM tb_userinfo WHERE loginID = #{loginID}),
+		        #{reply_content},
+		        NOW(),
+		        (SELECT course_no FROM tb_question WHERE question_no = #{question_no}),
+		        false
+		    )	   </insert>  
 	
 	<update id="updatequestionreply" >
 	     update tb_question_reply

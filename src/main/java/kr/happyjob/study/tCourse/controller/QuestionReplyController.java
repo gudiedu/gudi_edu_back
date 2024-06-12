@@ -87,8 +87,17 @@ public class QuestionReplyController {
 			        return returnMap;
 			    }
 			    
+			    String loginID = (String) paramMap.get("loginID");
+			    String name = (String) paramMap.get("name");
+			    
+			    logger.info("   - loginID : " + loginID);
+			    logger.info("   - name : " + name);
+
+			    
 			    paramMap.put("reply_content", reply_content);
-				paramMap.put("loginID", (String)session.getAttribute("loginId"));
+				paramMap.put("loginID", loginID);
+				paramMap.put("name", name);
+				
 				sqlReturn = questionReplyService.insertquestionreply(paramMap, request);
 				
 				
@@ -110,8 +119,8 @@ public class QuestionReplyController {
 				// Qna 답변 수정하기
 				@RequestMapping("updatequestionreply.do")
 				@ResponseBody
-				public Map<String, Object> updatequestionreply(@RequestParam Map<String, Object> paramMap, HttpSession session,
-						HttpServletRequest request) throws Exception {
+				public Map<String, Object> updatequestionreply(@RequestParam Map<String, Object> paramMap, 
+						HttpSession session, HttpServletRequest request) throws Exception {
 			
 					logger.info("+ Start " + className + ".updatequestionreply");
 					logger.info("   - paramMap : " + paramMap);
