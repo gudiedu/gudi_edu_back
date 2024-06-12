@@ -5,24 +5,31 @@
 
 	<!-- Qna 목록 조회 -->
 	<select id="sQnaList" resultType="kr.happyjob.study.sAlert.dto.SQnaDto">
-		SELECT
-			c.course_name,
-  			q.question_no,
-  			q.question_title,
-  			q.question_content,
-  			DATE_FORMAT(question_created_at, '%Y-%m-%d') as question_created_at,
-  			r.reply_no,
-  			r.reply_content,
-  			DATE_FORMAT(reply_created_at, '%Y-%m-%d') as reply_created_at,
-  			q.loginID,
-  			ui.name
-		FROM
-  			tb_question q
-  		LEFT OUTER JOIN
-  			tb_question_reply r ON q.question_no = r.question_no
-  		INNER JOIN tb_userinfo ui ON q.loginID = ui.loginID
-  		INNER JOIN tb_course c ON c.course_no = q.course_no
-  		ORDER BY q.question_no DESC;
+	    SELECT
+	        DISTINCT q.question_no,
+	        c.course_name,
+	        q.question_title,
+	        q.question_content,
+	        DATE_FORMAT(q.question_created_at, '%Y-%m-%d') AS question_created_at,
+	        r.reply_no,
+	        DATE_FORMAT(r.reply_created_at, '%Y-%m-%d') AS reply_created_at,
+	        q.loginID,
+	        q.name
+	    FROM
+	        tb_question q
+	    LEFT OUTER JOIN (
+	        SELECT 
+	            question_no, 
+	            MAX(reply_no) AS reply_no, 
+	            MAX(reply_created_at) AS reply_created_at
+	        FROM 
+	            tb_question_reply
+	        GROUP BY 
+	            question_no
+	    ) r ON q.question_no = r.question_no
+	    INNER JOIN tb_course c ON c.course_no = q.course_no
+	    ORDER BY q.question_no DESC
+	    LIMIT #{startPoint}, #{pageSize}
 	</select>
 	
 	<!-- Qna 총 갯수 조회 -->
@@ -41,19 +48,15 @@
   			q.question_title,
   			q.question_content,
   			DATE_FORMAT(question_created_at, '%Y-%m-%d') as question_created_at,
-  			r.reply_no,
-  			r.reply_content,
   			ui.name
 		FROM
   			tb_question q
-  		LEFT OUTER JOIN
-  			tb_question_reply r ON q.question_no = r.question_no
   		INNER JOIN
   			tb_userinfo ui ON q.loginID = ui.loginID
   		INNER JOIN
   			tb_course c ON c.course_no = q.course_no
   		WHERE
-  			q.question_no = #{sQuestionNo}
+  			q.question_no = #{SelectedQuestionNo}
 	</select>
 	
 	<!-- 특정 Qna Reply 조회 -->
@@ -63,8 +66,8 @@
   			q.question_no,
   			r.reply_no,
   			r.reply_content,
-  			DATE_FORMAT(reply_created_at, '%Y-%m-%d') as question_created_at,
-  			ui.name
+  			DATE_FORMAT(reply_created_at, '%Y-%m-%d') as reply_created_at,
+  			r.name
 		FROM
   			tb_question q
   		LEFT OUTER JOIN
@@ -74,28 +77,24 @@
   		INNER JOIN
   			tb_course c ON c.course_no = q.course_no
   		WHERE
-  			q.question_no = #{sQuestionNo}
+  			q.question_no = #{SelectedQuestionNo}
 	</select>
 	
 	<!-- Qna 등록 -->
 	<insert id="sQnaInsert">
-		<selectKey keyProperty="sqno" resultType="int" order="BEFORE">
-			SELECT IFNULL(MAX(question_no), 0) + 1 FROM tb_question
-		</selectKey>
-		
 		INSERT INTO tb_question
 					(
-						question_no,
+						course_no,
 						loginID,
 						question_title,
 						question_content,
 						name,
 						question_created_at						
 					) VALUES (
-						#{sqno},
+					SELECT course_name FROM tb_course c WHERE course_no = 
 						#{loginID},
-						#{question_title},
-						#{question_content},
+						#{questionTitle},
+						#{questionContent},
 						#{name},
 						now()
 					)
@@ -106,6 +105,21 @@
 		DELETE FROM tb_question
 			WHERE question_no = #{sQuestionNo}
 	</delete>
+	
+	<!-- 학생의 강의 신청한 목록 조회하기 -->
+	<select id="enrolledCourse" resultType="kr.happyjob.study.sAlert.dto.SQnaDto">
+		SELECT 
+			e.course_no, u.name, c.course_name
+	 	FROM 
+	 		tb_enrollment e
+	  	LEFT OUTER JOIN 
+	  		tb_userinfo u ON e.loginID = u.loginID
+	  	LEFT OUTER JOIN 
+	  		tb_course c ON c.course_no = e.course_no
+	  	WHERE
+	  		u.loginID = #{loginID}
+  		
+	</select>
 
 
 </mapper>

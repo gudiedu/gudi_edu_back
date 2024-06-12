@@ -41,7 +41,7 @@ public class SQnaController {
 	public Map<String, Object> sQnaList (Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 	         HttpServletResponse response, HttpSession session) throws Exception {
 		
-		logger.info("+ Start " + className + ".sListQna");
+		logger.info("+ Start " + className + ".sQnaList");
 		logger.info("   - paramMap : " + paramMap);
 		
 		// 페이지 네비게이터 변수 선언하기
@@ -52,6 +52,9 @@ public class SQnaController {
 		paramMap.put("pageSize", pageSize);
 		paramMap.put("startPoint", startPoint);
 		
+		logger.info("pageSize : " + pageSize);
+		logger.info("startPoint : " + startPoint);
+		
 		
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		
@@ -59,7 +62,7 @@ public class SQnaController {
 		
 		int totalCnt = sQnaService.totalCountQna(paramMap);
 		
-		// listQna 
+		// listQna
 		returnMap.put("listQna", listQna);
 		returnMap.put("totalCnt", totalCnt);
 	
@@ -75,7 +78,7 @@ public class SQnaController {
 		public Map<String, Object> sQnaInsert(@RequestParam Map<String, Object> paramMap, 
 					HttpSession session, HttpServletRequest request) throws Exception{
 			
-			logger.info("+ Start " + className + ".sInsertQna");
+			logger.info("+ Start " + className + ".sQnaInsert");
 			logger.info("   - paramMap : " + paramMap);
 
 			Map<String, Object> returnMap = new HashMap<String, Object>();
@@ -85,6 +88,10 @@ public class SQnaController {
 			
 			paramMap.put("loginID", (String)session.getAttribute("loginId"));
 			sqlReturn = sQnaService.sQnaInsert(paramMap, request);
+			
+			List<SQnaDto> enrolledCourse = sQnaService.enrolledCourse(paramMap);
+			returnMap.put("enrolledCourse", enrolledCourse);
+			
 			
 			
 			if(sqlReturn >= 0){
@@ -96,7 +103,7 @@ public class SQnaController {
 			 returnMap.put("result", sqlReturn);
 		     returnMap.put("resultMsg", resultMsg);
 		      
-		      logger.info("+ End " + className + ".sInsertQna");
+		      logger.info("+ End " + className + ".sQnaInsert");
 
 		      return returnMap;
 			
@@ -118,31 +125,14 @@ public class SQnaController {
 			SQnaDto sQnaSelectedOne = sQnaService.sQnaSelected(paramMap);
 			returnMap.put("result", sQnaSelectedOne);
 			
+			List<SQnaDto> sQnaSelectedReply = sQnaService.sQnaSelectedReply(paramMap);
+			returnMap.put("sQnaSelectedReply", sQnaSelectedReply);
+			
 			
 			logger.info("+ End " + className + ".sSelectedQna");
 	      
 	      return returnMap;
 	}
-	
-	@RequestMapping("sQnaSelectedReply.do")
-	@ResponseBody
-	public Map<String, Object> sQnaSelectedReply(Model model,
-			@RequestParam Map<String, Object> paramMap,
-			HttpServletRequest request, HttpServletResponse response,
-			HttpSession session) throws Exception {
-		
-			logger.info("+ Start " + className + ".sQnaSelectedReply");
-		    logger.info("   - paramMap : " + paramMap);
-		    
-		    Map<String, Object> returnMap = new HashMap<String, Object>();
-		    
-		    SQnaDto sQnaSelectedReply = sQnaService.sQnaSelectedReply(paramMap);
-		
-		    logger.info("+ End " + className + ".sQnaSelectedReply");
-	
-		return returnMap;
-	}
-	
 	
 	
 	// Qna 삭제하기

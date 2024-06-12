@@ -23,7 +23,10 @@ public interface SQnaDao {
 	public int sQnaDelete(Map<String, Object> paramMap) throws Exception;
 
 	// Qna 답변 조회
-	public SQnaDto sQnaSelectedReply(Map<String, Object> paramMap);
+	public List<SQnaDto> sQnaSelectedReply(Map<String, Object> paramMap);
+
+	// 학생이 수강신청한 강의 목록
+	public List<SQnaDto> enrolledCourse(Map<String, Object> paramMap);
 
 	
 }
