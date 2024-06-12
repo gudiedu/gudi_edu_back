@@ -14,7 +14,8 @@
            r.reply_no,
            r.reply_content,
            DATE_FORMAT(r.reply_created_at, '%Y-%m-%d') as reply_created_at,
-		   ui.loginID
+		   ui.loginID,
+		   r.is_updated
 		   
 			from tb_question_reply r left join tb_userinfo ui on r.loginId = ui.loginID
 			where r.question_no = #{question_no}
@@ -55,7 +56,8 @@
              , r.reply_no
   			 , r.reply_content
              , DATE_FORMAT(q.question_created_at, '%Y-%m-%d') as question_created_at
-             , DATE_FORMAT(r.reply_created_at, '%Y-%m-%d') as reply_created_at      
+             , DATE_FORMAT(r.reply_created_at, '%Y-%m-%d') as reply_created_at   
+             , r.is_updated   
      
        from  tb_question q<!-- tb_question_reply r -->
        
@@ -94,6 +96,7 @@
                       , reply_content                    
                       , reply_created_at
                       , course_no
+                      , is_updated
                     ) 
                     values (
                        #{selreply}
@@ -102,7 +105,8 @@
                      , #{name}
                      , #{reply_content}
                      , now()
-                     , (SELECT course_no FROM tb_question WHERE question_no = #{question_no})
+                     , (SELECT course_no FROM tb_question WHERE question_no = #{question_no}
+                     , false
                     )
 	   </insert>  
 	
@@ -111,6 +115,7 @@
 	          set loginID = #{loginID}
                  , reply_content = #{reply_content}
                  , reply_created_at = now()
+                 ,  is_updated = #{is_updated}
 	     where reply_no = #{reply_no}
 	     	   and question_no = #{question_no}
 	</update>

@@ -55,7 +55,7 @@ QuestionReplyDao QuestionReplyDao;
 	
    /** 답변 수정 */
 	public int updatequestionreply(Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
-	 
+		paramMap.put("is_updated", true);
 		return QuestionReplyDao.updatequestionreply(paramMap);
  }
 

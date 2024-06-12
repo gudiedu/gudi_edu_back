@@ -124,7 +124,7 @@ public class QuestionReplyController {
 					String loginID = (String) session.getAttribute("loginId");
 					
 				    paramMap.put("loginID", loginID);
-			
+				    
 					
 					logger.info("   - loginID : " + paramMap.get("loginID"));
 				    logger.info("   - reply_no : " + paramMap.get("reply_no"));
@@ -132,6 +132,7 @@ public class QuestionReplyController {
 				    logger.info("   - question_no : " + paramMap.get("question_no")); 
 				    
 					sqlReturn = questionReplyService.updatequestionreply(paramMap, request);
+				    paramMap.put("is_updated", true);
 			
 					if (sqlReturn >= 0) {
 						resultMsg = "수정 되었습니다.";
