@@ -67,4 +67,9 @@
 	ORDER BY attendance_date ASC
 </select>
 
+<!-- 강의관리 출결 : 공휴일 및 휴강일 -->
+<select id="sDayoffInfo" resultType="kr.happyjob.study.classroom.model.SDayoffModel">
+	SELECT DATE_FORMAT(d.dayoff_date , '%Y-%m-%d') as dayoff_date
+	FROM tb_dayoff d
+</select>
 </mapper>

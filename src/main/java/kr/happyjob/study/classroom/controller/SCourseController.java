@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.happyjob.study.classroom.dto.SCourseDto;
+import kr.happyjob.study.classroom.model.SDayoffModel;
 import kr.happyjob.study.classroom.service.SCourseService;
 
 @Controller
@@ -49,10 +50,12 @@ public class SCourseController {
 	      int attendanceDays = sCourseService.sAttendanceDays(paramMap);
 	      int absenceDays = sCourseService.sAbsenceDays(paramMap);
 	      List<SCourseDto> sAttendanceNotes = sCourseService.sAttendanceNotes(paramMap);
+	      List<SDayoffModel> sDayoffInfo = sCourseService.sDayoffInfo(paramMap);
 	      
 	      returnMap.put("sStudentCourseInfo", sStudentCourseInfo);
 	      returnMap.put("attendanceDays", attendanceDays);
 	      returnMap.put("absenceDays", absenceDays);
+	      returnMap.put("sDayoffInfo", sDayoffInfo);
 	      returnMap.put("sAttendanceNotes", sAttendanceNotes);
 	      
 	      logger.info("+ End " + className + ".sStudentAttendance");

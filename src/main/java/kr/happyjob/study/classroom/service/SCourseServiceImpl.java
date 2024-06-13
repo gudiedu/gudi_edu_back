@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import kr.happyjob.study.classroom.dao.SCourseDao;
 import kr.happyjob.study.classroom.dto.SCourseDto;
+import kr.happyjob.study.classroom.model.SDayoffModel;
 
 @Service
 public class SCourseServiceImpl implements SCourseService {
@@ -33,6 +34,11 @@ public class SCourseServiceImpl implements SCourseService {
 	/** 강의관리 출결 : 학생 출결(지각, 결석한 것만) */
 	public List<SCourseDto> sAttendanceNotes(Map<String, Object> paramMap) throws Exception {
 		return sCourseDao.sAttendanceNotes(paramMap);
+	}
+	
+	/** 강의관리 출결 : 공휴일 및 휴강일 */
+	public List<SDayoffModel> sDayoffInfo(Map<String, Object> paramMap) throws Exception {
+		return sCourseDao.sDayoffInfo(paramMap);
 	}
 	
 }
