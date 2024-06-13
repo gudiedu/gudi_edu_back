@@ -23,7 +23,7 @@ public class SNoticeDto extends SNoticeModel {
 	}
 
 	public void setName(String name) {
-		sUserInfo.setName(name);;
+		sUserInfo.setName(name);
 	}
 	
 	// sFile Getter & Setter

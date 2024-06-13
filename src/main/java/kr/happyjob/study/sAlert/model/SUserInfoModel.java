@@ -1,9 +1,26 @@
 package kr.happyjob.study.sAlert.model;
 
 public class SUserInfoModel {
+	
+	private String loginID;
+	
+	private String user_type;
+	
+	private String name;
+	
+	private String password;
+	
+	private String email;
+	
+	private String hp;
+	
 
 	public String getLoginID() {
 		return loginID;
+	}
+
+	public void setLoginID(String loginID) {
+		this.loginID = loginID;
 	}
 
 	public String getUser_type() {
@@ -46,15 +63,4 @@ public class SUserInfoModel {
 		this.hp = hp;
 	}
 
-	private String loginID;
-	
-	private String user_type;
-	
-	private String name;
-	
-	private String password;
-	
-	private String email;
-	
-	private String hp;
 }
