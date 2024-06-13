@@ -61,9 +61,9 @@ public class SQnaServiceImpl implements SQnaService {
 	}
 
 	// 학생의 수강신청한 강의 목록 조회
-		public List<SQnaDto> enrolledCourse(Map<String, Object> paramMap) throws Exception{
+		public List<SQnaDto> sQnaGetCourseName(Map<String, Object> paramMap) throws Exception{
 			
-			return sQnaDao.enrolledCourse(paramMap);
+			return sQnaDao.sQnaGetCourseName(paramMap);
 		}
 
 }

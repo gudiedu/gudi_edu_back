@@ -107,7 +107,7 @@
 	</delete>
 	
 	<!-- 학생의 강의 신청한 목록 조회하기 -->
-	<select id="enrolledCourse" resultType="kr.happyjob.study.sAlert.dto.SQnaDto">
+	<select id="sQnaGetCourseName" resultType="kr.happyjob.study.sAlert.dto.SQnaDto">
 		SELECT 
 			e.course_no, u.name, c.course_name
 	 	FROM 

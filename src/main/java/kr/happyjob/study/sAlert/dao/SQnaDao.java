@@ -26,7 +26,7 @@ public interface SQnaDao {
 	public List<SQnaDto> sQnaSelectedReply(Map<String, Object> paramMap);
 
 	// 학생이 수강신청한 강의 목록
-	public List<SQnaDto> enrolledCourse(Map<String, Object> paramMap);
+	public List<SQnaDto> sQnaGetCourseName(Map<String, Object> paramMap);
 
 	
 }

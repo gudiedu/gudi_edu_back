@@ -142,6 +142,10 @@ public class SQnaDto extends SQuestionModel {
 	
 	// sCourse Getter & Setter
 	
+	public String getCourse_name() {
+		return sCourse.getCourse_name();
+	}
+	
 	public void setCourse_name(String course_name) {
 		sCourse.setCourse_name(course_name);
 	}

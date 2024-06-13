@@ -89,11 +89,6 @@ public class SQnaController {
 			paramMap.put("loginID", (String)session.getAttribute("loginId"));
 			sqlReturn = sQnaService.sQnaInsert(paramMap, request);
 			
-			List<SQnaDto> enrolledCourse = sQnaService.enrolledCourse(paramMap);
-			returnMap.put("enrolledCourse", enrolledCourse);
-			
-			
-			
 			if(sqlReturn >= 0){
 		    	  resultMsg = "저장 되었습니다.";
 		      }else{
@@ -125,15 +120,33 @@ public class SQnaController {
 			SQnaDto sQnaSelectedOne = sQnaService.sQnaSelected(paramMap);
 			returnMap.put("result", sQnaSelectedOne);
 			
-			List<SQnaDto> sQnaSelectedReply = sQnaService.sQnaSelectedReply(paramMap);
-			returnMap.put("sQnaSelectedReply", sQnaSelectedReply);
-			
-			
 			logger.info("+ End " + className + ".sSelectedQna");
 	      
 	      return returnMap;
 	}
 	
+	// 강의 등록을 위한 수강생 강의명 가져오기
+	@RequestMapping("sQnaGetCourseName.do")
+	@ResponseBody
+	public Map<String, Object> sQnaGetCourseName(Model model,
+			@RequestParam Map<String, Object> paramMap,
+			HttpServletRequest request, HttpServletResponse response,
+			HttpSession session) throws Exception{
+		
+		logger.info("+ Start " + className + ".sQnaGetCourseName");
+		logger.info("   - paramMap : " + paramMap);
+		
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		
+		paramMap.put("loginID", (String)session.getAttribute("loginId"));
+		
+		List<SQnaDto> sQnaGetCourseName = sQnaService.sQnaGetCourseName(paramMap);
+		returnMap.put("sQnaGetCourseName", sQnaGetCourseName);
+		
+		logger.info("+ End " + className + ".sQnaGetCourseName");
+		
+		return returnMap;
+	}
 	
 	// Qna 삭제하기
 		@RequestMapping("sQnaDelete.do")
@@ -177,6 +190,5 @@ public class SQnaController {
 		      return returnmap;
 			
 		}
-	
 	
 }

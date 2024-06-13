@@ -28,6 +28,6 @@ public interface SQnaService {
 	public List<SQnaDto> sQnaSelectedReply(Map<String, Object> paramMap) throws Exception;
 
 	// 학생의 수강신청한 강의 목록 조회
-	public List<SQnaDto> enrolledCourse(Map<String, Object> paramMap) throws Exception;
+	public List<SQnaDto> sQnaGetCourseName(Map<String, Object> paramMap) throws Exception;
 
 }
