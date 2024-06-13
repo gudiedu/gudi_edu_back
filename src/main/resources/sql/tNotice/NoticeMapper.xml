@@ -23,6 +23,9 @@
 			<if test="(stitle != null) and (!stitle.equals(''))">
 				and n.notice_title like concat('%',#{stitle},'%')
 			</if>
+			<if test="user_type != null and user_type != ''">
+			      AND ui.user_type = #{user_type}
+			</if> 
 		</where>
 		ORDER BY notice_no DESC
 		LIMIT #{startpoint}, #{pageSize}
