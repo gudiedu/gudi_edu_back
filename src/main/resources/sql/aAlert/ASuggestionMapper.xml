@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.happyjob.study.aAlert.dao.ASuggestionDAO">
+	<select id="searchSuggestion" resultType="kr.happyjob.study.aAlert.model.ASuggestionDTO">
+		SELECT
+		suggestion_no
+		, loginID
+		, suggestion_category
+		, suggestion_answered
+		, suggestion_title
+		, DATE_FORMAT(suggestion_created_at, '%y-%m-%d') as suggestion_created_at
+		FROM tb_suggestion
+		<where>
+			<if test="(stitle != null) and (!stitle.equals(''))">
+				and suggestion_title like concat('%',#{stitle},'%')
+			</if>
+		</where>
+		ORDER BY suggestion_no DESC;
+	</select>
+	
+	<select id="selectSuggestion" resultType="map">
+		SELECT 
+		s.suggestion_no
+		, s.loginID
+		, s.suggestion_category
+		, s.suggestion_title
+		, s.suggestion_content
+		, DATE_FORMAT(s.suggestion_created_at, '%y-%m-%d') as suggestion_created_at
+		, f.file_no
+		, f.file_server_path
+		, f.file_local_path
+		, f.file_origin
+		, f.file_rename
+		, f.file_extension
+		, f.file_size
+		FROM
+		tb_suggestion s 
+		LEFT JOIN tb_file f
+		ON
+		s.file_no = f.file_no
+		WHERE s.suggestion_no = #{suggestion_no}
+	</select>
+	
+	<select id="selectSuggestionReply" resultType="map">
+		SELECT
+		reply.suggestion_reply_no
+		, reply.suggestion_reply_content
+		, f.file_no
+		, f.file_server_path
+		, f.file_local_path
+		, f.file_origin
+		, f.file_rename
+		, f.file_extension
+		, f.file_size
+		FROM 
+		tb_suggestion_reply reply
+		LEFT JOIN tb_file f
+		ON
+		reply.file_no = f.file_no
+		WHERE 
+		reply.suggestion_no = #{suggestion_no}
+	</select>
+	
+	<select id="downloadFile" resultType="map"> 
+		SELECT
+		file_server_path
+		, file_origin
+		FROM
+		tb_file
+		WHERE
+		file_no = #{file_no}
+	</select>
+	
+	<insert id="insertReply" useGeneratedKeys="true" keyProperty="suggestion_reply_no">
+		INSERT INTO tb_suggestion_reply
+		(
+		suggestion_no
+		, suggestion_reply_content
+		, suggestion_reply_created_at
+		, loginID
+		<if test="fileExits eq 'Y'.toString()">
+			, file_no
+		</if>
+		)
+		VALUES
+		(
+		#{suggestion_no}
+		, #{suggestion_reply_content}
+		, now()
+		, #{loginID}
+		<if test="fileExits eq 'Y'.toString()">
+			, #{file_no}
+		</if>
+		)
+	</insert>
+	
+	<update id="updateReply">
+		UPDATE tb_suggestion_reply
+		SET
+		suggestion_reply_content = #{suggestion_reply_content}
+		<choose>
+   			<when test="fileExits eq 'Y'.toString()">
+  		    	, file_no = #{file_no}
+ 			</when>
+	   		<when test="removeFile eq 'Y'.toString()">
+	   		 	, file_no = null
+	   		</when>
+  		</choose>
+		WHERE 
+		suggestion_reply_no = #{suggestion_reply_no}
+	</update>
+	
+	<delete id="deleteReply">
+		DELETE FROM tb_suggestion_reply
+		WHERE suggestion_reply_no = #{suggestion_reply_no}
+	</delete>
+	<delete id="deleteSuggestion">
+		DELETE FROM tb_suggestion
+		WHERE suggestion_no = #{suggestion_no}
+	</delete>
+	
+	<insert id="saveFile" parameterType="kr.happyjob.study.aAlert.model.AFileDTO" useGeneratedKeys="true" keyProperty="file_no">
+		INSERT INTO tb_file
+		(
+		file_origin
+		, file_local_path
+		, file_server_path
+		, file_size
+		, file_extension
+		)
+		VALUES
+		(
+		#{file_origin}
+		, #{file_local_path}
+		, #{file_server_path}
+		, #{file_size}
+		, #{file_extension}
+		)
+	</insert>
+	
+	<update id="updateSuggestion">
+		UPDATE tb_suggestion
+		SET
+		<choose>
+   			<when test="action eq 'I'.toString()">
+  		    	suggestion_answered = "Y"
+ 			</when>
+	   		<when test="action eq 'D'.toString()">
+	   		 	suggestion_answered = "N"
+	   		</when>
+  		</choose>
+		WHERE
+		suggestion_no = #{suggestion_no}
+	</update>
+	
+</mapper>
