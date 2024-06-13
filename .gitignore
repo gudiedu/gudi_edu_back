@@ -7,8 +7,6 @@ build/
 *.ear
 
 # Eclipse 관련 파일
-.classpath
-.project
 .settings/
 
 # IntelliJ IDEA 관련 파일
