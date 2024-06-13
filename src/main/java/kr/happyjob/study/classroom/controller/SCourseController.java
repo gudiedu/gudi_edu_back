@@ -34,6 +34,7 @@ public class SCourseController {
 	// Get class name for logger
 	private final String className = this.getClass().toString();
 	
+	
 	@RequestMapping("sStudentAttendance.do")
 	@ResponseBody
 	 public Map<String, Object> sAttendanceList(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
