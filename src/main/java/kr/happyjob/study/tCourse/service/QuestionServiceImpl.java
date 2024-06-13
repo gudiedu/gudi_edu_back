@@ -1,10 +1,10 @@
 package kr.happyjob.study.tCourse.service;
 
-import java.io.File;
+
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+
 
 
 
@@ -43,25 +43,6 @@ public int totalcntquestion(Map<String, Object> paramMap) throws Exception {
 }
 
 
-/** qna 수정 */
-public int updatequestion(Map<String, Object> paramMap) throws Exception {
-	 
-	return questionDao.updatequestion(paramMap);
-}
-
-
-/** qna 삭제 */
-public int deletequestion(Map<String, Object> paramMap) throws Exception {
-	 
-	return questionDao.deletequestion(paramMap);
-}
-
-
-/** qna 하나조회 */
-public QuestionVO selectquestion(Map<String, Object> paramMap) throws Exception {
-	 
-	return questionDao.selectquestion(paramMap);
-}
 		
 		
 }

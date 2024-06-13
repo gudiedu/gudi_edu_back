@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="kr.happyjob.study.tAlert.dao.NoticeDao">
+<mapper namespace="kr.happyjob.study.tAlert.dao.tNoticeDao">
 
 
 
 <!-- 강사 공지사항 리스트 조회+검색 -->
- <select id="listnotice" resultType="kr.happyjob.study.tAlert.model.NoticeVO">
+ <select id="searchNotice" resultType="kr.happyjob.study.tAlert.model.tNoticeVO">
  
  		 SELECT 
  		 
- 		   n.notice 
+ 		   n.notice_no 
  		 , n.loginID
  		 , n.notice_title
- 		 , DATE_FORMAT(n_notice_created_at, '%y-%m-%d') as notice_created_at
+ 		 , DATE_FORMAT(n.notice_created_at, '%y-%m-%d') as notice_created_at
 		 , ui.user_type
 		 
 		FROM tb_notice n
@@ -24,14 +24,31 @@
 				and n.notice_title like concat('%',#{stitle},'%')
 			</if>
 		</where>
-		ORDER BY notice_no DESC;
+		ORDER BY notice_no DESC
 		LIMIT #{startpoint}, #{pageSize}
 	</select>
 	
+	<!-- 그룹코드 목록 총 갯수 조회 -->
+	<select id="totalcntNotice" resultType="int">
+		
+		
+      select count(*)
+       from tb_notice n
+              inner join tb_userinfo ui on ui.loginID = n.loginID
+              <where>
+                <if test="(stitle != null) and (!stitle.equals(''))">
+                     and n.notice_title like concat('%',#{stitle},'%')
+                </if>
+              
+              </where>
+	</select>
+	
+	
+	
 	<!-- 강사 공지사항 셀렉트 -->
-	 <select id="selectnotice" resultType="kr.happyjob.study.tAlert.model.NoticeVO">
+	 <select id="selectNotice" resultType="kr.happyjob.study.tAlert.model.tNoticeVO">
 	 SELECT
-		n.notice_no
+		 n.notice_no
 		,n.notice_title
 		, DATE_FORMAT(n.notice_created_at, '%y-%m-%d') as notice_created_at
 		, n.loginID
@@ -50,7 +67,7 @@
 		WHERE n.notice_no = #{notice_no}
 	</select>
 	
-	 <insert id="insertnotice">
+	 <insert id="insertNotice">
 	    <selectKey keyProperty="selnotice" resultType="int" order="BEFORE"> 
 	   	     SELECT IFNULL(MAX(reply_no),0) +1 FROM tb_notice             
 	    </selectKey>
@@ -108,12 +125,12 @@
         </choose>
     ) -->
 	       
-	<delete id="deletenotice">
+	<delete id="deleteNotice">
 		DELETE FROM tb_notice
 		WHERE notice_no = #{notice_no}	
 	</delete>
 	       
-	<update id="updatenotice">
+	<update id="updateNotice">
 		UPDATE tb_notice
 		 SET 
 		   loginID = #{loginID}
@@ -126,7 +143,7 @@
 	</update>
 	
 	
-	 <insert id="insertnoticefile">
+	 <insert id="saveFile">
 	     <selectKey keyProperty="saventfile" resultType="int" order="BEFORE"> 
 	   	     SELECT IFNULL(MAX(ntc_no),0) +1  FROM tb_notice
 	    </selectKey>
@@ -134,7 +151,7 @@
 	       
 		INSERT INTO tb_file
 		(
-		file_origin
+		  file_origin
 		, file_local_path
 		, file_server_path
 		, file_size

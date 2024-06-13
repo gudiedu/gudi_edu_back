@@ -41,7 +41,7 @@ public class QuestionReplyController {
 	   
 	   @RequestMapping("listquestionreply.do")
 	   @ResponseBody
-	   public Map<String, Object> listquestion(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	   public Map<String, Object> listquestionreply(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 	         HttpServletResponse response, HttpSession session) throws Exception {
 	      
 	      logger.info("+ Start " + className + ".listquestionreply");
@@ -57,7 +57,7 @@ public class QuestionReplyController {
 	      
 	      returnmap.put("listdata",listdata);
 	      
-	      logger.info("+ End " + className + ".listquestion");
+	      logger.info("+ End " + className + ".listquestionreply");
 
 	      return returnmap;
 	   }

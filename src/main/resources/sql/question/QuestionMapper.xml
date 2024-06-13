@@ -65,7 +65,7 @@
            DATE_FORMAT(q.question_created_at, '%Y-%m-%d') as q_regdate,
             
        from tb_question q
-              
+              <!--  inner join tb_userinfo ui on ui.loginID = q.loginID-->
 	  where q.question_no = #{questionNo}
 	</select>
 	
