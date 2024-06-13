@@ -46,13 +46,15 @@ public class SCourseController {
 	      
 	      Map<String, Object> returnMap = new HashMap<String, Object>();
 	      
-	      SCourseDto sStudentCourseInfo = sCourseService.sStudentCourseInfo(paramMap);
+	      List<SCourseDto> sStudentCourseInfo = sCourseService.sStudentCourseInfo(paramMap);
+	      SCourseDto sStudentSelectedCourseInfo = sCourseService.sStudentSelectedCourseInfo(paramMap);
 	      int attendanceDays = sCourseService.sAttendanceDays(paramMap);
 	      int absenceDays = sCourseService.sAbsenceDays(paramMap);
 	      List<SCourseDto> sAttendanceNotes = sCourseService.sAttendanceNotes(paramMap);
 	      List<SDayoffModel> sDayoffInfo = sCourseService.sDayoffInfo(paramMap);
 	      
 	      returnMap.put("sStudentCourseInfo", sStudentCourseInfo);
+	      returnMap.put("sStudentSelectedCourseInfo", sStudentSelectedCourseInfo);
 	      returnMap.put("attendanceDays", attendanceDays);
 	      returnMap.put("absenceDays", absenceDays);
 	      returnMap.put("sDayoffInfo", sDayoffInfo);
