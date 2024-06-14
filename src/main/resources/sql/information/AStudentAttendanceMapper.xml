@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.happyjob.study.information.dao.AStudentAttendanceDAO">
+	<select id="searchLecture" resultType="map">
+		SELECT 
+		em.enrollment_no
+		, em.course_no
+		, cs.loginID
+		, cs.course_subject
+		, cs.course_name
+		, DATE_FORMAT(cs.course_start_date, '%y-%m-%d') as course_start_date 
+		, DATE_FORMAT(cs.course_end_date, '%y-%m-%d') as course_end_date
+		, cs.course_loc
+		, cs.course_quota
+		, ui.name
+		FROM 
+		tb_enrollment em
+		LEFT JOIN tb_course cs 
+		ON cs.course_no = em.course_no
+		LEFT JOIN tb_userinfo ui 
+		ON ui.loginID = cs.loginID
+		where em.loginID like #{studentId} and em.enrollment_confirmed like "Y";
+	</select>
+	
+	<select id="searchAttendance" resultType="kr.happyjob.study.information.dto.AAttendanceDTO">
+		SELECT 
+		attendance_no
+		, course_no
+		, file_no
+		, DATE_FORMAT(attendance_date, '%y-%m-%d') as attendance_date
+		, attendance_status
+		FROM
+		tb_attendance
+		WHERE 
+		course_no = #{courseNo} and loginID = #{studentId}
+		ORDER BY attendance_no DESC;
+	</select>
+
+</mapper>
