@@ -87,6 +87,7 @@ public class SQnaController {
 		    String resultMsg = "";
 			
 			paramMap.put("loginID", (String)session.getAttribute("loginId"));
+			//paramMap.put("studentName", (String)session.getAttribute("name"));
 			sqlReturn = sQnaService.sQnaInsert(paramMap, request);
 			
 			if(sqlReturn >= 0){
@@ -119,6 +120,9 @@ public class SQnaController {
 			
 			SQnaDto sQnaSelectedOne = sQnaService.sQnaSelected(paramMap);
 			returnMap.put("result", sQnaSelectedOne);
+			
+			List<SQnaDto> sQnaSelectedReply = sQnaService.sQnaSelectedReply(paramMap);
+			returnMap.put("sQnaSelectedReply", sQnaSelectedReply);
 			
 			logger.info("+ End " + className + ".sSelectedQna");
 	      
@@ -157,33 +161,24 @@ public class SQnaController {
 			logger.info("+ Start " + className + ".sDeleteQna");
 			logger.info("   - paramMap : " + paramMap);
 			
-			String action = (String) paramMap.get("action");
 		    int sqlreturn = 0;
-		    String resultmsg = "";
 			
+		    Map<String, Object> returnmap = new HashMap<String, Object>();
 			paramMap.put("loginID", (String)session.getAttribute("loginID"));
 			
-			Map<String, Object> returnmap = new HashMap<String, Object>();
+			int sqlReturn = 0;
+			String resultMsg = "";
 			
-			if("D".equals(action)) {
-		    	  sqlreturn = sQnaService.sQnaDelete(paramMap);
-		      } else {
-		    	  returnmap.put("result",-1);
-		          returnmap.put("resultmsg","잘못된 요청 입니다.");
-		          
-		          return returnmap;		
-		      }
+			sqlreturn = sQnaService.sQnaDelete(paramMap);
 			
-		      if("D".equals(action)) {
-		    	  if(sqlreturn >= 0) {
-		    	     resultmsg = "삭제 되었습니다.";
-		    	  } else {
-		    		 resultmsg = "식제 실패 되었습니다.";
-		    	  }
-		      }
-		      
+			if(sqlReturn >= 0){
+				resultMsg = "삭제 되었습니다.";
+			} else {
+				resultMsg = "삭제되지 않았습니다. 다시 확인해주세요.";
+			}
+			
 		      returnmap.put("result",sqlreturn);
-		      returnmap.put("resultmsg",resultmsg);
+		      returnmap.put("resultMsg",resultMsg);
 		      
 		      logger.info("+ End " + className + ".sDeleteQna");
 

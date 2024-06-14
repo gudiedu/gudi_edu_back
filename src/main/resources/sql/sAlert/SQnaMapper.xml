@@ -91,11 +91,11 @@
 						name,
 						question_created_at						
 					) VALUES (
-					SELECT course_name FROM tb_course c WHERE course_no = 
+						#{selectedCourseNo}, 
 						#{loginID},
 						#{questionTitle},
 						#{questionContent},
-						#{name},
+						#{studentName},
 						now()
 					)
 	</insert>
@@ -103,7 +103,7 @@
 	<!-- Qna 삭제하기 -->
 	<delete id="sQnaDelete">
 		DELETE FROM tb_question
-			WHERE question_no = #{sQuestionNo}
+			WHERE question_no = #{SelectedQuestionNo}
 	</delete>
 	
 	<!-- 학생의 강의 신청한 목록 조회하기 -->
