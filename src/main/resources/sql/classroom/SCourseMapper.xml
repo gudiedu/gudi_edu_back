@@ -94,4 +94,36 @@
 	SELECT DATE_FORMAT(d.dayoff_date , '%Y-%m-%d') as dayoff_date
 	FROM tb_dayoff d
 </select>
+
+<!-- 특정 강의 정보 조회 -->
+
+<select id="sCourseInfo" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
+	SELECT
+	  c.course_no
+	  , c.course_name
+	  , ui.name
+	  , c.course_loc
+	  , DATE_FORMAT(c.course_start_date, '%Y-%m-%d') AS course_start_date
+	  , DATE_FORMAT(c.course_end_date, '%Y-%m-%d') AS course_end_date
+	  , c.course_quota
+	FROM
+	  tb_course c
+	LEFT OUTER JOIN tb_userinfo ui ON ui.loginID = c.loginID
+	WHERE c.course_no = #{courseNo}
+</select>
+
+
+<!-- 강의 세부 정보 조회 -->
+
+<select id="sCourseDetail" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
+	SELECT
+		course_no, course_detail_week_no, course_detail_goal, course_detail_content
+	FROM
+		tb_course_detail
+	WHERE
+		course_no = #{courseNo}
+	ORDER BY
+  		course_detail_week_no ASC
+</select>
+
 </mapper>

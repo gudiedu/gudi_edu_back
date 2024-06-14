@@ -115,6 +115,9 @@ public class SQnaController {
 		
 			logger.info("+ Start " + className + ".sQnaSelected");
 			logger.info("   - paramMap : " + paramMap);
+			
+			// 해당 작성자가 게시글을 삭제할 수 있도록 현재 로그인한 ID값 가져가기
+			paramMap.put("currentLoginID",(String)session.getAttribute("loginId"));
 
 			Map<String, Object> returnMap = new HashMap<String, Object>();
 			

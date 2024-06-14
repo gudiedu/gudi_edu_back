@@ -24,4 +24,11 @@ public interface SCourseDao {
 	
 	/** 강의관리 출결 : 공휴일 및 휴강일 */
 	public List<SDayoffModel> sDayoffInfo(Map<String, Object> paramMap) throws Exception;
+
+	/** 강의관리 : 강의 세부 정보 조회*/
+	public SCourseDto sCourseDetail(Map<String, Object> paramMap) throws Exception;
+
+	/** 강의관리 : 특정 강의 정보 조회*/
+	public SCourseDto sCourseInfo(Map<String, Object> paramMap);
+	
 }

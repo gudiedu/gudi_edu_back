@@ -45,5 +45,15 @@ public class SCourseServiceImpl implements SCourseService {
 	public List<SDayoffModel> sDayoffInfo(Map<String, Object> paramMap) throws Exception {
 		return sCourseDao.sDayoffInfo(paramMap);
 	}
+
+	/**강의세부정보 조회*/
+	public SCourseDto sCourseDetail(Map<String, Object> paramMap) throws Exception {
+		return sCourseDao.sCourseDetail(paramMap);
+	}
+
+	/**특정 강의 정보 조회*/
+	public SCourseDto sCourseInfo(Map<String, Object> paramMap) throws Exception {
+		return sCourseDao.sCourseInfo(paramMap);
+	}
 	
 }

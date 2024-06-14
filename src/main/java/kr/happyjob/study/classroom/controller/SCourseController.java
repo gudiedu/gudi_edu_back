@@ -67,5 +67,56 @@ public class SCourseController {
 	      return returnMap;
 	   }
 	
+	// 특정 강의 세부 정보 조회
+		@RequestMapping("sCourseInfo.do")
+		@ResponseBody
+		 public Map<String, Object> sCourseInfo(Model model,
+				 @RequestParam Map<String, Object> paramMap,
+				 HttpServletRequest request,
+		         HttpServletResponse response, HttpSession session) throws Exception {
+			
+				logger.info("+ Start " + className + ".sCourseInfo");
+			    logger.info("   - paramMap : " + paramMap);
+				
+			    paramMap.put("currentLoginID",(String)session.getAttribute("loginId"));
+			    
+			    Map<String, Object> returnMap = new HashMap<String, Object>();
+			    
+			    SCourseDto sCourseInfo = sCourseService.sCourseInfo(paramMap);
+			    
+			    returnMap.put("infoResult", sCourseInfo);
+			    		    
+			    logger.info("+ End " + className + ".sCourseInfo");
+			    
+			    return returnMap;
+			
+		}
+	
+	// 특정 강의 세부 정보 조회
+	@RequestMapping("sCourseDetail.do")
+	@ResponseBody
+	 public Map<String, Object> sCourseDetail(Model model,
+			 @RequestParam Map<String, Object> paramMap,
+			 HttpServletRequest request,
+	         HttpServletResponse response, HttpSession session) throws Exception {
+		
+			logger.info("+ Start " + className + ".sCourseDetail");
+		    logger.info("   - paramMap : " + paramMap);
+			
+		    paramMap.put("loginID",(String)session.getAttribute("loginId"));
+		    
+		    Map<String, Object> returnMap = new HashMap<String, Object>();
+		    
+		    SCourseDto sCourseDetail = sCourseService.sCourseDetail(paramMap);
+		    
+		    returnMap.put("detailResult", sCourseDetail);
+		    
+		    logger.info("+ End " + className + ".sCourseDetail");
+		    
+		    return returnMap;
+		
+	}
+	
+	
 	
 }
