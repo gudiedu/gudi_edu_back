@@ -6,6 +6,7 @@ import kr.happyjob.study.classroom.model.SCourseModel;
 import kr.happyjob.study.classroom.model.SEnrollmentModel;
 import kr.happyjob.study.classroom.model.SFileModel;
 import kr.happyjob.study.classroom.model.SSurveyAnswerModel;
+import kr.happyjob.study.classroom.model.SSurveyChoiceContentModel;
 import kr.happyjob.study.classroom.model.SSurveyModel;
 import kr.happyjob.study.classroom.model.SSurveyQuestionModel;
 import kr.happyjob.study.classroom.model.STestModel;
@@ -25,6 +26,7 @@ public class SCourseDto extends SCourseModel {
 	private STestSubmissionModel sTestSubmission = new STestSubmissionModel();
 	private SSurveyModel sSurvey = new SSurveyModel();
 	private SSurveyQuestionModel sSurveyQuestion = new SSurveyQuestionModel();
+	private SSurveyChoiceContentModel sSurveyChoiceContent = new SSurveyChoiceContentModel();
 	private SSurveyAnswerModel sSurveyAnswer = new SSurveyAnswerModel();
 	private String student_name;
 	private String teacher_name;
@@ -249,6 +251,15 @@ public class SCourseDto extends SCourseModel {
 		sSurveyQuestion.setSurvey_question_type(survey_question_type);
 	}
 
+	// SSurveyChoiceContent Getter & Setter
+	public String getChoice_result() {
+		return sSurveyChoiceContent.getChoice_result();
+	}
+
+	public void setChoice_result(String choice_result) {
+		sSurveyChoiceContent.setChoice_result(choice_result);
+	}
+	
 	// sSurveyAnswer Getter & Setter
 	public int getQuestion_choiced() {
 		return sSurveyAnswer.getQuestion_choiced();

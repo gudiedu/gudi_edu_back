@@ -20,6 +20,17 @@
 	LEFT OUTER JOIN tb_userinfo ui2 ON ui2.loginID = c.loginID
 	WHERE e.loginID = #{loginID}
 	AND e.enrollment_confirmed = "Y"
+	limit #{startPoint}, #{pageSize}
+</select>
+
+<!-- 강의관리 : 학생이 수강하는 강의 목록 갯수 조회 -->
+<select id="totalCntCourse" resultType="int">
+	SELECT count(*)
+	FROM tb_enrollment e
+	INNER JOIN 
+	    tb_userinfo ui ON ui.loginID = e.loginID
+	WHERE e.loginID = #{loginID}
+	AND e.enrollment_confirmed = "Y"
 </select>
 
 <!-- 강의관리 출결 : 학생이 수강하는 특정 강의 내용 조회 -->
@@ -93,5 +104,47 @@
 <select id="sDayoffInfo" resultType="kr.happyjob.study.classroom.model.SDayoffModel">
 	SELECT DATE_FORMAT(d.dayoff_date , '%Y-%m-%d') as dayoff_date
 	FROM tb_dayoff d
+</select>
+
+<!-- 강의관리 수업만족도 : 수업만족도 질문 조회 -->
+<select id="sSatisfactionQuestion" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
+	SELECT c.course_no,
+		   c.course_name,
+	       s.survey_no,
+	       s.survey_name,
+	       sq.survey_question_no,
+	       sq.survey_question_essential,
+	       sq.survey_question_text,
+	       sq.question_choiced,
+	       sq.survey_question_type
+	FROM tb_course c
+	LEFT OUTER JOIN 
+	     tb_survey s ON s.survey_no = c.survey_no
+	LEFT OUTER JOIN 
+	     tb_survey_question sq ON sq.survey_no = c.survey_no
+	WHERE c.course_no = #{courseNo}
+</select>
+
+<!-- 강의관리 수업만족도 : 수업만족도 보기 조회 -->
+<select id="sSatisfactionAnswer" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
+	SELECT c.course_no,
+	       s.survey_no,
+	       s.survey_name,
+	       sq.survey_question_no,
+	       sq.survey_question_essential,
+	       sq.survey_question_text,
+	       sq.question_choiced,
+	       sq.survey_question_type,
+	       scc.question_choiced,
+	       scc.choice_no,
+	       scc.choice_result
+	FROM tb_course c
+	LEFT OUTER JOIN 
+	     tb_survey s ON s.survey_no = c.survey_no
+	LEFT OUTER JOIN 
+	     tb_survey_question sq ON sq.survey_no = c.survey_no
+	LEFT OUTER JOIN 
+	     tb_survey_choice_content scc ON scc.question_choiced = sq.question_choiced
+	WHERE c.course_no = #{courseNo}
 </select>
 </mapper>

@@ -10,6 +10,9 @@ public interface SCourseDao {
 	/** 강의관리 : 학생이 수강하는 강의 목록 조회 */
 	public List<SCourseDto> sStudentCourseInfo(Map<String, Object> paramMap) throws Exception;
 	
+	/** 강의관리 : 학생이 수강하는 강의 목록 갯수 조회 */
+	public int totalCntCourse(Map<String, Object> paramMap) throws Exception;
+	
 	/** 강의관리 출결 : 학생이 수강하는 특정 강의 내용 조회 */
 	public SCourseDto sStudentSelectedCourseInfo(Map<String, Object> paramMap) throws Exception;
 	
@@ -24,4 +27,10 @@ public interface SCourseDao {
 	
 	/** 강의관리 출결 : 공휴일 및 휴강일 */
 	public List<SDayoffModel> sDayoffInfo(Map<String, Object> paramMap) throws Exception;
+	
+	/** 강의관리 수업만족도 : 수업만족도 질문 조회 */
+	public List<SCourseDto> sSatisfactionQuestion(Map<String, Object> paramMap) throws Exception;
+	
+	/** 강의관리 수업만족도 : 수업만족도 보기 조회 */
+	public List<SCourseDto> sSatisfactionAnswer(Map<String, Object> paramMap) throws Exception;
 }

@@ -34,6 +34,36 @@ public class SCourseController {
 	// Get class name for logger
 	private final String className = this.getClass().toString();
 	
+	@RequestMapping("sStudentCourseList.do")
+	@ResponseBody
+	 public Map<String, Object> sStudentCourseList(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	         HttpServletResponse response, HttpSession session) throws Exception {
+		  
+		  logger.info("+ Start " + className + ".sStudentCourseList");
+	      logger.info("   - paramMap : " + paramMap);
+	      
+	      paramMap.put("loginID",(String)session.getAttribute("loginId"));
+	      
+	      int currentPage = Integer.parseInt((String)paramMap.get("currentPage"));
+	      int pageSize = Integer.parseInt((String)paramMap.get("pageSize"));
+	      
+	      int startPoint = (currentPage - 1) * pageSize;
+	      
+	      paramMap.put("startPoint", startPoint);
+	      paramMap.put("pageSize", pageSize);
+	      
+	      Map<String, Object> returnMap = new HashMap<String, Object>();
+	      
+	      List<SCourseDto> sStudentCourseInfo = sCourseService.sStudentCourseInfo(paramMap);
+	      int totalCnt = sCourseService.totalCntCourse(paramMap);
+	      
+	      returnMap.put("sStudentCourseInfo", sStudentCourseInfo);
+	      returnMap.put("totalCnt", totalCnt);
+	      
+	      logger.info("+ End " + className + ".sStudentCourseList");
+	      
+	      return returnMap;
+	   }
 	
 	@RequestMapping("sStudentAttendance.do")
 	@ResponseBody
@@ -47,15 +77,12 @@ public class SCourseController {
 	      
 	      Map<String, Object> returnMap = new HashMap<String, Object>();
 	      
-	      List<SCourseDto> sStudentCourseInfo = sCourseService.sStudentCourseInfo(paramMap);
 	      SCourseDto sStudentSelectedCourseInfo = sCourseService.sStudentSelectedCourseInfo(paramMap);
 	      int attendanceDays = sCourseService.sAttendanceDays(paramMap);
 	      int absenceDays = sCourseService.sAbsenceDays(paramMap);
 	      List<SCourseDto> sAttendanceNotes = sCourseService.sAttendanceNotes(paramMap);
 	      List<SDayoffModel> sDayoffInfo = sCourseService.sDayoffInfo(paramMap);
 	      
-	      //test
-	      returnMap.put("sStudentCourseInfo", sStudentCourseInfo);
 	      returnMap.put("sStudentSelectedCourseInfo", sStudentSelectedCourseInfo);
 	      returnMap.put("attendanceDays", attendanceDays);
 	      returnMap.put("absenceDays", absenceDays);
@@ -63,6 +90,28 @@ public class SCourseController {
 	      returnMap.put("sAttendanceNotes", sAttendanceNotes);
 	      
 	      logger.info("+ End " + className + ".sStudentAttendance");
+	      
+	      return returnMap;
+	   }
+	
+	@RequestMapping("sStudentSatisfaction.do")
+	@ResponseBody
+	 public Map<String, Object> sStudentSatisfaction(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	         HttpServletResponse response, HttpSession session) throws Exception {
+		  
+		  logger.info("+ Start " + className + ".sStudentSatisfaction");
+	      logger.info("   - paramMap : " + paramMap);
+	      
+	      Map<String, Object> returnMap = new HashMap<String, Object>();
+	      
+	      List<SCourseDto> sSatisfactionQuestion = sCourseService.sSatisfactionQuestion(paramMap);
+	      List<SCourseDto> sSatisfactionAnswer = sCourseService.sSatisfactionAnswer(paramMap);
+	     
+	      returnMap.put("sSatisfactionQuestion", sSatisfactionQuestion);
+	      returnMap.put("sSatisfactionAnswer", sSatisfactionAnswer);
+	      
+	      
+	      logger.info("+ End " + className + ".sStudentSatisfaction");
 	      
 	      return returnMap;
 	   }
