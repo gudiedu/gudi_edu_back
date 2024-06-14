@@ -27,6 +27,7 @@ import kr.happyjob.study.sAlert.service.SSuggestionService;
 @RequestMapping("/sAlert/")
 public class SSuggestionController {
 	
+	//test
 	@Autowired
 	SSuggestionService sSuggestionService;
 	

@@ -54,6 +54,7 @@ public class SCourseController {
 	      List<SCourseDto> sAttendanceNotes = sCourseService.sAttendanceNotes(paramMap);
 	      List<SDayoffModel> sDayoffInfo = sCourseService.sDayoffInfo(paramMap);
 	      
+	      //test
 	      returnMap.put("sStudentCourseInfo", sStudentCourseInfo);
 	      returnMap.put("sStudentSelectedCourseInfo", sStudentSelectedCourseInfo);
 	      returnMap.put("attendanceDays", attendanceDays);
