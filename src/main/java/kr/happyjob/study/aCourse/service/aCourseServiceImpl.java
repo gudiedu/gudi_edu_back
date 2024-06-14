@@ -33,10 +33,31 @@ public class aCourseServiceImpl implements aCourseService  {
 	        return acourseDao.aCourseInsert(detail_name);
 	    }
 		
-		// 다음 코드번호
-		public String codeSelect() throws Exception{
-			return acourseDao.codeSelect();
+		// 다음 강의 코드번호 추출
+		public String nextCodeSelect() throws Exception{
+			return acourseDao.nextCodeSelect();
 		}
+		
+		// 공통코드에 있는 강의코드 수정
+		public int codeUpdate(Map<String, Object> paramMap) throws Exception {
+	        return acourseDao.codeUpdate(paramMap);
+	    }
+		
+		// 공통코드에 있는 강의코드 삭제 
+		public int codeDelete(String detail_code) throws Exception {
+			return acourseDao.codeDelete(detail_code);
+		}
+		
+		public List<aCourseModel> codeSearch(String word) throws Exception{;
+			return acourseDao.codeSearch(word);
+		}
+		
+		
+		
+		// 선택한 강의 코드번호 추출
+//		public String codeSelect() throws Exception{
+//			return acourseDao.codeSelect();
+//				}
 		
 		
 }

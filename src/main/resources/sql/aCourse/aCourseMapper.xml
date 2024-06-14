@@ -24,14 +24,38 @@
  	WHERE group_code = 'S1000';
  	</insert>
  
- <!-- 다음 강의코드 추출 -->
- <select id="codeSelect" resultType="String" >
-	  SELECT CONCAT('A',CAST(ifnull(max(cast(SUBSTRING(detail_code,2)as unsigned)),99) + 1 as CHAR(3))) from tb_detail_code WHERE group_code = 'S1000';
+	<!-- 다음 강의코드 추출 -->
+ <select id="nextCodeSelect" resultType="String" >
+	  SELECT CONCAT('A',CAST(ifnull(max(cast(SUBSTRING(detail_code,2)as unsigned)),99) + 1 as CHAR(3))) 
+	  from tb_detail_code 
+	  WHERE group_code = 'S1000';
 	</select>
+	
+	<!-- 선택한 강의코드 추출 -->
+<!--  <select id="codeSelect" resultType="String" parameterType="String">
+ 		SELECT detail_code FROM tb_detail_code WHERE detail_name = #{detail_name};
+	</select> -->
+	
    <!-- 공통코드에 있는 강의코드 수정 -->
+   <update id="codeUpdate" parameterType="Map">
+   	UPDATE tb_detail_code 
+	SET detail_name = #{detail_name} 
+	WHERE detail_code = #{detail_code};
+   </update>
+   
    
    <!-- 공통코드에 있는 강의코드 삭제 -->
+     <delete id="codeDelete" parameterType="String">
+    DELETE FROM tb_detail_code WHERE detail_code = #{detail_code};
+     </delete>
      
+     
+     <!-- 검색어 입력  -->
+     <select id="codeSearch" parameterType="String" resultType="kr.happyjob.study.aCourse.model.aCourseModel">
+    SELECT detail_code, detail_name
+	FROM tb_detail_code
+	WHERE detail_name LIKE CONCAT('%', #{word}, '%');
+     </select>
 
 
 </mapper>
