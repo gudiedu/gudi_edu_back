@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.happyjob.study.common.comnUtils.FileUtilCho;
 import kr.happyjob.study.tAlert.dao.tNoticeDao;
-import kr.happyjob.study.tAlert.model.tFileVO;
 import kr.happyjob.study.tAlert.model.tNoticeVO;
 
 @Service
@@ -41,21 +40,23 @@ public class tNoticeServiceImpl implements tNoticeService {
 	tNoticeDao tNoticeDao;
 		
 
-	
+	/** 공지사항 목록 조회 */
 	public List<tNoticeVO> searchNotice(Map<String, Object> paramMap) throws Exception {
 
 		return tNoticeDao.searchNotice(paramMap);
 		
 	}
-
+	
+	
+	/** 공지사항 카운트 조회 */
 	public int totalcntNotice(Map<String, Object> paramMap) throws Exception {
 		 
 		return tNoticeDao.totalcntNotice(paramMap);
 	}
 
 	
-	
-	public Map<String, Object> selectNotice(Map<String, Object> paramMap) throws Exception {
+	/** 공지사항 하나 조회 */
+	public tNoticeVO selectNotice(Map<String, Object> paramMap) throws Exception {
 
 		return tNoticeDao.selectNotice(paramMap);
 	}
@@ -100,7 +101,7 @@ public class tNoticeServiceImpl implements tNoticeService {
 
 	private int saveFile(Map<String, Object> fileInfo) throws Exception{
 
-		tFileVO file = new tFileVO();
+		tNoticeVO file = new tNoticeVO();
 				
 				file.setFile_origin(fileInfo.get("file_nm").toString());
 				file.setFile_local_path(fileInfo.get("vrfile_loc").toString());

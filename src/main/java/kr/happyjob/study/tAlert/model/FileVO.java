@@ -11,10 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 
-public class tFileVO {
-	
-	
-		private int file_no;
+public class FileVO {
+		
 		private String file_server_path;
 		private String file_local_path; 
 		private String file_origin;
@@ -22,4 +20,6 @@ public class tFileVO {
 		private String file_extension;
 		private int file_size;
 	
-}
+		
+	}
+

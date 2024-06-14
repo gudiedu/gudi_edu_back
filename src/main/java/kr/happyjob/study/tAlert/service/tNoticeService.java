@@ -16,8 +16,8 @@ public interface tNoticeService {
 	/**공지사항 카운트*/
 	public int totalcntNotice(Map<String, Object> paramMap) throws Exception;
 	
-	/** 공지사항 조회 */
-	public Map<String, Object> selectNotice(Map<String, Object> paramMap) throws Exception;
+	/** 공지사항 한건조회 */
+	public tNoticeVO selectNotice(Map<String, Object> paramMap) throws Exception;
 	
 	/** 공지사항 입력 */
 	public int insertNotice(Map<String, Object> paramMap, HttpServletRequest request) throws Exception;
@@ -28,6 +28,7 @@ public interface tNoticeService {
 	/** 공지사항 수정 */
 	public int updateNotice(Map<String, Object> paramMap, HttpServletRequest request) throws Exception;
 
+	
 
 
 }
