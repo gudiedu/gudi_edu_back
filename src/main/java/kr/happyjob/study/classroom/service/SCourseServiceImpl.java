@@ -61,4 +61,9 @@ public class SCourseServiceImpl implements SCourseService {
 		return sCourseDao.sSatisfactionAnswer(paramMap);
 	}
 	
+	/** 강의관리 수업만족도 : 수업만족도 응답*/
+	public int sInsertSurvey(Map<String, Object> paramMap) throws Exception {
+		return sCourseDao.sInsertSurvey(paramMap);
+	}
+	
 }

@@ -34,4 +34,7 @@ public interface SCourseService {
 	
 	/** 강의관리 수업만족도 : 수업만족도 보기 조회 */
 	public List<SCourseDto> sSatisfactionAnswer(Map<String, Object> paramMap) throws Exception;
+	
+	/** 강의관리 수업만족도 : 수업만족도 응답 */
+	public int sInsertSurvey(Map<String, Object> paramMap) throws Exception;
 }

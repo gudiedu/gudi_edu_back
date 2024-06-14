@@ -147,4 +147,28 @@
 	     tb_survey_choice_content scc ON scc.question_choiced = sq.question_choiced
 	WHERE c.course_no = #{courseNo}
 </select>
+
+<!-- 강의관리 수업만족도 : 수업만족도 응답 -->
+<insert id="sInsertSurvey">
+	INSERT INTO tb_survey_answer
+			(
+			course_no, 
+			loginID, 
+			survey_no, 
+			survey_question_no, 
+			question_choiced, 
+			choice_no, 
+			written_answer
+			)
+			VALUES
+			(
+			#{courseNo}
+			, #{loginID}
+			, #{surveyNo}
+			, #{surveyQuestionNo}
+			, #{questionChoiced}
+			, #{choiceNo}
+			, #{writtenAnswer}
+			)
+</insert>
 </mapper>

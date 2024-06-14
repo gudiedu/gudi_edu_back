@@ -13,7 +13,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -115,6 +117,43 @@ public class SCourseController {
 	      
 	      return returnMap;
 	   }
+	
+	@RequestMapping(value = "sInsertSurvey.do", method = RequestMethod.POST, consumes = "application/json")
+	@ResponseBody
+	public Map<String, Object> sInsertSurvey(@RequestBody List<Map<String, Object>> paramMapList, HttpServletRequest request,
+	                                         HttpServletResponse response, HttpSession session) throws Exception {
+	    logger.info("+ Start " + className + ".sInsertSurvey");
+	    logger.info("   - paramMapList : " + paramMapList);
+
+	    Map<String, Object> returnMap = new HashMap<>();
+
+	    String loginId = (String) session.getAttribute("loginId");
+	    int totalSqlReturn = 0;
+	    String resultMsg = "";
+
+	    try {
+	        for (Map<String, Object> paramMap : paramMapList) {
+	            paramMap.put("loginID", loginId);
+	            int sqlReturn = sCourseService.sInsertSurvey(paramMap);
+	            if (sqlReturn < 1) {
+	                throw new Exception("설문 저장 실패 되었습니다.");
+	            }
+	            totalSqlReturn += sqlReturn;
+	        }
+	        resultMsg = "설문 저장 되었습니다.";
+	    } catch (Exception e) {
+	        resultMsg = e.getMessage();
+	        totalSqlReturn = -1;
+	    }
+
+	    returnMap.put("result", totalSqlReturn);
+	    returnMap.put("resultMsg", resultMsg);
+
+	    logger.info("+ End " + className + ".sInsertSurvey");
+
+	    return returnMap;
+	}
+
 	
 	
 }

@@ -89,8 +89,9 @@ parameterType : 리턴된 기본키를 저장할 객체의 주소(여기 상황�
 
 <!-- 건의사항 삭제 -->
 <delete id="sDeleteSuggestion">
-    DELETE FROM tb_suggestion 
-    WHERE suggestion_no = #{pSuggestionNo}
+    DELETE FROM tb_suggestion
+	WHERE suggestion_no = #{pSuggestionNo}
+	AND loginID = #{loginID}
 </delete>
 
 <!-- 건의사항 삭제 -->

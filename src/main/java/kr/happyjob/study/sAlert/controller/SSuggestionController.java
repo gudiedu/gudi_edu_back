@@ -104,6 +104,9 @@ public class SSuggestionController {
 		  logger.info("+ Start " + className + ".sDeleteSuggestion");
 	      logger.info("   - paramMap : " + paramMap);
 	      
+	      String loginId = (String)session.getAttribute("loginId");
+	      paramMap.put("loginID", loginId);
+	      
 	      Map<String, Object> returnMap = new HashMap<String, Object>();
 	      
 	      int sqlReturn = 0;
@@ -133,11 +136,14 @@ public class SSuggestionController {
 		  logger.info("+ Start " + className + ".sSelectSuggestion");
 	      logger.info("   - paramMap : " + paramMap);
 	      
+	      String loginId = (String)session.getAttribute("loginId");
+	      
 	      Map<String, Object> returnMap = new HashMap<String, Object>();
 	      
 	      SSuggestionDto listData = sSuggestionService.sSelectSuggestion(paramMap);
 	      
 	      returnMap.put("result", listData);
+	      returnMap.put("loginId", loginId);
 	      
 	      logger.info("+ End " + className + ".sSelectSuggestion");
 	      
