@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.happyjob.study.aCourse.dao.aCourseDao;
-import kr.happyjob.study.aCourse.model.aCourseModel;
+import kr.happyjob.study.aCourse.dao.aCourseCodeDao;
+import kr.happyjob.study.aCourse.model.aCourseCodeModel;
 
 @Service
-public class aCourseServiceImpl implements aCourseService  {
+public class aCourseCodeServiceImpl implements aCourseCodeService  {
 	// Set logger
 		private final Logger logger = LogManager.getLogger(this.getClass());
 		// Get class name for logger
@@ -21,42 +21,49 @@ public class aCourseServiceImpl implements aCourseService  {
 		
 		
 		@Autowired
-		private aCourseDao acourseDao;
+		private aCourseCodeDao acourseCodeDao;
 
-		public List<aCourseModel> aCourseList(Map<String, Object> paramMap) throws Exception {
+		public List<aCourseCodeModel> aCourseList(Map<String, Object> paramMap) throws Exception {
 			// TODO Auto-generated method stub
-			return acourseDao.aCourseList(paramMap);
+			return acourseCodeDao.aCourseList(paramMap);
 		}
 		
 	
 		public int aCourseInsert(String detail_name) throws Exception {
-	        return acourseDao.aCourseInsert(detail_name);
+	        return acourseCodeDao.aCourseInsert(detail_name);
 	    }
 		
 		// 다음 강의 코드번호 추출
 		public String nextCodeSelect() throws Exception{
-			return acourseDao.nextCodeSelect();
+			return acourseCodeDao.nextCodeSelect();
 		}
 		
 		// 공통코드에 있는 강의코드 수정
 		public int codeUpdate(Map<String, Object> paramMap) throws Exception {
-	        return acourseDao.codeUpdate(paramMap);
+	        return acourseCodeDao.codeUpdate(paramMap);
 	    }
 		
 		// 공통코드에 있는 강의코드 삭제 
 		public int codeDelete(String detail_code) throws Exception {
-			return acourseDao.codeDelete(detail_code);
+			return acourseCodeDao.codeDelete(detail_code);
 		}
 		
-		public List<aCourseModel> codeSearch(String word) throws Exception{;
-			return acourseDao.codeSearch(word);
+		public List<aCourseCodeModel> codeSearch(String word) throws Exception{;
+			return acourseCodeDao.codeSearch(word);
+		}
+		
+		// 코드목록 총 갯수 조회 
+		public int totalCountCode(Map<String, Object> paramMap) throws Exception{
+			
+			return acourseCodeDao.totalCountCode(paramMap);
+		
 		}
 		
 		
 		
 		// 선택한 강의 코드번호 추출
 //		public String codeSelect() throws Exception{
-//			return acourseDao.codeSelect();
+//			return acourseCodeDao.codeSelect();
 //				}
 		
 		

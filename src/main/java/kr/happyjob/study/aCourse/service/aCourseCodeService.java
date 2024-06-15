@@ -3,11 +3,11 @@ package kr.happyjob.study.aCourse.service;
 import java.util.List;
 import java.util.Map;
 
-import kr.happyjob.study.aCourse.model.aCourseModel;
+import kr.happyjob.study.aCourse.model.aCourseCodeModel;
 
-public interface aCourseService {
+public interface aCourseCodeService {
 	/** 공통코드에 있는 강의코드 목록 조회 */
-	public List<aCourseModel> aCourseList(Map<String, Object> paramMap) throws Exception;
+	public List<aCourseCodeModel> aCourseList(Map<String, Object> paramMap) throws Exception;
 	
 	/** 공통코드에 있는 강의코드 추가 */
 	public int aCourseInsert(String detail_name) throws Exception;
@@ -25,6 +25,9 @@ public interface aCourseService {
 	public int codeDelete(String detail_code) throws Exception;
 	
 	//검색 조회
-	public List<aCourseModel> codeSearch(String word) throws Exception;
+	public List<aCourseCodeModel> codeSearch(String word) throws Exception;
+	
+	// 코드목록 총 갯수 조회 
+	public int totalCountCode(Map<String, Object> paramMap) throws Exception;
 		
 }

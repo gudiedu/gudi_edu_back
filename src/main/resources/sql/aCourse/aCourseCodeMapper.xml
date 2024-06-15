@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="kr.happyjob.study.aCourse.dao.aCourseDao">
+<mapper namespace="kr.happyjob.study.aCourse.dao.aCourseCodeDao">
 
    <!-- 공통코드에 있는 강의코드 목록 조회 -->
-   <select id="aCourseList" resultType="kr.happyjob.study.aCourse.model.aCourseModel">
-		/*kr.happyjob.study.aCourse.dao.A_Datail_CodeDao.listcourse*/
+   <select id="aCourseList" resultType="kr.happyjob.study.aCourse.model.aCourseCodeModel">
+		/*kr.happyjob.study.aCourse.dao.A_Datail_CodeDao.aCourseList*/
         SELECT	detail_code	
         	,	detail_name
         FROM	tb_detail_code
         WHERE	group_code = 'S1000'
-        ORDER BY detail_code ASC;
+        ORDER BY detail_code ASC
+        LIMIT #{startPoint}, #{pageSize};
+	</select>
+	
+	<!-- 코드목록 총 갯수 조회 -->
+	<select id="totalCountCode" resultType="int">
+		SELECT
+			count(*)
+		FROM
+  			tb_detail_code
 	</select>
 	
    <!-- 공통코드에 있는 강의코드 추가 -->
@@ -51,7 +60,7 @@
      
      
      <!-- 검색어 입력  -->
-     <select id="codeSearch" parameterType="String" resultType="kr.happyjob.study.aCourse.model.aCourseModel">
+     <select id="codeSearch" parameterType="String" resultType="kr.happyjob.study.aCourse.model.aCourseCodeModel">
     SELECT detail_code, detail_name
 	FROM tb_detail_code
 	WHERE detail_name LIKE CONCAT('%', #{word}, '%');

@@ -20,15 +20,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import kr.happyjob.study.aCourse.model.aCourseModel;
-import kr.happyjob.study.aCourse.service.aCourseService;
+import kr.happyjob.study.aCourse.model.aCourseCodeModel;
+import kr.happyjob.study.aCourse.service.aCourseCodeService;
 
 @Controller
 @RequestMapping("/acourse/")
-public class aCourseController {
+public class aCourseCodeController {
 	
 	@Autowired
-	aCourseService acourseService;
+	aCourseCodeService acourseCodeService;
 	
 	   // Set logger
 	private final Logger logger = LogManager.getLogger(this.getClass());
@@ -44,12 +44,39 @@ public class aCourseController {
 				logger.info("+ Start " + className + ".aCourseList");
 				logger.info("   - paramMap : " + paramMap);
 				
-				List<aCourseModel> aCourseListModel = acourseService.aCourseList(paramMap);
+				// 페이지 네비게이터 변수 선언하기
+				int currentPage = 1;
+			    int pageSize = 10;
+
+			    // 파라미터에서 값 추출 및 변환
+			    if (paramMap.get("currentPage") != null) {
+			        currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
+			    }
+
+			    if (paramMap.get("pageSize") != null) {
+			        pageSize = Integer.parseInt((String) paramMap.get("pageSize"));
+			    }
+
+			    int startPoint = (currentPage - 1) * pageSize;
+				
+//				int currentPage = Integer.parseInt((String)paramMap.get("currentPage"));
+//				int pageSize = Integer.parseInt((String)paramMap.get("pageSize"));
+//				int startPoint = (currentPage -1) * pageSize;
+				
+				paramMap.put("pageSize", pageSize);
+				paramMap.put("startPoint", startPoint);
+				
+				logger.info("pageSize : " + pageSize);
+				logger.info("startPoint : " + startPoint);
+			
+				List<aCourseCodeModel> aCourseListModel = acourseCodeService.aCourseList(paramMap);
 				
 				Map<String, Object> resultMap = new HashMap<>();
 				
+				int totalCnt = acourseCodeService.totalCountCode(paramMap);
 				
 				resultMap.put("listdate", aCourseListModel);
+				resultMap.put("totalCnt", totalCnt);
 				
 				logger.info("+ End " + className + ".aCourseList");
 					return resultMap;
@@ -62,8 +89,8 @@ public class aCourseController {
 	        try {
 	        	logger.info("+ Start " + className + ".aCourseInsert");
 				logger.info("   - detail_name : " + detail_name);
-	            int result = acourseService.aCourseInsert(detail_name);
-//	            String detail_code = acourseService.selectDetailCode();
+	            int result = acourseCodeService.aCourseInsert(detail_name);
+//	            String detail_code = acourseCodeService.selectDetailCode();
 //	            model.addAttribute(detail_code);
 	            
 	            if (result > 0) {
@@ -85,7 +112,7 @@ public class aCourseController {
 	    @ResponseBody
 	    public String nextCodeSelect(Model model) {
 	        try {
-	            String detail_code = acourseService.nextCodeSelect();
+	            String detail_code = acourseCodeService.nextCodeSelect();
 	            logger.info("+ Start " + className + ".nextCodeSelect");
 				logger.info("   - nextCodeSelect : " + detail_code);
 //				model.addAttribute("newCode",newCode);
@@ -103,7 +130,7 @@ public class aCourseController {
 //	    @ResponseBody
 //	    public String codeSelect(Model model,@RequestParam("detail_name") String detail_name) {
 //	        try {
-//	            String detail_code = acourseService.codeSelect();
+//	            String detail_code = acourseCodeService.codeSelect();
 //	            logger.info("+ Start " + className + ".codeSelect");
 //				logger.info("   - codeSelect : " + detail_code);
 ////				model.addAttribute("newCode",newCode);
@@ -127,7 +154,7 @@ public class aCourseController {
 	    		 paramMap.get("detail_code");
 	             paramMap.get("detail_name");
 
-	             int result = acourseService.codeUpdate(paramMap);
+	             int result = acourseCodeService.codeUpdate(paramMap);
 	             String response;
 	             if (result > 0) {
 	            	 System.out.println("수정 성공");
@@ -157,8 +184,8 @@ public class aCourseController {
 	        try {
 	        	logger.info("+ Start " + className + ".codeDelete");
 				logger.info("   - detail_code : " + detail_code);
-	            int result = acourseService.codeDelete(detail_code);
-//	            String detail_code = acourseService.selectDetailCode();
+	            int result = acourseCodeService.codeDelete(detail_code);
+//	            String detail_code = acourseCodeService.selectDetailCode();
 //	            model.addAttribute(detail_code);
 	            
 	            if (result > 0) {
@@ -185,7 +212,7 @@ public class aCourseController {
 					logger.info("+ Start " + className + ".codeSearch");
 					logger.info("   - 검색단어 : " + word);
 					
-					List<aCourseModel> aCourseListModel = acourseService.codeSearch(word);
+					List<aCourseCodeModel> aCourseListModel = acourseCodeService.codeSearch(word);
 					
 					Map<String, Object> resultMap = new HashMap<>();
 					

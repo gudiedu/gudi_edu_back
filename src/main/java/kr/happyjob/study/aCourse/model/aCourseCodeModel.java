@@ -3,11 +3,8 @@ import lombok.*;
 
 @Getter
 @Setter
-public class aCourseModel {
+public class aCourseCodeModel {
 	private String detail_code;
 	private String group_code;
 	private String detail_name;
-	
-	
-
 }
