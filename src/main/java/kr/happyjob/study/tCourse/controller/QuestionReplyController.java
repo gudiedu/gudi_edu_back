@@ -87,16 +87,19 @@ public class QuestionReplyController {
 			        return returnMap;
 			    }
 			    
-			    String loginID = (String) paramMap.get("loginID");
+			    String loginId = (String)session.getAttribute("loginId");
+			      paramMap.put("loginID", loginId);
+			      
 			    String name = (String) paramMap.get("name");
+			    paramMap.put("name", name);
 			    
-			    logger.info("   - loginID : " + loginID);
+			    logger.info("   - loginID : " + loginId);
 			    logger.info("   - name : " + name);
 
 			    
 			    paramMap.put("reply_content", reply_content);
-				paramMap.put("loginID", loginID);
-				paramMap.put("name", name);
+				
+				
 				
 				sqlReturn = questionReplyService.insertquestionreply(paramMap, request);
 				
@@ -130,9 +133,10 @@ public class QuestionReplyController {
 					int sqlReturn = 0;
 					String resultMsg = "";
 					
-					String loginID = (String) session.getAttribute("loginId");
+					String loginId = (String)session.getAttribute("loginId");
+				      paramMap.put("loginID", loginId);
 					
-				    paramMap.put("loginID", loginID);
+				   
 				    
 					
 					logger.info("   - loginID : " + paramMap.get("loginID"));
@@ -172,7 +176,9 @@ public class QuestionReplyController {
 			    int sqlReturn = 0;
 			    String resultmsg = "";
 				
-				paramMap.put("loginID", (String)session.getAttribute("loginID"));
+			    String loginId = (String)session.getAttribute("loginId");
+			      paramMap.put("loginID", loginId);
+			      
 				sqlReturn = questionReplyService.deletequestionreply(paramMap, request);
 				
 				if (sqlReturn >= 0) {
@@ -219,7 +225,9 @@ public class QuestionReplyController {
 	         logger.info("   - paramMap : " + paramMap);
 	         
 	         
-	         paramMap.put("loginID",(String)session.getAttribute("loginId"));
+	         String loginId = (String)session.getAttribute("loginId");
+		      paramMap.put("loginID", loginId);
+		      
 	         
 	         Map<String, Object> returnmap = new HashMap<String, Object>();      
 	         

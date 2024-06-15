@@ -68,7 +68,7 @@ public class tNoticeController {
 		      returnmap.put("listdata",listdata);
 		      returnmap.put("totalcnt",totalcnt);
 		      
-		      logger.info("+ End " + className + ".listquestion");
+		      logger.info("+ End " + className + ".searchNotice");
 
 		      return returnmap;
 		   }
@@ -89,11 +89,12 @@ public class tNoticeController {
 		    String resultMsg = "";
 		    
 		    
-		    logger.info("   - loginID from session: " + session.getAttribute("loginId"));
+		    logger.info("   - loginId from session: " + session.getAttribute("loginId"));
 		    			
-			paramMap.put("loginID",(String)session.getAttribute("loginId"));
+		    String loginId = (String)session.getAttribute("loginId");
+		      paramMap.put("loginID", loginId);
 			
-			 logger.info("   - paramMap after adding loginID: " + paramMap); // 추가된 로그
+			 logger.info("   - paramMap after adding loginId: " + paramMap); // 추가된 로그
 			
 			
 			sqlReturn = tNoticeService.insertNotice(paramMap, request);
@@ -116,7 +117,7 @@ public class tNoticeController {
 	    
 	    @RequestMapping("selectNotice.do")
 		@ResponseBody
-		 public Map<String, Object> sSelectNotice(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+		 public Map<String, Object> selectNotice(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 		         HttpServletResponse response, HttpSession session) throws Exception {
 			  
 			  logger.info("+ Start " + className + ".selectNotice");
@@ -124,11 +125,15 @@ public class tNoticeController {
 		      
 		      Map<String, Object> returnMap = new HashMap<String, Object>();
 		      
+		      String loginId = (String)session.getAttribute("loginId");
+		      paramMap.put("loginID", loginId);
+		      
 		      tNoticeVO listData = tNoticeService.selectNotice(paramMap);
 		      
 		      returnMap.put("result", listData);
+		      returnMap.put("loginId", loginId);
 		      
-		      logger.info("+ End " + className + ".sSelectNotice");
+		      logger.info("+ End " + className + ".SelectNotice");
 		      
 		      return returnMap;
 		   }
@@ -136,7 +141,7 @@ public class tNoticeController {
 	   
 	    @RequestMapping("deleteNotice.do")
 		@ResponseBody
-		 public Map<String, Object> sDeleteNotice(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+		 public Map<String, Object> deleteNotice(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 		         HttpServletResponse response, HttpSession session) throws Exception {
 			  
 			  logger.info("+ Start " + className + ".deleteNotice");
@@ -146,6 +151,9 @@ public class tNoticeController {
 		      
 		      int sqlReturn = 0;
 		      String resultMsg = "";
+		      
+		      String loginId = (String)session.getAttribute("loginId");
+		      paramMap.put("loginID", loginId);
 		      
 		      sqlReturn = tNoticeService.deleteNotice(paramMap);
 		      

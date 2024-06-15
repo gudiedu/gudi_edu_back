@@ -79,7 +79,7 @@
 		   left join tb_userinfo ui on ui.loginID = n.loginID
 		   left join tb_file f on n.file_no = f.file_no 
 		   
-		WHERE n.notice_no = #{notice_no}
+		WHERE n.notice_no = #{pNoticeNo}
 	</select>
 
 
@@ -101,8 +101,8 @@
 			
 			)
 			VALUES (
-			  #{notice_title}
-			, #{notice_content}
+			  #{noticeTitle}
+			, #{noticeContent}
 			, #{loginID}
 			, now()
 		<if test="fileExits eq 'Y'.toString()">
@@ -136,7 +136,8 @@
   <!-- 강사 공지사항 삭제-->
 	<delete id="deleteNotice">
 		DELETE FROM tb_notice
-		WHERE notice_no = #{notice_no}	
+		WHERE notice_no = #{pNoticeNo}	
+		AND loginID = #{loginID}
 	</delete>
 	       
 	       
@@ -148,7 +149,7 @@
 		 , notice_title = #{notice_title}
 		 
 		 
-		 WHERE notice_no = #{notice_no}
+		 WHERE notice_no = #{pNoticeNo}
 		 
 		 
 	</update>
