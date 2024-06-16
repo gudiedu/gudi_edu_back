@@ -26,4 +26,11 @@ public class CourseServiceImpl implements CourseService{
 	public List<CourseModel> CourseList(Map<String, Object> paramMap) throws Exception{
 		return courseDao.CourseList(paramMap);
 	}
+
+	//강의 목록 검색 조회
+	@Override
+	public List<CourseModel> courseSearch(String word) throws Exception {
+		// TODO Auto-generated method stub
+		return courseDao.courseSearch(word);
+	}
 }

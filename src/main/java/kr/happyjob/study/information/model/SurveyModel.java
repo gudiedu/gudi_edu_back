@@ -2,13 +2,13 @@ package kr.happyjob.study.information.model;
 
 import lombok.*;
 
-@Data
-public class tb_surveyModel {
+@Getter
+@Setter
+public class SurveyModel {
 	private int survey_no;
 	private String survey_name;
-	private int total_question;
+	private int total_questions;
 	private int choice_questions;
 	private int written_questions;
 	
-
 }

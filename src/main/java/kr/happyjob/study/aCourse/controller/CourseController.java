@@ -49,6 +49,27 @@ public class CourseController {
 			
 			logger.info("+ End " + className + ".CourseList");
 	
-	return resultMap;
+			return resultMap;
 	}
+	
+	@RequestMapping("courseSearch.do")
+	@ResponseBody
+	public Map<String, Object> courseSearch(Model model, @RequestParam String word, HttpServletRequest request,
+            HttpServletResponse response, HttpSession session) throws Exception {
+				logger.info("+ Start " + className + ".courseSearch");
+				logger.info("   - 검색단어 : " + word);
+				
+				List<CourseModel> courseListModel = courseService.courseSearch(word);
+				
+				Map<String, Object> resultMap = new HashMap<>();
+				
+				resultMap.put("listdate", courseListModel);
+				
+	
+				logger.info("+ End " + className + ".courseSearch");
+				return resultMap;
+			}
+	
+	
+	
 }

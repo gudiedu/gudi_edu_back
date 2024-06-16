@@ -63,7 +63,8 @@
      <select id="codeSearch" parameterType="String" resultType="kr.happyjob.study.aCourse.model.aCourseCodeModel">
     SELECT detail_code, detail_name
 	FROM tb_detail_code
-	WHERE detail_name LIKE CONCAT('%', #{word}, '%');
+	WHERE detail_name LIKE CONCAT('%', #{word}, '%')
+	;
      </select>
 
 

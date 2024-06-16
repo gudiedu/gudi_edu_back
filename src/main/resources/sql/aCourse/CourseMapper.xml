@@ -12,6 +12,21 @@
 	,(SELECT DATEDIFF(course_end_date, course_start_date) )AS course_period
 	, course_start_date, course_end_date, course_loc
 	FROM tb_course tc
-	ORDER BY course_start_date DESC;
+	ORDER BY course_start_date DESC
 	</select>
+	
+	<select id="courseSearch" parameterType="String" resultType="kr.happyjob.study.aCourse.model.CourseModel">
+    SELECT 
+	course_no
+	,(SELECT name FROM tb_userinfo tu WHERE tu.loginID = tc.loginID) user_name
+	, course_subject, course_name
+	, course_quota, course_description
+	,(SELECT DATEDIFF(course_end_date, course_start_date) )AS course_period
+	, course_start_date, course_end_date, course_loc
+	FROM tb_course tc
+	WHERE course_name LIKE CONCAT('%', #{word}, '%')
+     </select>
+	
+	
+	
 </mapper>
