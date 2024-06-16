@@ -3,6 +3,8 @@ package kr.happyjob.study.classroom.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import kr.happyjob.study.classroom.dto.SCourseDto;
 import kr.happyjob.study.classroom.model.SDayoffModel;
 
@@ -26,9 +28,25 @@ public interface SCourseService {
 	/** 강의관리 출결 : 공휴일 및 휴강일 */
 	public List<SDayoffModel> sDayoffInfo(Map<String, Object> paramMap) throws Exception;
 
-	/** 강의관리: 강의 세부 정보 조회*/
-	public SCourseDto sCourseDetail(Map<String, Object> paramMap) throws Exception;
-
 	/** 강의관리: 특정 강의 정보 조회*/
-	public SCourseDto sCourseInfo(Map<String, Object> paramMap) throws Exception;
+	public List<SCourseDto> sCourseInfo(Map<String, Object> paramMap) throws Exception;
+	
+	/** 강의관리: 강의 세부 정보 조회*/
+	public List<SCourseDto> sCourseDetail(Map<String, Object> paramMap) throws Exception;
+
+	/** 수강신청: 수강신청 가능 목록 조회*/
+	public List<SCourseDto> sEnrollList(Map<String, Object> paramMap) throws Exception;
+
+	/** 수강신청: 수강신청하기*/
+	public int sEnrollInsert(Map<String, Object> paramMap, HttpServletRequest request) throws Exception;
+
+	/** 시험응시: 시험관련 목록 조회*/
+	public List<SCourseDto> sTestList(Map<String, Object> paramMap) throws Exception;
+	
+	/** 시험응시: 시험 제출하기*/
+	public int sTestSubmit(Map<String, Object> paramMap, HttpServletRequest request) throws Exception;
+
+	/** 시험응시: 시험 문제 불러오기*/
+	public List<SCourseDto> sCreateTest(Map<String, Object> paramMap) throws Exception;
+
 }

@@ -10,6 +10,9 @@ public class STestModel {
 	private String test_choice3;
 	private String test_choice4;
 	private String test_answer;
+	private int test_score;
+	private String test_category;
+	
 	public int getCourse_no() {
 		return course_no;
 	}
@@ -57,6 +60,18 @@ public class STestModel {
 	}
 	public void setTest_answer(String test_answer) {
 		this.test_answer = test_answer;
+	}
+	public int getTest_score() {
+		return test_score;
+	}
+	public void setTest_score(int test_score) {
+		this.test_score = test_score;
+	}
+	public String getTest_category() {
+		return test_category;
+	}
+	public void setTest_category(String test_category) {
+		this.test_category = test_category;
 	}
 	
 	

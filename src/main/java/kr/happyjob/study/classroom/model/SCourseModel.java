@@ -11,7 +11,7 @@ public class SCourseModel {
 	private String course_description;
 	private String course_start_date;
 	private String course_end_date;
-	private String course_status;
+	private String course_loc;
 	
 	public int getCourse_no() {
 		return course_no;
@@ -67,13 +67,13 @@ public class SCourseModel {
 	public void setCourse_end_date(String course_end_date) {
 		this.course_end_date = course_end_date;
 	}
-	public String getCourse_status() {
-		return course_status;
+	public String getCourse_loc() {
+		return course_loc;
 	}
-	public void setCourse_status(String course_status) {
-		this.course_status = course_status;
+	public void setCourse_loc(String course_loc) {
+		this.course_loc = course_loc;
 	}
-	
+
 	
 	
 

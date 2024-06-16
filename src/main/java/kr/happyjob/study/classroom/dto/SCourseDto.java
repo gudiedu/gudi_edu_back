@@ -330,6 +330,21 @@ public class SCourseDto extends SCourseModel {
 	public void setTest_answer(String test_answer) {
 		sTest.setTest_answer(test_answer);
 	}
+	
+	public int getTest_score() {
+		return sTest.getTest_score();
+	}
+	public void setTest_score(int test_score) {
+		sTest.setTest_score(test_score);
+	}
+	
+	public String getTest_category() {
+		return sTest.getTest_category();
+	}
+	public void setTest_category(String test_category) {
+		sTest.setTest_category(test_category);
+	}
+	
 
 	// sTestResult Getter & Setter
 	public int getResult_no() {
