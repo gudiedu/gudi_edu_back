@@ -1,14 +1,25 @@
 package kr.happyjob.study.information.controller;
 
+import java.io.File;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import kr.happyjob.study.aAlert.model.AFileDTO;
+import kr.happyjob.study.common.comnUtils.FileUtilCho;
 import kr.happyjob.study.information.dto.AAttendanceDTO;
 import kr.happyjob.study.information.service.AStudentAttendanceService;
 import lombok.RequiredArgsConstructor;
@@ -33,4 +44,42 @@ public class AStudentAttendanceController {
 		
 		return aStudentAttendanceService.searchAttendance(paramMap);
 	}
+	
+	@RequestMapping("/aInformation/student/attendance/status")
+	public void updateStatus(@RequestParam Map<String, Object> paramMap) throws Exception{
+		logger.info(paramMap);
+		aStudentAttendanceService.updateAttendanceStatus(paramMap);
+	}
+	
+	@RequestMapping("/aInformation/student/attendance/fileUpload")
+	public void uploadFile(@RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	         HttpServletResponse response, HttpSession session) throws Exception{
+		logger.info(paramMap);
+		aStudentAttendanceService.uploadAttendanceFile(paramMap, request);
+		
+	}
+	
+	@RequestMapping("/aInformation/student/attendance/downloadFile")
+	public void downloadFile(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	         HttpServletResponse response, HttpSession session) throws Exception {
+	      
+	      AFileDTO result = aStudentAttendanceService.downloadFile(paramMap);
+	      
+	      byte fileByte[] = FileUtils.readFileToByteArray(new File(result.getFile_server_path()));
+	      
+	      response.setContentType("application/octet-stream");
+	      response.setContentLength(fileByte.length);
+	      response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(result.getFile_origin(),"UTF-8")+"\";");
+	      response.setHeader("Content-Transfer-Encoding", "binary");
+	      response.getOutputStream().write(fileByte); 
+	      response.getOutputStream().flush();
+	      response.getOutputStream().close();
+
+	}
+	
+	@RequestMapping("/aInformation/student/attendance/deleteFile")
+	public void deleteFile(@RequestParam Map<String, Object> paramMap) throws Exception{
+		aStudentAttendanceService.deleteFile(paramMap);
+	}
+
 }

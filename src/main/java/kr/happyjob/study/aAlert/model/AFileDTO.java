@@ -1,9 +1,11 @@
 package kr.happyjob.study.aAlert.model;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@RequiredArgsConstructor
 public class AFileDTO {
 	
 	private int file_no;
