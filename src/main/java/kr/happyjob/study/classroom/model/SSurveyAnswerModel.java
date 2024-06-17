@@ -15,6 +15,8 @@ public class SSurveyAnswerModel {
 	private int choice_no;
 	
 	private String written_anwers;
+	
+	private String survey_completed;
 
 	public int getCourse_no() {
 		return course_no;
@@ -70,6 +72,14 @@ public class SSurveyAnswerModel {
 
 	public void setWritten_anwers(String written_anwers) {
 		this.written_anwers = written_anwers;
+	}
+
+	public String getSurvey_completed() {
+		return survey_completed;
+	}
+
+	public void setSurvey_completed(String survey_completed) {
+		this.survey_completed = survey_completed;
 	}
 	
 }

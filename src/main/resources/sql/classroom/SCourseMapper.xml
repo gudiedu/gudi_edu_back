@@ -9,6 +9,7 @@
 	       c.loginID,
 	       ui2.name AS teacher_name,
 	       c.course_no,
+	       c.survey_no,
 	       c.course_subject,
 	       c.course_name,
 	       c.course_start_date,
@@ -171,4 +172,12 @@
 			, #{writtenAnswer}
 			)
 </insert>
+
+<!-- 강의관리 수업만족도 : 수업만족도 응답 유무 -->
+<select id="sSurveyComplete" resultType="int">
+	SELECT count(*)
+	FROM tb_survey_answer sa
+	WHERE sa.course_no = #{pCourseNo}
+	AND sa.loginID = #{loginID}
+</select>
 </mapper>

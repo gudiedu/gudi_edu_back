@@ -284,6 +284,14 @@ public class SCourseDto extends SCourseModel {
 	public void setWritten_anwers(String written_anwers) {
 		sSurveyAnswer.setWritten_anwers(written_anwers);
 	}
+	
+	public String getSurvey_completed() {
+		return sSurveyAnswer.getSurvey_completed();
+	}
+
+	public void setSurvey_completed(String survey_completed) {
+		sSurveyAnswer.setSurvey_completed(survey_completed);
+	}
 
 	// sTest Getter & Setter
 	public int getTest_no() {
