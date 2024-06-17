@@ -61,7 +61,7 @@ public class tNoticeServiceImpl implements tNoticeService {
 		return tNoticeDao.selectNotice(paramMap);
 	}
 
-	
+	/** 공지사항 등록 */
 	public int insertNotice(Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
 		
 		Map<String, Object> fileInfo = fileUpload(request);
@@ -78,13 +78,13 @@ public class tNoticeServiceImpl implements tNoticeService {
 
 
 
-	
+	/** 공지사항 삭제 */
 	public int deleteNotice(Map<String, Object> paramMap) throws Exception {
 
 		return tNoticeDao.deleteNotice(paramMap);
 	}
 
-	
+	/** 공지사항 수정 
 	public int updateNotice(Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
 
 		
@@ -97,8 +97,9 @@ public class tNoticeServiceImpl implements tNoticeService {
 		}
 		
 		return tNoticeDao.updateNotice(paramMap);
-	}
+	}*/
 
+	/** 파일 저장*/
 	private int saveFile(Map<String, Object> fileInfo) throws Exception{
 
 		tNoticeVO file = new tNoticeVO();
@@ -114,6 +115,7 @@ public class tNoticeServiceImpl implements tNoticeService {
 				return file.getFile_no();
 			}
 
+	/** 파일 업로드*/
 	private Map<String, Object> fileUpload(HttpServletRequest request) throws Exception {
 
 		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;

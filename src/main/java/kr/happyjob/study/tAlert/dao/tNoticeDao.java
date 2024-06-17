@@ -3,7 +3,6 @@ package kr.happyjob.study.tAlert.dao;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 
 import kr.happyjob.study.tAlert.model.tNoticeVO;
 
