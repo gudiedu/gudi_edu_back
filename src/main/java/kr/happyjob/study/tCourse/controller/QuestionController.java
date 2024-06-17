@@ -49,6 +49,7 @@ public class QuestionController {
 	      
 	      // 1 page : 0  2 page : 10   
 	      
+	      
 	      int currentpage = Integer.parseInt((String) paramMap.get("currentPage"));
 	      int pagesize = Integer.parseInt((String) paramMap.get("pageSize"));
 	      int startpoint = (currentpage - 1) * pagesize;
