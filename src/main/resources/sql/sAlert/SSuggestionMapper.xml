@@ -39,7 +39,7 @@
 </select>
 
 <!-- 건의사항 등록 -->
-<insert id="sInsertSuggestion">
+<insert id="sInsertSuggestion" >
 	INSERT INTO tb_suggestion
 			(
 			suggestion_title
@@ -63,6 +63,26 @@
 			</if>
 			)
 </insert>
+
+<!-- 건의사항 수정 -->
+<update id="sUpdateSuggestion" >
+		UPDATE tb_suggestion
+		SET
+		suggestion_title = #{suggestionTitle},
+		suggestion_content = #{suggestionContent},
+		suggestion_category = #{suggestionCategory}
+		<choose>
+   			<when test="fileExits eq 'Y'.toString()">
+  		    	, file_no = #{file_no}
+ 			</when>
+   		 <when test="removeFile eq 'Y'.toString()">
+   		 		, file_no = null
+   		 </when>
+  		</choose>
+		WHERE 
+		suggestion_no = #{pSuggestionNo}
+</update>
+
 
 <!-- 건의사항 파일등록 -->
 <!-- useGeneratedKeys: 저장에 성공했을 때 자동증가된 기본키를 반환하겠는가? 기본값 false 

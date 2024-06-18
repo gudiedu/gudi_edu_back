@@ -55,6 +55,20 @@ public class SSuggestionServiceImpl implements SSuggestionService {
 		return sSuggestionDao.sInsertSuggestion(paramMap);
 	}
 	
+	/** 건의사항 수정 */
+	public int sUpdateSuggestion(Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
+		Map<String, Object> fileInfo = fileUpload(request);
+		paramMap.put("fileInfo", fileInfo);
+		
+		if(fileInfo.get("file_nm") != null && fileInfo.get("file_nm") != "") {
+			int fileNo = saveFile(fileInfo);
+			paramMap.put("fileExits","Y");
+			paramMap.put("file_no", fileNo);
+		}
+		
+		return sSuggestionDao.sUpdateSuggestion(paramMap);
+	}
+	
 	/** 건의사항 삭제 */
 	public int sDeleteSuggestion(Map<String, Object> paramMap) throws Exception {	
 		
