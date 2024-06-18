@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
+import kr.happyjob.study.support.model.tClassSurveyResultDTO;
 import kr.happyjob.study.support.model.tClassSurveyVO;
 import kr.happyjob.study.support.service.tClassSurveyService;
 
@@ -75,8 +75,37 @@ public class tClassSurveyController {
 	   }
 
 	  
- }
-	   
-	   
-	   
-	   
+	   @RequestMapping("fetchSurveyResults.do")
+	    @ResponseBody
+	    public Map<String, Object> fetchSurveyResults(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	         HttpServletResponse response, HttpSession session) throws Exception {
+	      
+		   logger.info("+ Start " + className + ".fetchSurveyResults");
+		    logger.info("   - paramMap : " + paramMap);
+
+		    String courseNoStr = (String) paramMap.get("course_no");
+		    if (courseNoStr == null || courseNoStr.trim().isEmpty() || "null".equals(courseNoStr)) {
+		        throw new IllegalArgumentException("course_no parameter is missing or empty");
+		    }
+
+		    int courseNo;
+		    try {
+		        courseNo = Integer.parseInt(courseNoStr);
+		    } catch (NumberFormatException e) {
+		        throw new IllegalArgumentException("Invalid course_no: " + courseNoStr, e);
+		    }
+
+	        
+	        paramMap.put("course_no", courseNo);
+
+	        Map<String, Object> returnmap = new HashMap<String, Object>();
+	      
+	        List<tClassSurveyResultDTO> surveyResults = tClassSurveyService.fetchSurveyResults(paramMap);
+	      
+	        returnmap.put("surveyResults", surveyResults);
+	      
+	        logger.info("+ End " + className + ".fetchSurveyResults");
+
+	        return returnmap;
+	    }
+	}

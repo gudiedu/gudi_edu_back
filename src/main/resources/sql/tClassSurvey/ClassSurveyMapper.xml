@@ -57,6 +57,8 @@
     LIMIT #{startpoint}, #{pageSize}
   </select>
 
+
+
 <!-- 설문조사 총 갯수 조회 -->
 <select id="totalcntClassSurvey" resultType="int">
 	
@@ -71,5 +73,22 @@
                       
 </select>
 	
+	<select id="fetchSurveyResults" resultType="kr.happyjob.study.support.model.tClassSurveyResultDTO">
+        SELECT
+            sa.question_choiced,
+            sa.survey_question_no,
+            sa.choice_no,
+            scc.choice_result,
+            sq.survey_question_text,
+            COUNT(sa.choice_no) as choice_count,
+            sa.written_answer
+        FROM tb_course c
+        JOIN tb_survey_answer sa ON c.course_no = sa.course_no
+        JOIN tb_survey_question sq ON sa.survey_no = sq.survey_no AND sa.survey_question_no = sq.survey_question_no
+        LEFT JOIN tb_survey_choice_content scc ON sa.question_choiced = scc.question_choiced AND sa.choice_no = scc.choice_no
+        WHERE c.course_no = #{course_no}
+        GROUP BY sa.question_choiced, sa.choice_no, scc.choice_result, sq.survey_question_text, sa.written_answer
+        ORDER BY 2, 3
+    </select>
 
 </mapper>

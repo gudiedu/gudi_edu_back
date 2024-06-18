@@ -25,4 +25,3 @@ public class tClassSurveyVO {
 		private int respondent_count;
 		
 	}
-
