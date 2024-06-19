@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.happyjob.study.support.dao.ChatRoomDao">
+
+	<select id="ChatRoomList" resultType="kr.happyjob.study.support.model.ChatRoomVO">
+		SELECT
+		    cr.chat_no,
+		    cr.chat_name,
+		    cr.chat_maker,
+		    COUNT(ch.chat_no) AS count_people
+		FROM
+		    tb_chatroom cr
+		LEFT JOIN
+		    tb_chating ch ON cr.chat_no = ch.chat_no
+		GROUP BY
+		    cr.chat_no,
+		    cr.chat_name,
+		    cr.chat_maker
+		ORDER BY
+		    cr.chat_no
+	</select>
+	
+	<select id="myChatRoomList" resultType="kr.happyjob.study.support.model.ChatRoomVO">
+		SELECT
+			cr.chat_no,
+			cr.chat_name,
+			cr.chat_maker,
+			COUNT(ch.chat_no) AS count_people
+		FROM
+			tb_chatroom cr
+		LEFT JOIN
+			tb_chating ch ON cr.chat_no = ch.chat_no
+		GROUP BY
+			cr.chat_no,
+			cr.chat_name,
+			cr.chat_maker
+		HAVING
+    		SUM(CASE WHEN ch.loginID = #{loginID} THEN 1 ELSE 0 END) > 0
+		ORDER BY
+			cr.chat_no
+	</select>
+
+	<select id="existChatPeople" resultType="int">
+		select count(*)
+		from tb_chating
+		where loginID = #{loginID} and chat_no = #{chatNo}
+	</select>
+	
+	<insert id="insertChating">
+		insert into tb_chating
+			(loginID, chat_no)
+		values
+			(#{loginID},#{chatNo})
+	</insert>
+
+
+	
+</mapper>

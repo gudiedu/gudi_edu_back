@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.happyjob.study.support.dao.AttendanceDao">
+
+	<select id="listAttendance" resultType="kr.happyjob.study.tCourse.model.CourseVO">
+		SELECT
+			course_no,
+			course_name,
+			course_subject,
+			course_loc,
+			course_start_date,
+			course_end_date,
+			DATEDIFF(course_end_date, course_start_date) AS duration,
+    		LEAST(DATEDIFF(CURDATE(), course_start_date), DATEDIFF(course_end_date, course_start_date)) AS days_elapsed,
+    		ROUND((LEAST(DATEDIFF(CURDATE(), course_start_date), DATEDIFF(course_end_date, course_start_date)) / DATEDIFF(course_end_date, course_start_date)) * 100, 2) AS progress
+    	FROM tb_course
+		<where>
+			<if test="(status != null) and (status != '')">
+				<choose>
+					<when test="status == 'all'">
+						CURDATE() BETWEEN course_start_date AND course_end_date
+					</when>
+					<when test="status == 'complete'">
+						CURRENT_DATE() <![CDATA[>]]>
+						course_end_date
+					</when>
+				</choose>
+			</if>
+			<if test="(loginID != null) and (loginID != '')">
+				and loginID = #{loginID}
+			</if>
+		</where>
+		limit #{startpoint} , #{pagesize}
+	</select>
+	
+	<select id="totalAttendance" resultType="int">
+		select count(*)
+		from tb_course
+		<where>
+			<if test="(status != null) and (status != '')">
+				<choose>
+					<when test="status == 'all'">
+						CURDATE() BETWEEN course_start_date AND course_end_date
+					</when>
+					<when test="status == 'complete'">
+						CURRENT_DATE() <![CDATA[>]]>
+						course_end_date
+					</when>
+				</choose>
+			</if>
+			<if test="(loginID != null) and (loginID != '')">
+				and loginID = #{loginID}
+			</if>
+		</where>
+	</select>
+	
+	<select id="infoAttendance" resultType="kr.happyjob.study.tCourse.model.EnrollmentDTO">
+		select
+				  e.enrollment_no
+				, e.course_no
+				, e.loginID
+				, e.enrollment_confirmed
+				, u.name
+				, u.hp
+				, a.attendance_date
+				, a.attendance_no
+				, a.attendance_status
+		from 
+			tb_enrollment e 
+		inner join 
+			tb_userinfo u on e.loginID = u.loginID
+		left join 
+			tb_attendance a on e.loginID = a.loginID 
+			and e.course_no = a.course_no
+			AND a.attendance_date = (
+		        SELECT MAX(a2.attendance_date)
+		        FROM tb_attendance a2
+		        WHERE a2.loginID = e.loginID
+		        AND a2.course_no = e.course_no
+		    )	
+		where e.enrollment_confirmed = "Y" and e.course_no = #{courseNo}
+    	
+	</select>
+	
+	<select id="keyAttendance" resultType="kr.happyjob.study.tCourse.model.CourseVO">
+		SELECT
+				course_no,
+				course_name,
+				course_subject,
+				course_loc,
+				course_start_date,
+				course_end_date,
+				DATEDIFF(course_end_date, course_start_date) AS duration,
+	    		LEAST(DATEDIFF(CURDATE(), course_start_date), DATEDIFF(course_end_date, course_start_date)) AS days_elapsed
+	    FROM tb_course
+	    where course_no = #{courseNo}
+	</select>
+	
+	<select id="totalInfoAttendance" resultType="int">
+		select count(*)
+		from tb_enrollment
+		where enrollment_confirmed = "Y" and course_no = #{courseNo}
+	</select>
+	
+	<select id="countAttendance" resultType="int">
+		select count(*)
+		from tb_attendance
+		where course_no = #{courseNo}
+		and attendance_date = #{att_today}
+	</select>
+	
+	<select id="listDay" resultType="kr.happyjob.study.tCourse.model.DayoffVO">
+		select 
+				  dayoff_no
+				, dayoff_date
+				, dayoff_detail
+		from tb_dayoff
+	</select>
+	
+	<select id="allListAttendance" resultType="kr.happyjob.study.tCourse.model.EnrollmentDTO">
+		select
+			 u.name
+			,u.hp
+			,a.attendance_date
+			,a.attendance_status
+		from tb_attendance a
+		inner join tb_userinfo u
+		ON u.loginID = a.loginID
+		where a.course_no = #{courseNo}
+		order by a.attendance_date
+	</select>
+	
+	<insert id="insertAteendance" parameterType="java.util.Map">
+		insert into tb_attendance
+			(loginID, course_no, attendance_date, attendance_status)
+		values
+		<foreach collection="students" item="st" separator=",">
+			(#{st.loginID}, #{st.course_no}, #{st.attendance_date}, #{st.attendance_status})
+		</foreach>
+	</insert>
+
+	<update id="updateAttendanceStatus" parameterType="map">
+		<foreach collection="students" item="student" separator=";">
+			UPDATE tb_attendance
+			SET attendance_status = #{student.attendance_status}
+			WHERE attendance_no = #{student.attendance_no}
+			AND course_no = #{courseNo}
+			AND attendance_date = #{att_today}
+		</foreach>
+	</update>
+	
+	<delete id="deleteAttendance">
+		delete from tb_attendance
+		where course_no = #{courseNo}
+		and attendance_date = #{att_today}
+	
+	</delete>
+
+	
+</mapper>
