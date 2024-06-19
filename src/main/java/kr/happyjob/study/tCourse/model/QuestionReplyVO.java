@@ -20,6 +20,10 @@ public class QuestionReplyVO {
     private String reply_content; 
     private String name;            
     private String reply_created_at;
-
-
+   
+    private String question_title;   
+    private String question_content; 
+    private String question_created_at;
+    
+    private Boolean is_updated; // 수정된댓글에 표시나오게 
 }
