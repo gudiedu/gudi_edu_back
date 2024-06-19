@@ -37,6 +37,9 @@ public interface SCourseService {
 	/** 수강신청: 수강신청 가능 목록 조회*/
 	public List<SCourseDto> sEnrollList(Map<String, Object> paramMap) throws Exception;
 
+	/** 수강신청: 중복확인하기*/
+	public int checkEnrollment(Map<String, Object> paramMap) throws Exception;
+
 	/** 수강신청: 수강신청하기*/
 	public int sEnrollInsert(Map<String, Object> paramMap, HttpServletRequest request) throws Exception;
 
@@ -49,4 +52,8 @@ public interface SCourseService {
 	/** 시험응시: 시험 문제 불러오기*/
 	public List<SCourseDto> sCreateTest(Map<String, Object> paramMap) throws Exception;
 
+	/** 시험응시: 시험 총점 계산해서 등록하기*/
+	public int sTestCalculate(Map<String, Object> paramMap, HttpServletRequest request) throws Exception;
+
+	
 }

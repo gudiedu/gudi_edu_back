@@ -354,6 +354,14 @@ public class SCourseDto extends SCourseModel {
 	public void setResult_no(int result_no) {
 		sTestResult.setResult_no(result_no);
 	}
+	
+	public int getResult_score() {
+		return sTestResult.getResult_score();
+	}
+	
+	public void setResult_score(int result_score) {
+		sTestResult.setResult_score(result_score);
+	}
 
 	// sTestSubmission Getter & Setter
 	public int getSubmission_no() {
@@ -372,12 +380,12 @@ public class SCourseDto extends SCourseModel {
 		sTestSubmission.setAnswer_selected(answer_selected);
 	}
 
-	public int getResult_score() {
-		return sTestSubmission.getResult_score();
+	public int getQuestion_score() {
+		return sTestSubmission.getQuestion_score();
 	}
 
-	public void setResult_score(int result_score) {
-		sTestSubmission.setResult_score(result_score);
+	public void setQuestion_score(int question_score) {
+		sTestSubmission.setQuestion_score(question_score);
 	}
 
 }
