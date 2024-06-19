@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.happyjob.study.tCourse.dao.CourseDao">
+
+	<!-- 강의 목록 조회 -->
+	<select id="listCourse" resultType="kr.happyjob.study.tCourse.model.CourseVO">
+		/*kr.happyjob.study.tCourse.dao.TCourseDao.listCourse*/
+		select 
+			  course_no
+			, loginID
+			, survey_no
+			, course_subject
+			, course_name
+			, course_quota
+			, course_description
+			, DATE_FORMAT(course_start_date, '%Y-%m-%d') as course_start_date
+			, DATE_FORMAT(course_end_date, '%Y-%m-%d') as course_end_date
+			, DATEDIFF(course_end_date, course_start_date) AS duration
+			, course_loc
+		from tb_course
+			<where>
+			    <if test="(status != null) and (status != '')">
+			    	<if test="status == 'ing'">
+			    		CURRENT_DATE() BETWEEN course_start_date AND course_end_date
+			    	</if>
+			    	<if test="status == 'complete'">
+			    		CURRENT_DATE() <![CDATA[>]]> course_end_date
+			    	</if>
+			    	<if test="status == 'expect'">
+			    		CURRENT_DATE() <![CDATA[<]]> course_start_date
+			    	</if>
+                </if>
+                <if test="(stitle != null) and (stitle != '')">
+                     and course_name like concat('%',#{stitle},'%')
+                </if>
+                <if test="(loginID != null) and (loginID != '')">
+                     and loginID = #{loginID}
+                </if>
+                
+              </where>
+        order by course_no desc
+        limit #{startpoint} , #{pagesize}
+	</select>
+	
+	<!-- 강의 목록 총 갯수 -->
+	<select id="totalCourse" resultType="int">
+		/*kr.happyjob.study.tCourse.dao.TCourseDao.totalCourse*/
+		select count(*)
+		from tb_course
+		<where>
+		    <if test="(status != null) and (status != '')">
+                   <if test="status == 'ing'">
+		    		CURRENT_DATE() BETWEEN course_start_date AND course_end_date
+		    	</if>
+		    	<if test="status == 'complete'">
+		    		CURRENT_DATE() <![CDATA[>]]> course_end_date
+		    	</if>
+		    	<if test="status == 'expect'">
+		    		CURRENT_DATE() <![CDATA[<]]> course_start_date
+		    	</if>
+               </if>
+               <if test="(stitle != null) and (stitle != '')">
+                    and course_subject like concat('%',#{stitle},'%')
+               </if>
+               <if test="(loginID != null) and (loginID != '')">
+                    and loginID = #{loginID}
+                </if>
+         </where>
+	</select>
+	
+	<select id="keyCourse" resultType="kr.happyjob.study.tCourse.model.CourseVO">
+		/*kr.happyjob.study.tCourse.dao.TCourseDao.keyCourse*/
+		select
+			  c.course_no
+			, c.loginID
+			, c.survey_no
+			, c.course_subject
+			, c.course_name
+			, c.course_quota
+			, c.course_description
+			, DATE_FORMAT(c.course_start_date, '%Y-%m-%d') AS course_start_date
+			, DATE_FORMAT(c.course_end_date, '%Y-%m-%d') AS course_end_date
+			, DATEDIFF(c.course_end_date, c.course_start_date) AS duration
+			, c.course_loc
+			, d.detail_code
+		from tb_course c inner join tb_detail_code d
+		on c.course_subject = d.detail_name
+		where c.course_no = #{courseNo}
+	</select>
+	
+	<select id="detailCourse" resultType="kr.happyjob.study.tCourse.model.CourseDetailVO">
+		/*kr.happyjob.study.tCourse.dao.TCourseDao.detailCourse*/
+		select
+			  course_detail_no
+			, course_no
+			, course_detail_week_no
+			, course_detail_goal
+			, course_detail_content
+		from tb_course_detail
+		where course_no = #{courseNo}
+	</select>
+	
+	<select id="listSurvey" resultType="kr.happyjob.study.tCourse.model.SurveyVO">
+		/*kr.happyjob.study.tCourse.dao.TCourseDao.listSurvey*/
+		select
+			  survey_name
+			, survey_no
+		from tb_survey
+	</select>
+	
+	
+	<insert id="insertCourse" useGeneratedKeys="true" keyProperty="courseNo">
+		insert into tb_course
+			(loginID, course_subject, course_name, course_quota, course_description, course_start_date, course_end_date, course_loc, survey_no)
+		values
+			(#{loginID}, #{courseSubjectText}, #{courseName}, #{capacity}, #{courseDescription}, #{startDate}, #{endDate}, #{classroom}, #{selectedSurvey})		
+	</insert>
+	
+	<insert id="insertTest">
+		INSERT INTO tb_test(test_no, course_no)
+		SELECT IFNULL(MAX(test_no), 0) + 1, #{courseNo}
+		FROM tb_test;
+	</insert>
+	
+	<insert id="insertCourseDetail" parameterType="java.util.Map">
+		insert into tb_course_detail
+			(course_no, course_detail_week_no, course_detail_goal, course_detail_content)
+		values
+		<foreach collection="weeks" item="week" separator=",">
+			(#{courseNo}, #{week.weekNo}, #{week.goal}, #{week.content})
+	</foreach>
+			
+	
+	</insert>
+	
+	<update id="updateCourse">
+		update tb_course
+			set   course_subject = #{courseSubjectText}
+				, course_name = #{courseName}
+				, course_quota = #{capacity}
+				, course_description = #{courseDescription}
+				, course_start_date = #{startDate}
+				, course_end_date = #{endDate}
+				, course_loc = #{classroom}
+				, survey_no = #{selectedSurvey}
+		where course_no = #{courseNo}
+	</update>
+	
+	<delete id="deleteCourseDetail">
+		delete from tb_course_detail
+		where course_no = #{courseNo}
+	</delete>
+
+	<delete id="deleteCourse">
+		delete from tb_course
+		where course_no = #{courseNo}
+	</delete>
+
+	
+
+	
+</mapper>

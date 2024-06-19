@@ -9,15 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class EnrollmentVO {
+public class SurveyVO {
 	
-	private int enrollment_no; //수강번호
-	private int course_no; //강의번호
-	private String loginID; //아이디
-	private String enrollment_confirmed; //승인여부
+	private int survey_no;
+	private String survey_name;
 	
-	
-	
-	
-
 }
