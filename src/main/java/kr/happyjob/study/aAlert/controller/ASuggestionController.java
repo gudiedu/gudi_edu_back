@@ -29,40 +29,93 @@ public class ASuggestionController {
 	
 	private final Logger logger = LogManager.getLogger(this.getClass());
 	
-	//임시 URL
+	/**
+	 * 건의사항 전체 조회
+	 * @author JongGon Woo
+	 * @param model
+	 * @param paramMap
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/aSuggestion")
 	public List<ASuggestionDTO> searchSuggestion(Model model,@RequestParam Map<String, Object> paramMap) throws Exception{
 		return aSuggestionService.searchSuggestion(paramMap);
 	}
 	
+	/**
+	 * 특정 건의사항 조회
+	 * @author JongGon Woo
+	 * @param paramMap
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/aSuggestion/select")
 	public Map<String, Object> selectSuggestion(@RequestParam Map<String, Object> paramMap) throws Exception{
 		logger.info(paramMap);
 		return aSuggestionService.selectSuggestion(paramMap);
 	}
 	
+	/**
+	 * 건의사항 답변 작성
+	 * @author JongGon Woo
+	 * @param paramMap
+	 * @param session
+	 * @param request
+	 * @throws Exception
+	 */
 	@RequestMapping("/aSuggestion/reply/new")
 	public void insertReply(@RequestParam Map<String, Object> paramMap, HttpSession session, HttpServletRequest request) throws Exception{
 		paramMap.put("loginID", (String)session.getAttribute("loginId"));
 		aSuggestionService.insertReply(paramMap, request);
 	}
 	
+	/**
+	 * 건의사항 답변 수정
+	 * @author JongGon Woo
+	 * @param paramMap
+	 * @param session
+	 * @param request
+	 * @throws Exception
+	 */
 	@RequestMapping("/aSuggestion/reply/update")
 	public void updateReply(@RequestParam Map<String, Object> paramMap, HttpSession session, HttpServletRequest request) throws Exception{
 		paramMap.put("loginID", (String)session.getAttribute("loginId"));
 		aSuggestionService.updateReply(paramMap, request);
 	}
 	
+	/**
+	 * 건의사항 답변 삭제
+	 * @author JongGon Woo
+	 * @param paramMap
+	 * @param session
+	 * @throws Exception
+	 */
 	@RequestMapping("aSuggestion/reply/delete")
 	public void deleteReply(@RequestParam Map<String, Object> paramMap, HttpSession session) throws Exception{
 		aSuggestionService.deleteReply(paramMap);
 	}
 	
+	/**
+	 * 건의사항 삭제
+	 * @author JongGon Woo
+	 * @param paramMap
+	 * @param session
+	 * @throws Exception
+	 */
 	@RequestMapping("aSuggestion/delete")
 	public void deleteSuggestion(@RequestParam Map<String, Object> paramMap, HttpSession session) throws Exception{
 		aSuggestionService.deleteSuggestion(paramMap);
 	}
 	
+	/**
+	 * 파일 다운로드
+	 * @param model
+	 * @param paramMap
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws Exception
+	 */
 	@RequestMapping("/aSuggestion/fileDownload")
 	public void noticeFileDownload(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 	         HttpServletResponse response, HttpSession session) throws Exception {

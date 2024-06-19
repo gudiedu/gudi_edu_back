@@ -32,6 +32,13 @@ public class AStudentAttendanceController {
 	
 	private final Logger logger = LogManager.getLogger(this.getClass());
 	
+	/**
+	 * 수강중인 강의 조회
+	 * @author JongGon Woo
+	 * @param paramMap
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/aInformation/student")
 	public List<Map<String, Object>> searchLecture(@RequestParam Map<String, Object> paramMap) throws Exception{
 		List<Map<String, Object>> result = aStudentAttendanceService.searchLecture(paramMap);
@@ -39,18 +46,40 @@ public class AStudentAttendanceController {
 		return result;
 	}
 	
+	/**
+	 * 특정 강의의 출석 현황 조회
+	 * @author JongGon Woo
+	 * @param paramMap
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/aInformation/student/attendance")
 	public List<AAttendanceDTO> searchAttendance(@RequestParam Map<String, Object> paramMap) throws Exception{
 		
 		return aStudentAttendanceService.searchAttendance(paramMap);
 	}
 	
+	/**
+	 * 출석 상태 변경
+	 * @author JongGon Woo
+	 * @param paramMap
+	 * @throws Exception
+	 */
 	@RequestMapping("/aInformation/student/attendance/status")
 	public void updateStatus(@RequestParam Map<String, Object> paramMap) throws Exception{
 		logger.info(paramMap);
 		aStudentAttendanceService.updateAttendanceStatus(paramMap);
 	}
 	
+	/**
+	 * 출석 증빙 서류 업로드
+	 * @author JongGon Woo
+	 * @param paramMap
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws Exception
+	 */
 	@RequestMapping("/aInformation/student/attendance/fileUpload")
 	public void uploadFile(@RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 	         HttpServletResponse response, HttpSession session) throws Exception{
@@ -59,6 +88,16 @@ public class AStudentAttendanceController {
 		
 	}
 	
+	/**
+	 * 파일 다운로드
+	 * @author JongGon woo
+	 * @param model
+	 * @param paramMap
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws Exception
+	 */
 	@RequestMapping("/aInformation/student/attendance/downloadFile")
 	public void downloadFile(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 	         HttpServletResponse response, HttpSession session) throws Exception {
@@ -77,6 +116,12 @@ public class AStudentAttendanceController {
 
 	}
 	
+	/**
+	 * 첨부파일 삭제
+	 * @author JongGon Woo
+	 * @param paramMap
+	 * @throws Exception
+	 */
 	@RequestMapping("/aInformation/student/attendance/deleteFile")
 	public void deleteFile(@RequestParam Map<String, Object> paramMap) throws Exception{
 		aStudentAttendanceService.deleteFile(paramMap);
