@@ -37,12 +37,12 @@ public class ANoticeServiceImpl implements ANoticeService {
 	private String noticePath;
 
 	@Override
-	public List<ANoticeDTO> searchNotice(Map<String, Object> paramMap) {
+	public List<ANoticeDTO> searchNotice(Map<String, Object> paramMap) throws Exception{
 		return aNoticeDAO.searchNotice(paramMap);
 	}
 
 	@Override
-	public Map<String, Object> selectNotice(Map<String, Object> paramMap) {
+	public Map<String, Object> selectNotice(Map<String, Object> paramMap) throws Exception{
 		return aNoticeDAO.selectNotice(paramMap);
 	}
 
@@ -80,6 +80,13 @@ public class ANoticeServiceImpl implements ANoticeService {
 		return aNoticeDAO.deleteNotice(paramMap);
 	}
 	
+	/**
+	 * 파일 업로드 메서드
+	 * @author JongGon Woo
+	 * @param request - 파일 정보
+	 * @return - 파일 업로드 후 생성된 파일 정보 
+	 * @throws Exception
+	 */
 	private Map<String, Object> fileUpload(HttpServletRequest request) throws Exception{
 		
 		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
@@ -91,6 +98,13 @@ public class ANoticeServiceImpl implements ANoticeService {
 		return fileInfo;
 	}
 	
+	/**
+	 * DB 파일 정보 저장
+	 * @author JongGon Woo
+	 * @param fileInfo - 파일 정보
+	 * @return - 저장 후 생성된 tb_file 테이블의 기본키
+	 * @throws Exception
+	 */
 	private int saveFile(Map<String,Object> fileInfo) throws Exception{
 		
 		AFileDTO file = new AFileDTO();

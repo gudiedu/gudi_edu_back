@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import kr.happyjob.study.aAlert.model.ANoticeDTO;
 
 public interface ANoticeService {
-	public List<ANoticeDTO> searchNotice(Map<String, Object> paramMap);
+	public List<ANoticeDTO> searchNotice(Map<String, Object> paramMap) throws Exception;
 	
-	public Map<String, Object> selectNotice(Map<String, Object> paramMap);
+	public Map<String, Object> selectNotice(Map<String, Object> paramMap) throws Exception;
 	
 	public int insertNotice(Map<String, Object> paramMap, HttpServletRequest request) throws Exception;
 	
