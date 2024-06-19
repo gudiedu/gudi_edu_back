@@ -18,7 +18,10 @@
 	       tb_userinfo ui ON ui.loginID = s.loginID
 	       <where>
 		    	<if test="(stitle != null) and (!stitle.equals(''))">
-		    	and s.suggestion_title like concat('%',#{stitle},'%')
+		    		AND s.suggestion_title like concat('%',#{stitle},'%')
+		    	</if>
+		    	<if test="(scategory != null) and (!scategory.equals(''))">
+		    	    AND s.suggestion_category like concat('%',#{scategory},'%')
 		    	</if>
 		   </where>
 	ORDER BY s.suggestion_answered DESC
@@ -33,8 +36,11 @@
 	    tb_userinfo ui ON ui.loginID = s.loginID
 	    <where>
 	    	<if test="(stitle != null) and (!stitle.equals(''))">
-	    	and s.suggestion_title like concat('%',#{stitle},'%')
+	    		AND s.suggestion_title like concat('%',#{stitle},'%')
 	    	</if>
+	    	<if test="(scategory != null) and (!scategory.equals(''))">
+		    	AND s.suggestion_category like concat('%',#{scategory},'%')
+		    </if>
 	    </where>
 </select>
 
