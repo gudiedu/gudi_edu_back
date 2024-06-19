@@ -62,13 +62,13 @@
 <!-- 설문조사 총 갯수 조회 -->
 <select id="totalcntClassSurvey" resultType="int">
 	
-  select count(*)
-   from tb_course c
+  SELECT COUNT(*)
+   FROM tb_course c
           
-          where
+          WHERE
           c.loginID = #{loginID}
             <if test="(stitle != null) and (!stitle.equals(''))">
-                 and c.course_name like concat('%',#{stitle},'%')
+                 AND c.course_name LIKE concat('%',#{stitle},'%')
             </if>
                       
 </select>

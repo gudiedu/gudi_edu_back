@@ -7,7 +7,7 @@
 	<select id="listquestion" resultType="kr.happyjob.study.tCourse.model.QuestionVO">
 		/*kr.happyjob.study.tCourse.dao.questionDao.listquestion*/
 		
-       select 
+      SELECT
 		   
            q.question_no,
            q.name,
@@ -19,8 +19,8 @@
   
              <!-- , ui.name as writer -->
      
-       from tb_question q
-       inner join tb_course c on q.course_no = c.course_no and c.loginID = #{loginID}
+       FROM tb_question q
+       INNER JOIN tb_course c ON q.course_no = c.course_no AND c.loginID = #{loginID}
             <!--   inner join tb_userinfo ui on ui.loginID = q.loginID
               left outer join tb_question_reply r on q.question_no = r.question_no
               inner join tb_course c ON c.course_no = q.course_no  -->
@@ -28,7 +28,7 @@
               <where>
                 
                 <if test="(stitle != null) and (!stitle.equals(''))">
-                     and q.question_title like concat('%',#{stitle},'%')
+                     AND q.question_title LIKE concat('%',#{stitle},'%')
                 </if>
          
               </where>
@@ -40,12 +40,12 @@
 	<select id="totalcntquestion" resultType="int">
 		/*kr.happyjob.study.tCourse.dao.questionDao.totalcntquestion*/
 		
-      select count(*)
-       from tb_question q
-              inner join tb_course c on q.course_no = c.course_no and c.loginID = #{loginID}
+      SELECT count(*)
+       FROM tb_question q
+              INNER JOIN tb_course c ON q.course_no = c.course_no AND c.loginID = #{loginID}
               <where>
                 <if test="(stitle != null) and (!stitle.equals(''))">
-                     and q.question_title like concat('%',#{stitle},'%')
+                     AND q.question_title LIKE concat('%',#{stitle},'%')
                 </if>
               
               </where>
@@ -54,7 +54,7 @@
 	
 	<select id="selectquestion"  resultType="kr.happyjob.study.tCourse.model.QuestionVO">
 	   /*kr.happyjob.study.tCourse.dao.questionDao.selectquestion*/
-       select 
+       SELECT 
        
            q.question_no,
            q.course_no,
@@ -65,45 +65,10 @@
            q.name,
            DATE_FORMAT(q.question_created_at, '%Y-%m-%d') as q_regdate,
             
-       from tb_question q
+      FROM tb_question q
               <!--  inner join tb_userinfo ui on ui.loginID = q.loginID-->
-	  where q.question_no = #{questionNo}
+	  WHERE q.question_no = #{questionNo}
 	</select>
 	
-	
-	<!--   <insert id="insertquestion">
-	    <selectKey keyProperty="selmotice" resultType="int" order="BEFORE"> 
-	   	     SELECT IFNULL(MAX(ntc_no),0) +1  FROM tb_question
-	    </selectKey>
-	       
-	    insert into tb_question
-	                 (  
-	                    ntc_no
-                      , loginID
-                      , ntc_title
-                      , ntc_content
-                      , ntc_regdate
-                    ) values (
-                       #{selmotice}
-                     , #{loginID}
-                     , #{questionTitle}
-                     , #{questionContent}
-                     , now()
-                    )
-	</insert>  -->
-	
-	<update id="updatequestion" >
-	     update tb_question
-	          set loginID = #{loginID}
-                 , question_title = #{questionTitle}
-                 , question_content = #{questionContent}
-                 , question_regdate = now()
-	     where question_no = #{questionNo}
-	</update>
-	
-	<delete id="deletequestion">
-	    delete from tb_question
-	    where question_no = #{questionNo}
-	</delete>
 	
 	</mapper>
