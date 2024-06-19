@@ -36,12 +36,12 @@ public class CourseController {
 	// 강의 목록 리스트 출력
 	@RequestMapping("CourseList.do")
 	@ResponseBody
-	public Map<String, Object> CourseList(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	public Map<String, Object> courseList(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
                HttpServletResponse response, HttpSession session) throws Exception {
 			logger.info("+ Start " + className + ".CourseList");
 			logger.info("   - paramMap : " + paramMap);
 			
-			List<CourseModel> CourseListModel = courseService.CourseList(paramMap);
+			List<CourseModel> CourseListModel = courseService.courseList(paramMap);
 			
 			Map<String, Object> resultMap = new HashMap<>();
 			

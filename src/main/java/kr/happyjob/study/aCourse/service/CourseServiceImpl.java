@@ -23,8 +23,8 @@ public class CourseServiceImpl implements CourseService{
 	private CourseDao courseDao;
 	
 	//강의 목록 리스트 출력
-	public List<CourseModel> CourseList(Map<String, Object> paramMap) throws Exception{
-		return courseDao.CourseList(paramMap);
+	public List<CourseModel> courseList(Map<String, Object> paramMap) throws Exception{
+		return courseDao.courseList(paramMap);
 	}
 
 	//강의 목록 검색 조회

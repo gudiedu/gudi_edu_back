@@ -155,13 +155,12 @@ public class aCourseCodeController {
 	             paramMap.get("detail_name");
 
 	             int result = acourseCodeService.codeUpdate(paramMap);
-	             String response;
 	             if (result > 0) {
 	            	 System.out.println("수정 성공");
-	                 return response = "수정 성공";
+	                 return "수정 성공";
 	             } else {
 	            	 System.out.println("수정 실패");
-	                 return response = "수정 실패";
+	                 return "수정 실패";
 	             }
 	    	  } catch (Exception e) {
 		            e.printStackTrace();

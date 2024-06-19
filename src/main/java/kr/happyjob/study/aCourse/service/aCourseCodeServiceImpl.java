@@ -48,6 +48,7 @@ public class aCourseCodeServiceImpl implements aCourseCodeService  {
 			return acourseCodeDao.codeDelete(detail_code);
 		}
 		
+		//코드 키워드 검색
 		public List<aCourseCodeModel> codeSearch(String word) throws Exception{;
 			return acourseCodeDao.codeSearch(word);
 		}
