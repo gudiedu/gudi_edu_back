@@ -114,7 +114,6 @@
 	       s.survey_no,
 	       s.survey_name,
 	       sq.survey_question_no,
-	       sq.survey_question_essential,
 	       sq.survey_question_text,
 	       sq.question_choiced,
 	       sq.survey_question_type
@@ -132,7 +131,6 @@
 	       s.survey_no,
 	       s.survey_name,
 	       sq.survey_question_no,
-	       sq.survey_question_essential,
 	       sq.survey_question_text,
 	       sq.question_choiced,
 	       sq.survey_question_type,
