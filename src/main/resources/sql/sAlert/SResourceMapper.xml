@@ -16,6 +16,7 @@
 	    DATE_FORMAT(r.resource_edited_at , '%Y-%m-%d') as resource_edited_at,
 	    r.resource_writer,
 	    r.resource_editor,
+	    c.course_subject,
 	    c.course_name
 	FROM tb_resource r
 	LEFT JOIN 
@@ -57,6 +58,7 @@
 	    DATE_FORMAT(r.resource_edited_at , '%Y-%m-%d') as resource_edited_at,
 	    r.resource_writer,
 	    r.resource_editor,
+	    c.course_subject,
 	    c.course_name,
 	    f.file_origin,
 	    f.file_rename,

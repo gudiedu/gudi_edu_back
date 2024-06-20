@@ -111,6 +111,14 @@ public class SResourceDto extends SResourceModel {
 		sCourse.setCourse_name(course_name);
 	}
 	
+	public String getCourse_subject() {
+		return sCourse.getCourse_subject();
+	}
+
+	public void setCourse_subject(String course_subject) {
+		sCourse.setCourse_subject(course_subject);
+	}
+	
 	// sFile Getter & Setter
 	public int getFile_no() {
 		return sFile.getFile_no();
