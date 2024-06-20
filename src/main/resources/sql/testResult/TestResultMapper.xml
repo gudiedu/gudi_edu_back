@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.happyjob.study.tCourse.dao.TestResultDao">
+
+ <!-- 강의 정보 조회 쿼리 -->
+<select id="selectCourseList" parameterType="map" resultType="kr.happyjob.study.tCourse.model.CourseVO">
+        SELECT
+            course_no,
+            course_name,
+            course_start_date,
+            course_end_date,
+            course_quota
+        FROM
+            tb_course
+        WHERE
+         	loginID = #{loginID}
+        AND
+            course_name LIKE CONCAT('%', #{stitle}, '%')
+        ORDER BY
+            course_start_date DESC
+        LIMIT #{startPoint}, #{pageSize}
+    </select>
+    
+
+    <select id="countCourseList" parameterType="map" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            tb_course
+        WHERE
+         loginID = #{loginID}
+        AND
+         course_name LIKE CONCAT('%', #{stitle}, '%')
+    </select>
+    
+    
+
+
+<!-- 시험 결과 조회 쿼리 -->
+
+
+<select id="selectTestResults" parameterType="map" resultType="kr.happyjob.study.tCourse.model.TestReslutSubmissionDTO">
+    SELECT 
+        e.loginID, 
+        u.name, 
+        COALESCE(SUM(ts.question_score), 0) as question_score,
+        MAX(tr.result_no) as result_no 
+    FROM 
+        tb_enrollment e 
+    JOIN 
+        tb_userinfo u ON e.loginID = u.loginID 
+    LEFT JOIN 
+        tb_test_result tr ON e.loginID = tr.loginID AND e.course_no = tr.course_no 
+    LEFT JOIN 
+        tb_test_submission ts ON e.loginID = ts.loginID AND e.course_no = ts.course_no
+    WHERE 
+        e.course_no = #{course_no} AND e.enrollment_confirmed = 'Y' 
+    GROUP BY 
+        e.loginID, u.name;
+</select>
+
+
+
+
+<!-- 학생 상세 정보 조회 쿼리 -->
+
+<select id="selectStudentTestDetails" parameterType="map" resultType="kr.happyjob.study.tCourse.model.TestReslutSubmissionDTO">
+    SELECT 
+        e.loginID, 
+        u.name, 
+        COALESCE(ts.question_score, 0) as question_score, 
+        t.test_question, 
+        t.test_choice1, 
+        t.test_choice2, 
+        t.test_choice3, 
+        t.test_choice4, 
+        t.test_answer, 
+        ts.answer_selected,
+        tr.result_no,
+        MAX(tr.result_score) as result_score,  <!-- MAX 함수 사용 -->
+        t.test_category
+    FROM 
+        tb_enrollment e 
+    JOIN 
+        tb_userinfo u ON e.loginID = u.loginID 
+    LEFT JOIN 
+        tb_test t ON e.course_no = t.course_no 
+    LEFT JOIN 
+        tb_test_submission ts ON e.loginID = ts.loginID AND e.course_no = ts.course_no AND t.test_no = ts.test_no 
+    LEFT JOIN 
+        tb_test_result tr ON e.loginID = tr.loginID AND e.course_no = tr.course_no AND tr.test_category = t.test_category
+    WHERE 
+        e.course_no = #{course_no} AND e.loginID = #{loginID}
+    GROUP BY 
+        e.loginID, u.name, t.test_question, t.test_choice1, t.test_choice2, t.test_choice3, t.test_choice4, t.test_answer, ts.answer_selected, tr.result_no, t.test_category;
+</select>
+
+
+<select id="selectTestStatistics" parameterType="map" resultType="kr.happyjob.study.tCourse.model.TestReslutSubmissionDTO">
+    SELECT 
+        AVG(subquery.total_score) as average_score,
+        MAX(subquery.total_score) as highest_score,
+        COUNT(DISTINCT subquery.loginID) as participant_count
+    FROM (
+        SELECT 
+            tr.loginID,
+            SUM(tr.result_score) as total_score
+        FROM 
+            tb_test_result tr
+        WHERE 
+            tr.course_no = #{course_no}
+        GROUP BY 
+            tr.loginID
+    ) subquery
+</select>
+ 
+ 
+ 
+</mapper>

@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CourseVO {
-	
-	
+
 	private int course_no; // 강의번호
 	private String loginID; // 아이디
 	private int survey_no; // 설문코드
@@ -21,6 +20,7 @@ public class CourseVO {
 	private String course_description; // 강의소개
 	private String course_start_date; // 개강일
 	private String course_end_date; // 종강일
+
 	private String course_loc; //강의실
 	
 	private int duration; // 수강기간
@@ -31,5 +31,6 @@ public class CourseVO {
 	private double progress; // 진행률
 	
 	
+
 
 }
