@@ -17,7 +17,5 @@ public class EnrollmentVO {
 	private int enrollment_confirmed; //승인여부
 	
 	
-	
-	
 
 }

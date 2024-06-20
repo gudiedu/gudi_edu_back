@@ -10,12 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class TestSubmissionVO {
-	
+
 	private int submission_no;
 	private int course_no;
 	private int test_no;
 	private String answer_selected;
 	private int result_score;
 	private String loginID;
+	private int question_score;
 
 }

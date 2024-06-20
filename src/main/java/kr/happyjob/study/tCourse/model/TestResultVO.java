@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TestResultVO {
 	
-	private int result_no;
-	private int course_no;
-	private String loginID;
-	private int result_score;
+	private int result_no; //시험결과번호
+	private int course_no; // 강의번호
+	private String loginID; // 아이디
+	private int result_score; // 총 점수
 
 }

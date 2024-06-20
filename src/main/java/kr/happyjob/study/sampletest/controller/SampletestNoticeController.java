@@ -90,6 +90,8 @@ public class SampletestNoticeController {
 	@Value("${pdfcss}")
 	private String pdfcss;
 	
+	
+	
    @RequestMapping("listnotice.do")
    @ResponseBody
    public Map<String, Object> listnotice(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
@@ -117,10 +119,12 @@ public class SampletestNoticeController {
       returnmap.put("totalcnt",totalcnt);
       
       logger.info("+ End " + className + ".listnotice");
-
+      
       return returnmap;
    }
      
+   
+   
    @RequestMapping("savenotice.do")
    @ResponseBody
    public Map<String, Object> savenotice(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
@@ -137,6 +141,8 @@ public class SampletestNoticeController {
       
       
       paramMap.put("loginID",(String)session.getAttribute("loginId"));
+    
+      
       
       Map<String, Object> returnmap = new HashMap<String, Object>();
       
@@ -184,6 +190,10 @@ public class SampletestNoticeController {
       return returnmap;
    }  
    
+   
+   
+   
+   
    @RequestMapping("selectnotice.do")
    @ResponseBody
    public Map<String, Object> selectnotice(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
@@ -205,6 +215,10 @@ public class SampletestNoticeController {
 
       return returnmap;
    }  
+   
+   
+   
+   
    
    @RequestMapping("savenoticefile.do")
    @ResponseBody
@@ -268,6 +282,10 @@ public class SampletestNoticeController {
 
       return returnmap;
    }  
+   
+   
+   
+   
    
    @RequestMapping("noticefileDown.do")
    public void noticefileDown(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
