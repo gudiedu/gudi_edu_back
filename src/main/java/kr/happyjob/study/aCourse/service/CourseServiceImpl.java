@@ -33,4 +33,12 @@ public class CourseServiceImpl implements CourseService{
 		// TODO Auto-generated method stub
 		return courseDao.courseSearch(word);
 	}
+	
+	public List<CourseModel> searchClassSurvey(Map<String, Object> paramMap) throws Exception{
+		return courseDao.searchClassSurvey(paramMap);
+	}
+	public int totalcntClassSurvey(Map<String, Object> paramMap) throws Exception{
+		return courseDao.totalcntClassSurvey(paramMap);
+	}
+	
 }

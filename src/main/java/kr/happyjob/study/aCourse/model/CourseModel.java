@@ -16,4 +16,6 @@ public class CourseModel {
 	private String course_start_date; //개강일
 	private String course_end_date; //종강일
 	private String course_loc; //강의실
+	private int respondent_count;
+	private int confirmed_count;
 }

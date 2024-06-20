@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.happyjob.study.support.dao.tClassSurveyDao">
+
+
+<!-- 설문조사 조회+검색 
+ <select id="searchClassSurvey" resultType="kr.happyjob.study.support.model.tClassSurveyVO">
+ 		
+    SELECT 
+	 
+	   c.course_no 
+	 , c.loginID
+	 , c.course_name
+	 , c.course_quota
+	 , DATE_FORMAT(c.course_start_date, '%y-%m-%d') as course_start_date
+	 , DATE_FORMAT(c.course_end_date, '%y-%m-%d') as course_end_date
+	
+	 
+	 
+	from tb_course c
+    where
+            c.loginID = #{loginID}
+            <if test="(stitle != null) and (!stitle.equals(''))">
+                 and c.course_name like concat('%',#{stitle},'%')
+            </if>
+     
+			ORDER BY c.course_no DESC
+			LIMIT #{startpoint}, #{pageSize}
+</select>-->
+
+   <!-- 설문조사 조회+검색 -->
+<select id="searchClassSurvey" resultType="kr.happyjob.study.support.model.tClassSurveyVO">
+  SELECT 
+     c.course_no,
+     c.loginID,
+     c.course_name,
+     c.course_quota,
+     DATE_FORMAT(c.course_start_date, '%y-%m-%d') as course_start_date,
+     DATE_FORMAT(c.course_end_date, '%y-%m-%d') as course_end_date,
+     COALESCE(sa.survey_no, 0) as survey_no,
+     COALESCE(sa.respondent_count, 0) as respondent_count,
+     COALESCE(ec.confirmed_count, 0) as confirmed_count
+  FROM 
+  	tb_course c
+  LEFT JOIN (
+     SELECT 
+       sa.course_no,
+       sa.survey_no,
+       COUNT(DISTINCT sa.loginID) as respondent_count
+     FROM tb_survey_answer sa
+     GROUP BY sa.course_no, sa.survey_no
+  ) sa ON c.course_no = sa.course_no
+  LEFT JOIN (
+     SELECT 
+       e.course_no,
+       COUNT(e.enrollment_no) as confirmed_count
+     FROM tb_enrollment e
+     WHERE e.enrollment_confirmed = 'Y'
+     GROUP BY e.course_no
+  ) ec ON c.course_no = ec.course_no
+  WHERE 
+  	c.loginID = #{loginID}
+    <if test="(stitle != null) and (!stitle.equals(''))">
+      AND c.course_name LIKE concat('%', #{stitle}, '%')
+    </if>
+  ORDER BY c.course_no DESC
+  LIMIT #{startpoint}, #{pageSize}
+</select>
+
+
+
+
+<!-- 설문조사 총 갯수 조회 -->
+<select id="totalcntClassSurvey" resultType="int">
+	
+  SELECT COUNT(*)
+   FROM tb_course c
+          
+          WHERE
+          c.loginID = #{loginID}
+            <if test="(stitle != null) and (!stitle.equals(''))">
+                 AND c.course_name LIKE concat('%',#{stitle},'%')
+            </if>
+                      
+</select>
+	
+	<select id="fetchSurveyResults" resultType="kr.happyjob.study.support.model.tClassSurveyResultDTO">
+        SELECT
+            sa.question_choiced,
+            sa.survey_question_no,
+            sa.choice_no,
+            scc.choice_result,
+            sq.survey_question_text,
+            COUNT(sa.choice_no) as choice_count,
+            sa.written_answer
+        FROM tb_course c
+        JOIN tb_survey_answer sa ON c.course_no = sa.course_no
+        JOIN tb_survey_question sq ON sa.survey_no = sq.survey_no AND sa.survey_question_no = sq.survey_question_no
+        LEFT JOIN tb_survey_choice_content scc ON sa.question_choiced = scc.question_choiced AND sa.choice_no = scc.choice_no
+        WHERE c.course_no = #{course_no}
+        GROUP BY sa.question_choiced, sa.choice_no, scc.choice_result, sq.survey_question_text, sa.written_answer
+        ORDER BY 2, 3
+    </select>
+
+</mapper>
