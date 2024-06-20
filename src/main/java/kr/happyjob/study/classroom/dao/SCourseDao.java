@@ -45,7 +45,7 @@ public interface SCourseDao {
 
 	/** 시험응시: 시험문제 불러오기*/
 	public List<SCourseDto> sCreateTest(Map<String, Object> paramMap) throws Exception;
-
+	
 	/** 시험응시 : 시험제출하기*/
 	public int sTestSubmit(Map<String, Object> paramMap) throws Exception;
 
@@ -54,5 +54,8 @@ public interface SCourseDao {
 
 	/** 시험응시: 시험 채점 결과 삽입*/
 	public int sTestCalculate(Map<String, Object> paramMap) throws Exception;
+
+	/** 시험응시: 시험 제출 결과 불러오기*/
+	public List<SCourseDto> sShowingTestResult(Map<String, Object> paramMap) throws Exception;
 
 }

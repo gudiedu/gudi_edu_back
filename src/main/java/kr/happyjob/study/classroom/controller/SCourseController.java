@@ -211,7 +211,6 @@ public class SCourseController {
 		    logger.info("+ End " + className + ".sTestList");
 		    
 		    return returnMap;
-		
 	}
 		
 	// 시험 문제 조회하기_Minji
@@ -275,7 +274,7 @@ public class SCourseController {
 		    
 		    sqlReturn = sCourseService.sTestSubmit(paramMap, request);
 		    
-		    if(sqlReturn >= 0){
+	    	if(sqlReturn > 0){
 		    	resultMsg = "시험이 제출되었습니다. 수고하셨습니다.";
 		    } else {
 		    	resultMsg = "시험이 제출되지 않았습니다. 다시 확인해주세요.";
@@ -330,4 +329,30 @@ public class SCourseController {
 		    return returnMap;
 		
 	}
+	
+	// 시험 문제 조회하기_Minji
+		@RequestMapping("sShowingTestResult.do")
+		@ResponseBody
+		 public Map<String, Object> sShowingTestResult(Model model,
+				 @RequestParam Map<String, Object> paramMap,
+				 HttpServletRequest request,
+		         HttpServletResponse response, HttpSession session) throws Exception {
+			
+				logger.info("+ Start " + className + ".sShowingTestResult");
+			    logger.info("   - paramMap : " + paramMap);
+				
+			    paramMap.put("studentSignedID",(String)session.getAttribute("loginId"));
+			    
+			    Map<String, Object> returnMap = new HashMap<String, Object>();
+			    
+			    List<SCourseDto> sShowingTestResult = sCourseService.sShowingTestResult(paramMap);
+			    
+			    returnMap.put("showingResult", sShowingTestResult);
+			    returnMap.put("studentSignedID",(String)session.getAttribute("loginId"));
+			    
+			    logger.info("+ End " + className + ".sShowingTestResult");
+			    
+			    return returnMap;
+			
+		}
 }

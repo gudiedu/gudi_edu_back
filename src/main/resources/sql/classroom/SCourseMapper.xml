@@ -145,7 +145,7 @@
 		WHERE
 		  course_start_date > now()
 		ORDER BY
-		  course_start_date ASC;
+		  course_start_date ASC
 	</select>
 	
 	<!-- 수강신청 중복 여부 확인하기 -->
@@ -177,6 +177,7 @@
 		  c.course_subject,
 		  c.course_name,
 		  c.loginID,
+		  ui.name,
 		  c.course_loc,
 		  t.course_no,
 		  t.test_category,
@@ -188,6 +189,7 @@
 		LEFT OUTER JOIN tb_course c ON e.course_no = c.course_no
 		LEFT OUTER JOIN tb_test t ON t.course_no = c.course_no
 		LEFT OUTER JOIN tb_test_result r ON r.loginID = e.loginID AND r.course_no = e.course_no
+		LEFT OUTER JOIN tb_userinfo ui ON c.loginID = ui.loginID
 		WHERE e.loginID = #{studentSignedID} AND e.enrollment_confirmed = 'Y'
 		GROUP BY e.course_no
 	</select>
@@ -195,27 +197,21 @@
 	<!-- 시험 문제 불러오기 -->
 	<select id="sCreateTest" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
 		SELECT
-		  e.course_no,
-		  e.loginID,
-		  c.course_subject,
-		  c.course_name,
-		  c.loginID,
-		  c.course_loc,
-		  t.course_no,
-		  t.test_category,
-		  r.result_no,
-		  r.loginID,
-		  r.result_score
+		  course_no
+		  , test_no
+		  , test_question
+		  , test_choice1
+		  , test_choice2
+		  , test_choice3
+		  , test_choice4
+		  , test_score
+		  , test_category
 		FROM
-		  tb_enrollment e
-		LEFT OUTER JOIN tb_course c ON e.course_no = c.course_no
-		LEFT OUTER JOIN tb_test t ON t.course_no = c.course_no
-		LEFT OUTER JOIN tb_test_result r ON r.loginID = e.loginID AND r.course_no = e.course_no
-		WHERE e.loginID = #{studentSignedID} AND e.enrollment_confirmed = 'Y'
-		GROUP BY e.course_no
+		  tb_test
+		WHERE
+		  course_no = #{SelectedCourseNo} AND test_category = #{SelectedTestCategory}
 	</select>
-
-
+	
 	<!-- 시험응시 제출하기 <insert id="sTestSubmit"> -->
 	<insert id="sTestSubmit">
     <foreach collection="answerSelected" item="selectedAnswer" index="idx">
@@ -283,5 +279,30 @@
 			#{selectedTestCategory}
 			)
 	</insert>
+	
+	<!-- 시험 문제 불러오기 -->
+	<select id="sShowingTestResult" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
+		SELECT
+			s.course_no,
+			s.test_no,
+			t.test_question,
+			t.test_choice1,
+			t.test_choice2,
+			t.test_choice3,
+			t.test_choice4,
+			s.answer_selected,
+			t.test_answer,
+			s.question_score,
+			s.loginID,
+			s.test_category
+		FROM
+			tb_test_submission s 
+		LEFT OUTER JOIN
+			tb_test t ON s.course_no = t.course_no
+		AND
+			s.test_no = t.test_no
+		WHERE
+		  loginID = #{studentSignedID}
+	</select>
 
 </mapper>

@@ -51,9 +51,13 @@ public interface SCourseService {
 
 	/** 시험응시: 시험 문제 불러오기*/
 	public List<SCourseDto> sCreateTest(Map<String, Object> paramMap) throws Exception;
-
+	
 	/** 시험응시: 시험 총점 계산해서 등록하기*/
 	public int sTestCalculate(Map<String, Object> paramMap, HttpServletRequest request) throws Exception;
+
+	/** 시험응시: 시험 제출 결과 불러오기*/
+	public List<SCourseDto> sShowingTestResult(Map<String, Object> paramMap) throws Exception;
+
 
 	
 }

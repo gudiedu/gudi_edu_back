@@ -92,7 +92,11 @@ public class SCourseServiceImpl implements SCourseService {
 	public int sTestCalculate(Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
 		return sCourseDao.sTestCalculate(paramMap);
 	}
-
+	
+	/** 시험응시: 시험 제출 결과 불러오기*/
+	public List<SCourseDto> sShowingTestResult(Map<String, Object> paramMap) throws Exception{
+		return sCourseDao.sShowingTestResult(paramMap);
+	}
 
 
 }
