@@ -41,16 +41,37 @@ public class CourseController {
 			logger.info("+ Start " + className + ".CourseList");
 			logger.info("   - paramMap : " + paramMap);
 			
+		      
+		      
 			List<CourseModel> CourseListModel = courseService.courseList(paramMap);
 			
 			Map<String, Object> resultMap = new HashMap<>();
 			
 			resultMap.put("listdate", CourseListModel);
-			
 			logger.info("+ End " + className + ".CourseList");
 	
 			return resultMap;
 	}
+	
+	// 강의 목록 리스트 출력2
+		@RequestMapping("searchClassSurvey.do")
+		@ResponseBody
+		public Map<String, Object> searchClassSurvey(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	               HttpServletResponse response, HttpSession session) throws Exception {
+				logger.info("+ Start " + className + ".CourseList");
+				logger.info("   - paramMap : " + paramMap);
+				
+			      
+			      
+				List<CourseModel> CourseListModel = courseService.searchClassSurvey(paramMap);
+				
+				Map<String, Object> resultMap = new HashMap<>();
+				
+				resultMap.put("listdate", CourseListModel);
+				logger.info("+ End " + className + ".CourseList");
+		
+				return resultMap;
+		}
 	
 	@RequestMapping("courseSearch.do")
 	@ResponseBody

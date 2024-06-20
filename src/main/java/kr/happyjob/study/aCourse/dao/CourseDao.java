@@ -11,5 +11,10 @@ public interface CourseDao {
 	
 	//강의 목록 검색 조회
 	public List<CourseModel> courseSearch(String word) throws Exception;
-
+	
+	
+	public List<CourseModel> searchClassSurvey(Map<String, Object> paramMap) throws Exception;
+	
+	public int totalcntClassSurvey(Map<String, Object> paramMap) throws Exception;
+	
 }
