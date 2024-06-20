@@ -6,7 +6,7 @@ public class STestSubmissionModel {
 	private int course_no;
 	private int test_no;
 	private String answer_selected;
-	private int result_score;
+	private int question_score;
 	
 	public int getSubmission_no() {
 		return submission_no;
@@ -32,11 +32,11 @@ public class STestSubmissionModel {
 	public void setAnswer_selected(String answer_selected) {
 		this.answer_selected = answer_selected;
 	}
-	public int getResult_score() {
-		return result_score;
+	public int getQuestion_score() {
+		return question_score;
 	}
-	public void setResult_score(int result_score) {
-		this.result_score = result_score;
+	public void setQuestion_score(int question_score) {
+		this.question_score = question_score;
 	}
 
 	

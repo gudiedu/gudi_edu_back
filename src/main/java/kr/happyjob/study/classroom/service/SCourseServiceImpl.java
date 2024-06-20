@@ -3,6 +3,8 @@ package kr.happyjob.study.classroom.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +52,21 @@ public class SCourseServiceImpl implements SCourseService {
 	public List<SDayoffModel> sDayoffInfo(Map<String, Object> paramMap) throws Exception {
 		return sCourseDao.sDayoffInfo(paramMap);
 	}
+
+	/**특정 강의 정보 조회*/
+	public List<SCourseDto> sCourseInfo(Map<String, Object> paramMap) throws Exception {
+		return sCourseDao.sCourseInfo(paramMap);
+	}
+
+	/**강의세부정보 조회*/
+	public List<SCourseDto> sCourseDetail(Map<String, Object> paramMap) throws Exception {
+		return sCourseDao.sCourseDetail(paramMap);
+	}
+
+	/** 수강신청: 수강신청 가능 목록 조회*/
+	public List<SCourseDto> sEnrollList(Map<String, Object> paramMap) throws Exception {
+		return sCourseDao.sEnrollList(paramMap);
+	}
 	
 	/** 강의관리 수업만족도 : 수업만족도 질문 조회 */
 	public List<SCourseDto> sSatisfactionQuestion(Map<String, Object> paramMap) throws Exception {
@@ -71,4 +88,40 @@ public class SCourseServiceImpl implements SCourseService {
 		return sCourseDao.sSurveyComplete(paramMap);
 	}
 	
+	/** 수강신청: 중복확인하기*/
+	public int checkEnrollment(Map<String, Object> paramMap) throws Exception{
+		return sCourseDao.checkEnrollment(paramMap);
+	}
+
+	/** 수강신청: 수강신청하기*/
+	public int sEnrollInsert(Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
+		return sCourseDao.sEnrollInsert(paramMap);
+	}
+
+	/** 시험응시: 시험강의목록조회하기*/
+	public List<SCourseDto> sTestList(Map<String, Object> paramMap) throws Exception {
+		return sCourseDao.sTestList(paramMap);
+	}
+	
+	/** 시험응시: 시험제출하기*/
+	public int sTestSubmit(Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
+		return sCourseDao.sTestSubmit(paramMap);
+	}
+
+	/** 시험응시: 시험문제 불러오기*/
+	public List<SCourseDto> sCreateTest(Map<String, Object> paramMap) throws Exception {
+		return sCourseDao.sCreateTest(paramMap);
+	}
+
+	/** 시험응시 : 시험 채점 결과 삽입*/
+	public int sTestCalculate(Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
+		return sCourseDao.sTestCalculate(paramMap);
+	}
+	
+	/** 시험응시: 시험 제출 결과 불러오기*/
+	public List<SCourseDto> sShowingTestResult(Map<String, Object> paramMap) throws Exception{
+		return sCourseDao.sShowingTestResult(paramMap);
+	}
+
+
 }

@@ -349,6 +349,21 @@ public class SCourseDto extends SCourseModel {
 	public void setTest_answer(String test_answer) {
 		sTest.setTest_answer(test_answer);
 	}
+	
+	public int getTest_score() {
+		return sTest.getTest_score();
+	}
+	public void setTest_score(int test_score) {
+		sTest.setTest_score(test_score);
+	}
+	
+	public String getTest_category() {
+		return sTest.getTest_category();
+	}
+	public void setTest_category(String test_category) {
+		sTest.setTest_category(test_category);
+	}
+	
 
 	// sTestResult Getter & Setter
 	public int getResult_no() {
@@ -357,6 +372,14 @@ public class SCourseDto extends SCourseModel {
 
 	public void setResult_no(int result_no) {
 		sTestResult.setResult_no(result_no);
+	}
+	
+	public int getResult_score() {
+		return sTestResult.getResult_score();
+	}
+	
+	public void setResult_score(int result_score) {
+		sTestResult.setResult_score(result_score);
 	}
 
 	// sTestSubmission Getter & Setter
@@ -376,12 +399,12 @@ public class SCourseDto extends SCourseModel {
 		sTestSubmission.setAnswer_selected(answer_selected);
 	}
 
-	public int getResult_score() {
-		return sTestSubmission.getResult_score();
+	public int getQuestion_score() {
+		return sTestSubmission.getQuestion_score();
 	}
 
-	public void setResult_score(int result_score) {
-		sTestSubmission.setResult_score(result_score);
+	public void setQuestion_score(int question_score) {
+		sTestSubmission.setQuestion_score(question_score);
 	}
 
 }
