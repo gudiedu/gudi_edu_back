@@ -45,18 +45,8 @@ public class aCourseCodeController {
 				logger.info("   - paramMap : " + paramMap);
 				
 				// 페이지 네비게이터 변수 선언하기
-				int currentPage = 1;
-			    int pageSize = 10;
-
-			    // 파라미터에서 값 추출 및 변환
-			    if (paramMap.get("currentPage") != null) {
-			        currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
-			    }
-
-			    if (paramMap.get("pageSize") != null) {
-			        pageSize = Integer.parseInt((String) paramMap.get("pageSize"));
-			    }
-
+				int currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
+			    int pageSize  = Integer.parseInt((String) paramMap.get("pageSize"));
 			    int startPoint = (currentPage - 1) * pageSize;
 				
 //				int currentPage = Integer.parseInt((String)paramMap.get("currentPage"));
@@ -203,23 +193,23 @@ public class aCourseCodeController {
 
 	   }
 	    
-	 // 키워드 검색
-		   @RequestMapping("codeSearch.do")
-		   @ResponseBody
-		   public Map<String, Object> codeSearch(Model model, @RequestParam String word, HttpServletRequest request,
-	               HttpServletResponse response, HttpSession session) throws Exception {
-					logger.info("+ Start " + className + ".codeSearch");
-					logger.info("   - 검색단어 : " + word);
-					
-					List<aCourseCodeModel> aCourseListModel = acourseCodeService.codeSearch(word);
-					
-					Map<String, Object> resultMap = new HashMap<>();
-					
-					
-					resultMap.put("listdate", aCourseListModel);
-					
-					logger.info("+ End " + className + ".codeSearch");
-						return resultMap;
-					}
+	 // 키워드 검색 매퍼 유동적으로 합침
+//		   @RequestMapping("codeSearch.do")
+//		   @ResponseBody
+//		   public Map<String, Object> codeSearch(Model model, @RequestParam String word, HttpServletRequest request,
+//	               HttpServletResponse response, HttpSession session) throws Exception {
+//					logger.info("+ Start " + className + ".codeSearch");
+//					logger.info("   - 검색단어 : " + word);
+//					
+//					List<aCourseCodeModel> aCourseListModel = acourseCodeService.codeSearch(word);
+//					
+//					Map<String, Object> resultMap = new HashMap<>();
+//					
+//					
+//					resultMap.put("listdate", aCourseListModel);
+//					
+//					logger.info("+ End " + className + ".codeSearch");
+//						return resultMap;
+//					}
 	   
 }

@@ -10,7 +10,7 @@ import kr.happyjob.study.information.model.SurveyQuestionModel;
 public interface SurveyDao {
 	/************ 설문 ************/
 	//설문지 목록 리스트
-	public List<SurveyModel> surveyList() throws Exception;
+	public List<SurveyModel> surveyList(Map<String, Object> paramMap) throws Exception;
 	
 	//선택한 설문지 상세 질문들 목록
 	public List<SurveyQuestionModel> questionList(Map<String, Object> paramMap) throws Exception;
@@ -48,4 +48,7 @@ public interface SurveyDao {
 	
 	//강의에 설문등록하기
 	public int surveyIntoCourse(Map<String, Object> paramMap) throws Exception;
+	
+	//설문 총 갯수 가져오기
+	public int totalcntSurvey(Map<String, Object> paramMap) throws Exception;
 }

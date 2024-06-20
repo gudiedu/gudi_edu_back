@@ -19,6 +19,7 @@
    </if>
 	ORDER BY 
 		course_no ASC
+	LIMIT #{startPoint}, #{pageSize}
 	
 	</select>
 	
@@ -66,23 +67,27 @@
 		    WHERE e.enrollment_confirmed = 'Y'
 		    GROUP BY e.course_no
 		 ) ec ON c.course_no = ec.course_no
-		  <if test="(stitle != null) and (!stitle.equals(''))">
+  	<if test="(stitle != null) and (!stitle.equals(''))">
       WHERE c.course_name LIKE concat('%', #{stitle}, '%')
     </if>
 		 ORDER BY c.course_no asc
+		 LIMIT #{startPoint}, #{pageSize}
 	</select>
 	
 	
 	<!-- 설문조사 총 갯수 조회 -->
-<select id="totalcntClassSurvey" resultType="int">
+	<select id="totalcntClassSurvey" resultType="int">
 	
-  SELECT COUNT(*)
-   FROM tb_course c
-            <if test="(stitle != null) and (!stitle.equals(''))">
-                 WHERE c.course_name LIKE concat('%',#{stitle},'%')
-            </if>
-                      
-</select>
+	SELECT 
+		COUNT(*)
+	FROM 
+	 	tb_course c
+     <if test="(stitle != null) and (!stitle.equals(''))">
+     WHERE 
+     	c.course_name LIKE concat('%',#{stitle},'%')
+     </if>
+	                    
+	</select>
 	
 	
 </mapper>
