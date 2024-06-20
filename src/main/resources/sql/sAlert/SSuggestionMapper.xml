@@ -17,11 +17,19 @@
 	LEFT OUTER JOIN 
 	       tb_userinfo ui ON ui.loginID = s.loginID
 	       <where>
+	       		<if test="(status != null) and (status != '')">
+		    		<if test="status == 'facilities'">
+		    			s.suggestion_category = '시설'
+		    		</if>
+		    		<if test="status == 'academicAffairs'">
+		    			s.suggestion_category = '학사'
+		    		</if>
+		    		<if test="status == 'others'">
+		    			s.suggestion_category = '기타'
+		    		</if>
+	    		</if>
 		    	<if test="(stitle != null) and (!stitle.equals(''))">
 		    		AND s.suggestion_title like concat('%',#{stitle},'%')
-		    	</if>
-		    	<if test="(scategory != null) and (!scategory.equals(''))">
-		    	    AND s.suggestion_category like concat('%',#{scategory},'%')
 		    	</if>
 		   </where>
 	ORDER BY s.suggestion_answered DESC
