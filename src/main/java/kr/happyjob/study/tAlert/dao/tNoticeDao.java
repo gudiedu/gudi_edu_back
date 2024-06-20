@@ -1,5 +1,6 @@
 package kr.happyjob.study.tAlert.dao;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,10 @@ public interface tNoticeDao {
 	public int saveFile(tNoticeVO file) throws Exception;
 	
 	public int deleteNotice(Map<String, Object> paramMap) throws Exception;
+
+	public String selectFilePath(Map<String, Object> paramMap);
+
+	public int deleteFileByNoticeNo(Map<String, Object> paramMap);
 
 	
 }

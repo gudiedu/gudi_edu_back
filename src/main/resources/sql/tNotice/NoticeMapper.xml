@@ -154,6 +154,18 @@
 		 
 	</update> -->
 	
+	<select id="selectFilePath" resultType="String">
+	 
+	 SELECT	file_server_path 
+	 FROM tb_file 
+	 WHERE file_no = (select file_no from tb_notice where notice_no = #{pNoticeNo})
 	
+	
+	</select>
+	
+	<delete id="deleteFileByNoticeNo">
+	  DELETE FROM tb_file 
+	  WHERE file_no = (SELECT file_no FROM tb_notice WHERE notice_no = #{pNoticeNo})
+	</delete>
 	 
 </mapper>

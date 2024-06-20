@@ -1,18 +1,16 @@
 package kr.happyjob.study.tAlert.service;
 
 import java.io.File;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-
 import kr.happyjob.study.common.comnUtils.FileUtilCho;
 import kr.happyjob.study.tAlert.dao.tNoticeDao;
 import kr.happyjob.study.tAlert.model.tNoticeVO;
@@ -20,111 +18,94 @@ import kr.happyjob.study.tAlert.model.tNoticeVO;
 @Service
 public class tNoticeServiceImpl implements tNoticeService {
 
-	// Set logger
-	private final Logger logger = LogManager.getLogger(this.getClass());
+    private final Logger logger = LogManager.getLogger(this.getClass());
+    private final String className = this.getClass().toString();
 
-	// Get class name for logger
-	private final String className = this.getClass().toString();
+    @Value("${fileUpload.rootPath}")
+    private String rootPath;
+    
+    @Value("${fileUpload.virtualRootPath}")
+    private String virtualRootPath;
+    
+    @Value("${fileUpload.noticePath}")
+    private String noticePath;
+    
+    @Autowired
+    tNoticeDao tNoticeDao;
 
-	@Value("${fileUpload.rootPath}")
-	private String rootPath;
-	
-	@Value("${fileUpload.virtualRootPath}")
-	private String virtualRootPath;
-	
-	@Value("${fileUpload.noticePath}")
-	private String noticePath;
-	
-	
-	@Autowired
-	tNoticeDao tNoticeDao;
-		
+    public List<tNoticeVO> searchNotice(Map<String, Object> paramMap) throws Exception {
+        return tNoticeDao.searchNotice(paramMap);
+    }
+    
+    public int totalcntNotice(Map<String, Object> paramMap) throws Exception {
+        return tNoticeDao.totalcntNotice(paramMap);
+    }
 
-	/** 공지사항 목록 조회 */
-	public List<tNoticeVO> searchNotice(Map<String, Object> paramMap) throws Exception {
+    public tNoticeVO selectNotice(Map<String, Object> paramMap) throws Exception {
+        return tNoticeDao.selectNotice(paramMap);
+    }
 
-		return tNoticeDao.searchNotice(paramMap);
-		
-	}
-	
-	
-	/** 공지사항 카운트 조회 */
-	public int totalcntNotice(Map<String, Object> paramMap) throws Exception {
-		 
-		return tNoticeDao.totalcntNotice(paramMap);
-	}
+    public int insertNotice(Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
+        logger.info("Starting insertNotice");
 
-	
-	/** 공지사항 하나 조회 */
-	public tNoticeVO selectNotice(Map<String, Object> paramMap) throws Exception {
+        if (request instanceof MultipartHttpServletRequest) {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 
-		return tNoticeDao.selectNotice(paramMap);
-	}
+            // 파일 업로드는 한 번만 수행
+            Map<String, Object> fileInfo = fileUpload(multipartRequest);
+            logger.info("File uploaded: " + fileInfo);
 
-	/** 공지사항 등록 */
-	public int insertNotice(Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
-		
-		Map<String, Object> fileInfo = fileUpload(request);
-		paramMap.put("fileInfo", fileInfo);
-		
-		if(fileInfo.get("file_nm") != null && fileInfo.get("file_nm") != "") {
-			int fileNo = saveFile(fileInfo);
-			paramMap.put("fileExits","Y");
-			paramMap.put("file_no", fileNo);
-		}
-		
-		return tNoticeDao.insertNotice(paramMap);
-	}
+            if (fileInfo != null && !fileInfo.isEmpty()) {
+                if (fileInfo.get("file_nm") != null && !fileInfo.get("file_nm").toString().isEmpty()) {
+                    logger.info("Saving file");
+                    int fileNo = saveFile(fileInfo);
+                    logger.info("File saved with fileNo: " + fileNo);
 
+                    paramMap.put("fileExits", "Y");
+                    paramMap.put("file_no", fileNo);
+                }
+            }
+        }
 
+        logger.info("Inserting notice");
+        int result = tNoticeDao.insertNotice(paramMap);
+        logger.info("Notice inserted with result: " + result);
 
-	/** 공지사항 삭제 */
-	public int deleteNotice(Map<String, Object> paramMap) throws Exception {
+        return result;
+    }
 
-		return tNoticeDao.deleteNotice(paramMap);
-	}
+    public int deleteNotice(Map<String, Object> paramMap) throws Exception {
+    	String url = tNoticeDao.selectFilePath(paramMap);
+    	System.out.println("::::::::::::::::::::::::" +  url);
+    	if (url != null && !url.isEmpty()) {
+    		new File(url).delete();
+    	}
+    	
+        return tNoticeDao.deleteNotice(paramMap) + tNoticeDao.deleteFileByNoticeNo(paramMap);
+    }
 
-	/** 공지사항 수정 
-	public int updateNotice(Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
+    private int saveFile(Map<String, Object> fileInfo) throws Exception {
+        logger.info("Starting saveFile");
 
-		
-		Map<String, Object> fileInfo = fileUpload(request);
-		paramMap.put("fileInfo", fileInfo);
-		if(fileInfo.get("file_nm") != null && fileInfo.get("file_nm") != "") {
-			int fileNo = saveFile(fileInfo);
-			paramMap.put("fileExits","Y");
-			paramMap.put("file_no", fileNo);
-		}
-		
-		return tNoticeDao.updateNotice(paramMap);
-	}*/
+        tNoticeVO file = new tNoticeVO();
+        file.setFile_origin(fileInfo.get("file_nm").toString());
+        file.setFile_local_path(fileInfo.get("vrfile_loc").toString());
+        file.setFile_server_path(fileInfo.get("file_loc").toString());
+        file.setFile_extension(fileInfo.get("fileExtension").toString());
+        file.setFile_size(Integer.parseInt(fileInfo.get("file_size").toString()));
+        
+        tNoticeDao.saveFile(file);
+        logger.info("File saved with file_no: " + file.getFile_no());
 
-	/** 파일 저장*/
-	private int saveFile(Map<String, Object> fileInfo) throws Exception{
+        return file.getFile_no();
+    }
 
-		tNoticeVO file = new tNoticeVO();
-				
-				file.setFile_origin(fileInfo.get("file_nm").toString());
-				file.setFile_local_path(fileInfo.get("vrfile_loc").toString());
-				file.setFile_server_path(fileInfo.get("file_loc").toString());
-				file.setFile_extension(fileInfo.get("fileExtension").toString());
-				file.setFile_size(Integer.parseInt(fileInfo.get("file_size").toString()));
-				
-				tNoticeDao.saveFile(file);
-				
-				return file.getFile_no();
-			}
-
-	/** 파일 업로드*/
-	private Map<String, Object> fileUpload(HttpServletRequest request) throws Exception {
-
-		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
-		
-		String itemFilePath = noticePath + File.separator;
-		FileUtilCho fileUpload = new FileUtilCho(multipartHttpServletRequest, rootPath, virtualRootPath, itemFilePath);
-		Map<String, Object> fileInfo = fileUpload.uploadFiles();
-		
-		return fileInfo;
-	}
-
+    private Map<String, Object> fileUpload(MultipartHttpServletRequest request) throws Exception {
+        logger.info("Starting fileUpload");
+        String itemFilePath = noticePath + File.separator;
+        FileUtilCho fileUpload = new FileUtilCho(request, rootPath, virtualRootPath, itemFilePath);
+        Map<String, Object> fileInfo = fileUpload.uploadFiles();
+        logger.info("File uploaded inside fileUpload: " + fileInfo);
+        return fileInfo;
+    }
 }
