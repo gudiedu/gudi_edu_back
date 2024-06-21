@@ -20,15 +20,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import kr.happyjob.study.sAlert.dto.SNoticeDto;
-import kr.happyjob.study.sAlert.service.SNoticeService;
+import kr.happyjob.study.sAlert.dto.SResourceDto;
+import kr.happyjob.study.sAlert.service.SResourceService;
 
 @Controller
 @RequestMapping("/sAlert/")
-public class SNoticeController {
+public class SResourceController {
 	
 	@Autowired
-	SNoticeService sNoticeService;
+	SResourceService sResourceService;
 	
 	// Set logger
 	private final Logger logger = LogManager.getLogger(this.getClass());
@@ -36,12 +36,12 @@ public class SNoticeController {
 	// Get class name for logger
 	private final String className = this.getClass().toString();
 	
-	@RequestMapping("sNoticeList.do")
+	@RequestMapping("sListResources.do")
 	@ResponseBody
-	 public Map<String, Object> sNoticeList(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	 public Map<String, Object> sListResources(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 	         HttpServletResponse response, HttpSession session) throws Exception {
 		  
-		  logger.info("+ Start " + className + ".sNoticeList");
+		  logger.info("+ Start " + className + ".sResources");
 	      logger.info("   - paramMap : " + paramMap);
 		
 	      int currentPage = Integer.parseInt((String)paramMap.get("currentPage"));
@@ -54,45 +54,45 @@ public class SNoticeController {
 	      
 	      Map<String, Object> returnMap = new HashMap<String, Object>();
 	      
-	      List<SNoticeDto> listData = sNoticeService.sListNotice(paramMap);
-	      int totalCnt = sNoticeService.totalCntNotice(paramMap);
+	      List<SResourceDto> listData = sResourceService.sListResources(paramMap);
+	      int totalCnt = sResourceService.totalCntResource(paramMap);
 	      
 	      returnMap.put("listData", listData);
 	      returnMap.put("totalCnt", totalCnt);
 	      
-	      logger.info("+ End " + className + ".sNoticeList");
+	      logger.info("+ End " + className + ".sResources");
 	      
 	      return returnMap;
 	   }
 	
-	@RequestMapping("sSelectNotice.do")
+	@RequestMapping("sSelectResource.do")
 	@ResponseBody
-	   public Map<String, Object> sSelectNotice(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	   public Map<String, Object> sSelectResource(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 	         HttpServletResponse response, HttpSession session) throws Exception {
 	      
-	      logger.info("+ Start " + className + ".sSelectNotice");
+	      logger.info("+ Start " + className + ".sSelectResource");
 	      logger.info("   - paramMap : " + paramMap);
 	      
 	      Map<String, Object> returnMap = new HashMap<String, Object>();
 	      
-	      SNoticeDto sqlReturn = sNoticeService.sSelectNotice(paramMap);
-	    	 
+	      SResourceDto sqlReturn = sResourceService.sSelectResource(paramMap);
+	    	  
 	      returnMap.put("result", sqlReturn);
 	      
-	      logger.info("+ End " + className + ".sSelectNotice");
+	      logger.info("+ End " + className + ".sSelectResource");
 	      
 	      return returnMap;
 	   }
 	
-	@RequestMapping("noticeFileDownload.do")
+	@RequestMapping("resourceFileDownload.do")
 	@ResponseBody
-	   public void noticeFileDownload(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
+	   public void resourceFileDownload(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
 	         HttpServletResponse response, HttpSession session) throws Exception {
 	      
-	      logger.info("+ Start " + className + ".noticeFileDownload");
+	      logger.info("+ Start " + className + ".resourceFileDownload");
 	      logger.info("   - paramMap : " + paramMap);
 	      
-	      SNoticeDto sqlReturn = sNoticeService.sSelectNotice(paramMap);
+	      SResourceDto sqlReturn = sResourceService.sSelectResource(paramMap);
 	      //sqlReturn.getFile_name()
 	      //sqlReturn.getPhygical_path() //실제 파일 경로를 되돌려줌
 	      
@@ -106,7 +106,7 @@ public class SNoticeController {
 	      response.getOutputStream().flush();
 	      response.getOutputStream().close();
 
-	      logger.info("+ End " + className + ".noticeFileDownload");
+	      logger.info("+ End " + className + ".resourceFileDownload");
 	      
 	      return;
 	   }

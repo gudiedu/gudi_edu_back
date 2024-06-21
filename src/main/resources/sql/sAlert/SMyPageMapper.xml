@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.happyjob.study.sAlert.dao.SMyPageDao">
+
+<!-- 내 정보 조회 -->
+<select id="sMyPage" resultType="kr.happyjob.study.sAlert.dto.SMyPageDto">
+	SELECT ui.loginID,
+	       ui.name,
+	       ui.password,
+	       ui.email,
+	       ui.hp
+	FROM tb_userinfo ui
+	WHERE ui.loginID = #{loginID}
+</select>
+
+<!-- 내 정보 수정 -->
+<update id="sUpdateMyPage">
+	UPDATE tb_userinfo ui
+	SET ui.password = #{userPw},
+     	 ui.email = #{userEmail},
+     	 ui.hp = #{userPhone}
+    WHERE ui.loginID = #{loginID}
+</update>
+</mapper>
