@@ -27,14 +27,14 @@ import kr.happyjob.study.tCourse.model.CourseVO;
 import kr.happyjob.study.tCourse.model.EnrollmentDTO;
 import kr.happyjob.study.tCourse.model.SurveyVO;
 import kr.happyjob.study.tCourse.service.CourseInfoService;
-import kr.happyjob.study.tCourse.service.CourseService;
+import kr.happyjob.study.tCourse.service.TCourseService;
 
 @Controller
 @RequestMapping("/tCourse/")
-public class CourseController {
+public class TCourseController {
 	
 	@Autowired
-	CourseService courseService;
+	TCourseService courseService;
 	
 	@Autowired
 	CourseInfoService courseInfoService;

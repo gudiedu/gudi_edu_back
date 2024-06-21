@@ -8,7 +8,7 @@ import kr.happyjob.study.tCourse.model.CourseVO;
 import kr.happyjob.study.tCourse.model.SurveyVO;
 
 
-public interface CourseDao {
+public interface TCourseDao {
 	
 	
 	public List<CourseVO> listCourse(Map<String, Object> paramMap) throws Exception;

@@ -10,17 +10,17 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.happyjob.study.tCourse.dao.CourseDao;
+import kr.happyjob.study.tCourse.dao.TCourseDao;
 import kr.happyjob.study.tCourse.model.CourseDetailVO;
 import kr.happyjob.study.tCourse.model.CourseVO;
 import kr.happyjob.study.tCourse.model.SurveyVO;
 
 
 @Service
-public class CourseServiceImpl implements CourseService {
+public class TCourseServiceImpl implements TCourseService {
 	
 	@Autowired
-	CourseDao courseDao;
+	TCourseDao courseDao;
 
 	@Override
 	public List<CourseVO> listCourse(Map<String, Object> paramMap) throws Exception {

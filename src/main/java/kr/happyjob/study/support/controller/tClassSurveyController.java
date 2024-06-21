@@ -53,7 +53,7 @@ public class tClassSurveyController {
 	      int currentpage = Integer.parseInt((String) paramMap.get("currentPage"));
 	      int pagesize = Integer.parseInt((String) paramMap.get("pageSize"));
 	      int startpoint = (currentpage - 1) * pagesize;
-	      
+	      paramMap.put("loginID", session.getAttribute("loginId"));
 	      paramMap.put("pagesize", pagesize);
 	      paramMap.put("startpoint", startpoint);
 	      paramMap.put("pageSize", Integer.parseInt((String) paramMap.get("pageSize")));
