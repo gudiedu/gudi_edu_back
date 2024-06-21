@@ -54,6 +54,7 @@ public class SSuggestionServiceImpl implements SSuggestionService {
 		
 		return sSuggestionDao.sInsertSuggestion(paramMap);
 	}
+
 	
 	/** 건의사항 수정 */
 	public int sUpdateSuggestion(Map<String, Object> paramMap, HttpServletRequest request) throws Exception {

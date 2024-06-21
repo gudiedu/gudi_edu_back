@@ -25,7 +25,9 @@
 	    tb_course c ON c.course_no = r.course_no
 	    <where>
 	    	<if test="(stitle != null) and (!stitle.equals(''))">
-	    	and r.resource_title like concat('%',#{stitle},'%')
+	    		r.resource_title like concat('%',#{stitle},'%')
+	    		OR c.course_subject like concat('%',#{stitle},'%')
+	    		OR c.course_name like concat('%',#{stitle},'%')
 	    	</if>
 	    </where>
 	ORDER BY r.resource_created_at DESC
@@ -38,9 +40,13 @@
 	FROM tb_resource r
 	INNER JOIN 
 	    tb_userinfo ui ON ui.loginID = r.loginID
+	LEFT JOIN 
+	    tb_course c ON c.course_no = r.course_no
 	    <where>
 	    	<if test="(stitle != null) and (!stitle.equals(''))">
-	    	and r.resource_title like concat('%',#{stitle},'%')
+	    		r.resource_title like concat('%',#{stitle},'%')
+	    		OR c.course_subject like concat('%',#{stitle},'%')
+	    		OR c.course_name like concat('%',#{stitle},'%')
 	    	</if>
 	    </where>
 </select>
