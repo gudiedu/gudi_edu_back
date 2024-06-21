@@ -141,18 +141,22 @@
 	</delete>
 	       
 	       
-  <!-- 강사 공지사항 수정 
-	<update id="updateNotice">
-		UPDATE tb_notice
-		 SET 
-		   loginID = #{loginID}
-		 , notice_title = #{notice_title}
-		 
-		 
-		 WHERE notice_no = #{pNoticeNo}
-		 
-		 
-	</update> -->
+  		<update id="updateNotice">
+		  UPDATE tb_notice
+		   SET 
+		     loginID = #{loginID}
+		   , notice_title = #{noticeTitle}
+		   , notice_content = #{noticeContent}
+		   <choose>
+		     <when test="fileExits eq 'Y'.toString()">
+		       , file_no = #{file_no}
+		     </when>
+		     <when test="removeFile eq 'Y'.toString()">
+		       , file_no = null
+		     </when>
+		   </choose>
+		  WHERE notice_no = #{pNoticeNo}
+		</update>
 	
 	<select id="selectFilePath" resultType="String">
 	 

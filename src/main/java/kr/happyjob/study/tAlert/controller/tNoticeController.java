@@ -138,6 +138,48 @@ public class tNoticeController {
 		      return returnMap;
 		   }
 	    
+	    
+	    @RequestMapping("updateNotice.do")
+		@ResponseBody
+		public Map<String, Object> updateNotice(@RequestParam Map<String, Object> paramMap, 
+					HttpSession session, HttpServletRequest request) throws Exception{
+			
+			logger.info("+ Start " + className + ".insertNotice");
+			logger.info("   - paramMap : " + paramMap);
+
+			
+			Map<String, Object> returnMap = new HashMap<String, Object>();
+			
+			int sqlReturn = 0;
+		    String resultMsg = "";
+		    
+		    
+		    logger.info("   - loginId from session: " + session.getAttribute("loginId"));
+		    			
+		    String loginId = (String)session.getAttribute("loginId");
+		      paramMap.put("loginID", loginId);
+			
+			 logger.info("   - paramMap after adding loginId: " + paramMap); // 추가된 로그
+			
+			
+			sqlReturn = tNoticeService.updateNotice(paramMap, request);
+		
+			
+			if(sqlReturn >= 0){
+		    	  resultMsg = "수정되었습니다.";
+		      }else{
+		    	  resultMsg = "수정 실패 되었습니다.";
+		      }
+		      
+			 returnMap.put("result", sqlReturn);
+		     returnMap.put("resultMsg", resultMsg);
+		      
+		      logger.info("+ End " + className + ".updateNotice");
+
+		      return returnMap;
+			
+		}  
+	    
 	   
 	    @RequestMapping("deleteNotice.do")
 		@ResponseBody
