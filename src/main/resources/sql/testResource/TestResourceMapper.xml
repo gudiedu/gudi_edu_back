@@ -10,7 +10,7 @@
 		SELECT
 		r.resource_no,
 		r.course_no,
-		c.course_name, <!-- 강의 이름 가져오기 -->
+		c.course_name,
 		r.loginID,
 		r.resource_title,
 		r.resource_content,
@@ -19,21 +19,20 @@
 		r.resource_writer,
 		r.resource_editor,
 		r.file_no,
-		u.name  <!-- name 필드 추가 -->
+		u.name
 		FROM tb_resource r
-		LEFT JOIN tb_course c ON r.course_no = c.course_no <!-- 
-			강의 테이블과 조인 -->
-		LEFT JOIN tb_userinfo u ON r.loginID = u.loginID <!-- 사용자 테이블과 조인 -->
+		LEFT JOIN tb_course c ON r.course_no = c.course_no
+		LEFT JOIN tb_userinfo u ON r.loginID = u.loginID
 		<where>
-			r.loginID = #{loginID} <!-- loginID 조건 추가 -->
+			r.loginID = #{loginID}
 			<if test="stitle != null and stitle != ''">
-				AND r.resource_title LIKE CONCAT('%', #{stitle}, '%')
+				AND (r.resource_title LIKE CONCAT('%', #{stitle}, '%')
+				OR c.course_name LIKE CONCAT('%', #{stitle}, '%'))
 			</if>
 		</where>
 		ORDER BY r.resource_created_at DESC
 		LIMIT #{startPoint}, #{pageSize}
 	</select>
-
 
 
 	<!-- 학습자료 총 개수 조회 -->
@@ -111,34 +110,54 @@
 
 	<select id="getResourceById"
 		resultType="kr.happyjob.study.tCourse.model.LearningMaterialsDTO">
-		SELECT r.*,
-		f.file_origin, f.file_server_path,
-		f.file_local_path
+		SELECT
+		r.resource_no,
+		r.course_no,
+		r.loginID,
+		r.resource_title,
+		r.resource_content,
+		r.resource_created_at,
+		r.resource_edited_at,
+		r.resource_writer,
+		r.resource_editor,
+		r.file_no,
+		f.file_origin,
+		f.file_server_path,
+		f.file_local_path,
+		f.file_rename,
+		f.file_extension,
+		f.file_size,
+		c.course_name
 		FROM tb_resource r
-		LEFT JOIN tb_file f ON r.file_no =
-		f.file_no
-		WHERE r.resource_no =
-		#{resourceNo}
+		LEFT JOIN
+		tb_file f ON r.file_no = f.file_no
+		LEFT JOIN tb_course c ON r.course_no
+		= c.course_no
+		WHERE r.resource_no = #{resourceNo}
 	</select>
 
 
 
 
-<update id="updateResource" parameterType="map">
-    UPDATE tb_resource
-    SET 
-        resource_title = #{resource_title},
-        resource_content = #{resource_content},
-        resource_edited_at = NOW(),
-        resource_editor = #{resource_editor},
-        file_no = #{file_no}
-    WHERE resource_no = #{resource_no}
-</update>
+	<update id="updateResource" parameterType="map">
+		UPDATE tb_resource
+		SET
+		resource_title = #{resource_title},
+		resource_content =
+		#{resource_content},
+		resource_edited_at = NOW(),
+		resource_editor =
+		#{resource_editor},
+		file_no = #{file_no}
+		WHERE resource_no =
+		#{resource_no}
+	</update>
 
 
 
 	<delete id="deleteResource" parameterType="int">
-		DELETE FROM tb_resource WHERE resource_no = #{resourceNo}
+		DELETE FROM
+		tb_resource WHERE resource_no = #{resourceNo}
 	</delete>
 
 

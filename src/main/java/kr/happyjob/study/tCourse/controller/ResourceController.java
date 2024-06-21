@@ -91,11 +91,7 @@ public class ResourceController {
         paramMap.put("resource_created_at", new java.util.Date());
         paramMap.put("resource_writer", loginID);
 
-        // 파일 업로드를 위한 MultipartHttpServletRequest로 캐스팅
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        paramMap.put("request", multipartRequest);  // 파일 업로드를 위한 요청 객체 추가
-
-        int result = resourceService.addResource(paramMap, multipartRequest); // multipartRequest로 전달
+        int result = resourceService.addResource(paramMap, request);
 
         Map<String, Object> returnMap = new HashMap<>();
         returnMap.put("result", result > 0 ? "success" : "fail");
@@ -143,7 +139,7 @@ public class ResourceController {
 	
 	
 	
-	// 학습자료 수정 메서드
+	// 학습자료 수정
 	@RequestMapping("updateResource")
 	@ResponseBody
 	public Map<String, Object> updateResource(@RequestParam Map<String, Object> paramMap, HttpSession session, HttpServletRequest request) throws Exception {
@@ -159,11 +155,7 @@ public class ResourceController {
 	    paramMap.put("resource_edited_at", new java.util.Date());
 	    paramMap.put("resource_editor", loginID);
 
-	    // 파일 업로드를 위한 MultipartHttpServletRequest로 캐스팅
-	    MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-	    paramMap.put("request", multipartRequest);
-
-	    int result = resourceService.updateResource(paramMap, multipartRequest);
+	    int result = resourceService.updateResource(paramMap, request);
 
 	    Map<String, Object> returnMap = new HashMap<>();
 	    returnMap.put("result", result > 0 ? "success" : "fail");
@@ -173,7 +165,8 @@ public class ResourceController {
 	}
 	
 	
-	// 학습자료 삭제 메서드
+	
+	// 학습자료 삭제
 	@RequestMapping("deleteResource")
 	@ResponseBody
 	public Map<String, Object> deleteResource(@RequestParam int resourceNo) throws Exception {
