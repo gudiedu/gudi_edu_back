@@ -3,131 +3,168 @@
 
 <mapper namespace="kr.happyjob.study.classroom.dao.SCourseDao">
 
-<!-- 강의관리 : 학생이 수강하는 강의 목록 조회 -->
-<select id="sStudentCourseInfo" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
-	SELECT ui.name AS student_name,
-	       c.loginID,
-	       ui2.name AS teacher_name,
-	       c.course_no,
-	       c.survey_no,
-	       c.course_subject,
-	       c.course_name,
-	       c.course_start_date,
-	       c.course_end_date,
-	       e.enrollment_confirmed
-	FROM tb_enrollment e
-	LEFT OUTER JOIN tb_userinfo ui ON ui.loginID = e.loginID
-	LEFT OUTER JOIN tb_course c ON c.course_no = e.course_no
-	LEFT OUTER JOIN tb_userinfo ui2 ON ui2.loginID = c.loginID
-	WHERE e.loginID = #{loginID}
-	AND e.enrollment_confirmed = "Y"
-	limit #{startPoint}, #{pageSize}
-</select>
+	<!-- 강의관리 : 학생이 수강하는 강의 목록 조회 -->
+	<select id="sStudentCourseInfo" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
+		SELECT ui.name AS student_name,
+		c.loginID,
+		ui2.name AS teacher_name,
+		c.course_no,
+		c.survey_no,
+		c.course_subject,
+		c.course_name,
+		c.course_start_date,
+		c.course_end_date,
+		e.enrollment_confirmed
+		FROM
+		tb_enrollment e
+		LEFT OUTER JOIN tb_userinfo ui ON ui.loginID = e.loginID
+		LEFT OUTER JOIN tb_course c ON c.course_no = e.course_no
+		LEFT OUTER JOIN tb_userinfo ui2 ON ui2.loginID = c.loginID
+		WHERE e.loginID =
+		#{loginID}
+		AND e.enrollment_confirmed = 'Y'
+		<if test="stitle != null and !stitle.equals('')">
+			AND (
+			ui2.name LIKE CONCAT('%', #{stitle}, '%')
+			OR
+			c.course_subject LIKE CONCAT('%', #{stitle}, '%')
+			OR c.course_name
+			LIKE CONCAT('%', #{stitle}, '%')
+			)
+		</if>
+		limit #{startPoint}, #{pageSize}
+	</select>
 
-<!-- 강의관리 : 학생이 수강하는 강의 목록 갯수 조회 -->
-<select id="totalCntCourse" resultType="int">
-	SELECT count(*)
-	FROM tb_enrollment e
-	INNER JOIN 
-	    tb_userinfo ui ON ui.loginID = e.loginID
-	WHERE e.loginID = #{loginID}
-	AND e.enrollment_confirmed = "Y"
-</select>
+	<!-- 강의관리 : 학생이 수강하는 강의 목록 갯수 조회 -->
+	<select id="totalCntCourse" resultType="int">
+		SELECT count(*)
+		FROM tb_enrollment e
+		LEFT OUTER JOIN tb_userinfo ui ON ui.loginID = e.loginID
+		LEFT OUTER JOIN tb_course c ON c.course_no = e.course_no
+		LEFT OUTER JOIN tb_userinfo ui2 ON ui2.loginID = c.loginID
+		WHERE e.loginID = #{loginID}
+		AND
+		e.enrollment_confirmed = "Y"
+		<if test="stitle != null and !stitle.equals('')">
+			AND (
+			ui2.name LIKE CONCAT('%', #{stitle}, '%')
+			OR
+			c.course_subject LIKE CONCAT('%', #{stitle}, '%')
+			OR c.course_name
+			LIKE CONCAT('%', #{stitle}, '%')
+			)
+		</if>
+	</select>
 
 	<!-- 특정 강의 정보 조회 -->
 	<select id="sCourseInfo" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
 		SELECT
-		  c.course_no
-		  , c.course_name
-		  , ui.name
-		  , c.course_loc
-		  , c.course_description
-		  , DATE_FORMAT(c.course_start_date, '%Y-%m-%d') AS course_start_date
-		  , DATE_FORMAT(c.course_end_date, '%Y-%m-%d') AS course_end_date
-		  , c.course_quota
+		c.course_no
+		,
+		c.course_name
+		, ui.name
+		, c.course_loc
+		, c.course_description
+		,
+		DATE_FORMAT(c.course_start_date, '%Y-%m-%d') AS course_start_date
+		,
+		DATE_FORMAT(c.course_end_date, '%Y-%m-%d') AS course_end_date
+		,
+		c.course_quota
 		FROM
-		  tb_course c
-		LEFT OUTER JOIN tb_userinfo ui ON ui.loginID = c.loginID
-		WHERE c.course_no = #{courseNo}
+		tb_course c
+		LEFT OUTER JOIN tb_userinfo ui ON
+		ui.loginID = c.loginID
+		WHERE
+		c.course_no = #{courseNo}
 	</select>
 
 
 	<!-- 강의 세부 정보 조회 -->
 	<select id="sCourseDetail" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
 		SELECT
-			course_no
-			, course_detail_week_no
-			, course_detail_goal
-			, course_detail_content
+		course_no
+		,
+		course_detail_week_no
+		, course_detail_goal
+		, course_detail_content
 		FROM
-			tb_course_detail
+		tb_course_detail
 		WHERE
-			course_no = #{courseNo}
+		course_no = #{courseNo}
 		ORDER BY
-	  		course_detail_week_no ASC
+		course_detail_week_no ASC
 	</select>
 
-	<!-- 수강신청 가능 강의 목록 조회  -->
+	<!-- 수강신청 가능 강의 목록 조회 -->
 	<select id="sEnrollList" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
 		SELECT
-		  c.course_no,
-		  ui.name,
-		  c.course_subject,
-		  c.course_name,
-		  c.course_quota,
-		  DATE_FORMAT(c.course_start_date, '%Y-%m-%d') AS course_start_date,
-		  DATE_FORMAT(c.course_end_date, '%Y-%m-%d') AS course_end_date,
-		  c.course_loc
+		c.course_no,
+		ui.name,
+		c.course_subject,
+		c.course_name,
+		c.course_quota,
+		DATE_FORMAT(c.course_start_date, '%Y-%m-%d') AS course_start_date,
+		DATE_FORMAT(c.course_end_date, '%Y-%m-%d') AS course_end_date,
+		c.course_loc
 		FROM
-		  tb_course c
-		LEFT OUTER JOIN tb_userinfo ui ON ui.loginID = c.loginID
+		tb_course c
+		LEFT OUTER JOIN tb_userinfo ui ON
+		ui.loginID = c.loginID
 		WHERE
-		  course_start_date > now()
+		course_start_date > now()
 		ORDER BY
-		  course_start_date ASC
+		course_start_date ASC
 	</select>
-	
+
 	<!-- 수강신청 중복 여부 확인하기 -->
 	<select id="checkEnrollment" parameterType="map" resultType="int">
-    SELECT COUNT(course_no)
-    FROM tb_enrollment
-    WHERE loginID = #{studentSignedID} AND course_no = #{openedNo}
+		SELECT COUNT(course_no)
+		FROM tb_enrollment
+		WHERE loginID =
+		#{studentSignedID} AND course_no = #{openedNo}
 	</select>
 
 	<!-- 수강신청하기 -->
 	<insert id="sEnrollInsert">
 		INSERT INTO tb_enrollment
-					(
-						course_no
-						, loginID
-						, enrollment_confirmed					
-					) VALUES (
-						#{openedNo}, 
-						#{studentSignedID},
-						'N'
-					)
+		(
+		course_no
+		, loginID
+		,
+		enrollment_confirmed
+		) VALUES (
+		#{openedNo},
+		#{studentSignedID},
+		'N'
+		)
 	</insert>
 
 	<!-- 시험응시 관련 리스트 조회 -->
 	<select id="sTestList" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
 		SELECT
-		  e.course_no,
-		  e.loginID,
-		  c.course_subject,
-		  c.course_name,
-		  c.loginID,
-		  ui.name,
-		  c.course_loc,
-		  t.course_no,
-		  t.test_category,
-		  r.result_no,
-		  r.loginID,
-		  r.result_score
+		e.course_no,
+		e.loginID,
+		c.course_subject,
+		c.course_name,
+		c.loginID,
+		ui.name,
+		c.course_loc,
+		t.course_no,
+		t.test_category,
+		r.result_no,
+		r.loginID,
+		r.result_score
 		FROM
-		  tb_enrollment e
-		LEFT OUTER JOIN tb_course c ON e.course_no = c.course_no
-		LEFT OUTER JOIN tb_test t ON t.course_no = c.course_no
-		LEFT OUTER JOIN tb_test_result r ON r.loginID = e.loginID AND r.course_no = e.course_no
+		tb_enrollment e
+		LEFT OUTER JOIN tb_course c ON e.course_no =
+		c.course_no
+		LEFT OUTER
+		JOIN tb_test t ON t.course_no = c.course_no
+		LEFT
+		OUTER JOIN
+		tb_test_result r ON r.loginID = e.loginID AND r.course_no =
+		e.course_no
 		LEFT OUTER JOIN tb_userinfo ui ON c.loginID = ui.loginID
 		WHERE e.loginID = #{studentSignedID} AND e.enrollment_confirmed = 'Y'
 		GROUP BY e.course_no
@@ -136,256 +173,290 @@
 	<!-- 시험 문제 불러오기 -->
 	<select id="sCreateTest" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
 		SELECT
-		  course_no
-		  , test_no
-		  , test_question
-		  , test_choice1
-		  , test_choice2
-		  , test_choice3
-		  , test_choice4
-		  , test_score
-		  , test_category
+		course_no
+		, test_no
+		,
+		test_question
+		, test_choice1
+		, test_choice2
+		, test_choice3
+		, test_choice4
+		, test_score
+		, test_category
 		FROM
-		  tb_test
+		tb_test
 		WHERE
-		  course_no = #{SelectedCourseNo} AND test_category = #{SelectedTestCategory}
+		course_no =
+		#{SelectedCourseNo} AND test_category = #{SelectedTestCategory}
 	</select>
-	
+
 	<!-- 시험응시 제출하기 <insert id="sTestSubmit"> -->
 	<insert id="sTestSubmit">
-    <foreach collection="answerSelected" item="selectedAnswer" index="idx">
-        INSERT INTO tb_test_submission
-        (
-            course_no,
-            test_no,
-            answer_selected,
-            loginID,
-            test_category,
-            question_score
-        )
-        SELECT
-            #{selectedCourseNo},
-            #{testQuestionNo[${idx}]},
-            #{selectedAnswer},
-            #{studentSignedID},
-            #{selectedTestCategory},
-            CASE WHEN ll.test_answer != #{selectedAnswer} THEN 0
-                 ELSE ll.test_score
-            END AS question_score
-        FROM (
-            SELECT
-                #{selectedCourseNo} AS course_no,
-                #{testQuestionNo[${idx}]} AS test_no
-        ) ts
-        LEFT JOIN (
-            SELECT test_answer,
-                   test_score,
-                   course_no,
-                   test_no
-            FROM tb_test
-            WHERE course_no = #{selectedCourseNo}
-              AND test_no = #{testQuestionNo[${idx}]}
-        ) ll ON ll.course_no = ts.course_no
-             AND ll.test_no = ts.test_no
-        WHERE NOT EXISTS (
-            SELECT 1
-            FROM tb_test_submission
-            WHERE course_no = #{selectedCourseNo}
-              AND test_no = #{testQuestionNo[${idx}]}
-              AND loginID = #{studentSignedID}
-        );
-    </foreach>
+		<foreach collection="answerSelected" item="selectedAnswer"
+			index="idx">
+			INSERT INTO tb_test_submission
+			(
+			course_no,
+			test_no,
+			answer_selected,
+			loginID,
+			test_category,
+			question_score
+			)
+			SELECT
+			#{selectedCourseNo},
+			#{testQuestionNo[${idx}]},
+			#{selectedAnswer},
+			#{studentSignedID},
+			#{selectedTestCategory},
+			CASE WHEN ll.test_answer
+			!= #{selectedAnswer} THEN 0
+			ELSE ll.test_score
+			END AS question_score
+			FROM (
+			SELECT
+			#{selectedCourseNo} AS course_no,
+			#{testQuestionNo[${idx}]} AS test_no
+			) ts
+			LEFT JOIN (
+			SELECT
+			test_answer,
+			test_score,
+			course_no,
+			test_no
+			FROM tb_test
+			WHERE course_no =
+			#{selectedCourseNo}
+			AND test_no = #{testQuestionNo[${idx}]}
+			) ll ON
+			ll.course_no = ts.course_no
+			AND ll.test_no = ts.test_no
+			WHERE NOT
+			EXISTS (
+			SELECT 1
+			FROM tb_test_submission
+			WHERE course_no =
+			#{selectedCourseNo}
+			AND test_no = #{testQuestionNo[${idx}]}
+			AND loginID
+			= #{studentSignedID}
+			);
+		</foreach>
 	</insert>
 
 	<!-- 시험 최종점수 등록하기 -->
 	<insert id="sTestCalculate">
-		INSERT INTO tb_test_result 
-			(
-			course_no,
-			loginID,
-			result_score,
-			test_category
-			)
+		INSERT INTO tb_test_result
+		(
+		course_no,
+		loginID,
+		result_score,
+		test_category
+		)
 		VALUES
-			(
-			#{selectedCourseNo},
-			#{studentSignedID},
-			(SELECT SUM(question_score)
-				FROM tb_test_submission
-				WHERE course_no = #{selectedCourseNo}
-				AND loginID = #{studentSignedID}
-				AND test_category = #{selectedTestCategory}),
-			#{selectedTestCategory}
-			)
+		(
+		#{selectedCourseNo},
+		#{studentSignedID},
+		(SELECT SUM(question_score)
+		FROM tb_test_submission
+		WHERE course_no = #{selectedCourseNo}
+		AND loginID = #{studentSignedID}
+		AND test_category = #{selectedTestCategory}),
+		#{selectedTestCategory}
+		)
 	</insert>
-	
+
 	<!-- 시험 문제 불러오기 -->
 	<select id="sShowingTestResult" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
 		SELECT
-			s.course_no,
-			s.test_no,
-			t.test_question,
-			t.test_choice1,
-			t.test_choice2,
-			t.test_choice3,
-			t.test_choice4,
-			s.answer_selected,
-			t.test_answer,
-			s.question_score,
-			s.loginID,
-			s.test_category
+		s.course_no,
+		s.test_no,
+		t.test_question,
+		t.test_choice1,
+		t.test_choice2,
+		t.test_choice3,
+		t.test_choice4,
+		s.answer_selected,
+		t.test_answer,
+		s.question_score,
+		s.loginID,
+		s.test_category
 		FROM
-			tb_test_submission s 
+		tb_test_submission s
 		LEFT OUTER JOIN
-			tb_test t ON s.course_no = t.course_no
+		tb_test t ON s.course_no = t.course_no
 		AND
-			s.test_no = t.test_no
+		s.test_no =
+		t.test_no
 		WHERE
-		  loginID = #{studentSignedID}
+		loginID = #{studentSignedID}
 	</select>
 
-<!-- 강의관리 출결 : 학생이 수강하는 특정 강의 내용 조회 -->
-<select id="sStudentSelectedCourseInfo" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
-   SELECT c.loginID,
-         ui.name,
-          c.course_no,
-          c.course_subject,
-          c.course_name,
-          DATE_FORMAT(c.course_start_date , '%Y-%m-%d') as course_start_date,
-          DATE_FORMAT(c.course_end_date , '%Y-%m-%d') as course_end_date
-   FROM tb_course c
-   LEFT OUTER JOIN 
-          tb_userinfo ui ON ui.loginID = c.loginID
-   LEFT OUTER JOIN
-          tb_attendance a ON a.course_no = c.course_no
-   WHERE a.loginID = #{loginID}
-   AND a.course_no = #{pCourseNo}
-   GROUP BY a.loginID, c.course_no
-</select>
+	<!-- 강의관리 출결 : 학생이 수강하는 특정 강의 내용 조회 -->
+	<select id="sStudentSelectedCourseInfo" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
+		SELECT
+		c.loginID,
+		ui.name,
+		c.course_no,
+		c.course_subject,
+		c.course_name,
+		DATE_FORMAT(c.course_start_date , '%Y-%m-%d') as course_start_date,
+		DATE_FORMAT(c.course_end_date , '%Y-%m-%d') as course_end_date
+		FROM
+		tb_course c
+		LEFT OUTER JOIN
+		tb_userinfo ui ON ui.loginID = c.loginID
+		LEFT OUTER JOIN
+		tb_attendance a ON a.course_no = c.course_no
+		WHERE
+		a.loginID = #{loginID}
+		AND a.course_no = #{pCourseNo}
+		GROUP BY
+		a.loginID, c.course_no
+	</select>
 
-<!-- 강의관리 출결 : 학생 출결(출석한 횟수) -->
-<select id="sAttendanceDays" resultType="int">
-   SELECT count(*)
-   FROM tb_attendance a
-   LEFT OUTER JOIN
-        tb_userinfo ui ON ui.loginID = a.loginID
-   LEFT OUTER JOIN
-        tb_course c ON c.course_no = a.course_no
-   WHERE a.loginID = #{loginID}
-   AND a.course_no = #{pCourseNo}
-   AND a.attendance_status = "출석"
-</select>
+	<!-- 강의관리 출결 : 학생 출결(출석한 횟수 : 지각도 출석에 포함) -->
+	<select id="sAttendanceDays" resultType="int">
+		SELECT count(*)
+		FROM
+		tb_attendance a
+		LEFT OUTER JOIN
+		tb_userinfo ui ON ui.loginID = a.loginID
+		LEFT OUTER JOIN
+		tb_course c ON c.course_no = a.course_no
+		WHERE a.loginID
+		= #{loginID}
+		AND a.course_no = #{pCourseNo}
+		AND a.attendance_status IN
+		('출석', '지각')
+	</select>
 
-<!-- 강의관리 출결 : 학생 출결(결석한 횟수) -->
-<select id="sAbsenceDays" resultType="int">
-   SELECT count(*)
-   FROM tb_attendance a
-   LEFT OUTER JOIN
-        tb_userinfo ui ON ui.loginID = a.loginID
-   LEFT OUTER JOIN
-        tb_course c ON c.course_no = a.course_no
-   WHERE a.loginID = #{loginID}
-   AND a.course_no = #{pCourseNo}
-   AND a.attendance_status = "결석"
-</select>
+	<!-- 강의관리 출결 : 학생 출결(결석한 횟수) -->
+	<select id="sAbsenceDays" resultType="int">
+		SELECT count(*)
+		FROM
+		tb_attendance a
+		LEFT OUTER JOIN
+		tb_userinfo ui ON ui.loginID = a.loginID
+		LEFT OUTER JOIN
+		tb_course c ON c.course_no = a.course_no
+		WHERE a.loginID
+		= #{loginID}
+		AND a.course_no = #{pCourseNo}
+		AND a.attendance_status =
+		"결석"
+	</select>
 
-<!-- 강의관리 출결 : 학생 출결(지각, 결석한 것만) -->
-<select id="sAttendanceNotes" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
-   SELECT ui.loginID,
-          a.attendance_no,
-          a.course_no,
-          DATE_FORMAT(a.attendance_date , '%Y-%m-%d') as attendance_date,
-          a.attendance_status,
-          c.course_subject,
-          c.course_name,
-          c.course_start_date,
-          c.course_end_date
-   FROM tb_attendance a
-   LEFT OUTER JOIN
-        tb_userinfo ui ON ui.loginID = a.loginID
-   LEFT OUTER JOIN
-        tb_course c ON c.course_no = a.course_no
-   WHERE a.loginID = #{loginID}
-   AND a.course_no = #{pCourseNo}
-   AND (a.attendance_status = "지각" OR a.attendance_status = "결석")
-   ORDER BY attendance_date ASC
-</select>
+	<!-- 강의관리 출결 : 학생 출결(지각, 결석한 것만) -->
+	<select id="sAttendanceNotes" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
+		SELECT ui.loginID,
+		a.attendance_no,
+		a.course_no,
+		DATE_FORMAT(a.attendance_date ,
+		'%Y-%m-%d') as attendance_date,
+		a.attendance_status,
+		c.course_subject,
+		c.course_name,
+		c.course_start_date,
+		c.course_end_date
+		FROM tb_attendance
+		a
+		LEFT OUTER JOIN
+		tb_userinfo ui ON ui.loginID = a.loginID
+		LEFT OUTER
+		JOIN
+		tb_course c ON c.course_no = a.course_no
+		WHERE a.loginID =
+		#{loginID}
+		AND a.course_no = #{pCourseNo}
+		AND (a.attendance_status =
+		"지각" OR a.attendance_status = "결석")
+		ORDER BY attendance_date ASC
+	</select>
 
-<!-- 강의관리 출결 : 공휴일 및 휴강일 -->
-<select id="sDayoffInfo" resultType="kr.happyjob.study.classroom.model.SDayoffModel">
-	SELECT DATE_FORMAT(d.dayoff_date , '%Y-%m-%d') as dayoff_date
-	FROM tb_dayoff d
-</select>
+	<!-- 강의관리 출결 : 공휴일 및 휴강일 -->
+	<select id="sDayoffInfo" resultType="kr.happyjob.study.classroom.model.SDayoffModel">
+		SELECT
+		DATE_FORMAT(d.dayoff_date , '%Y-%m-%d') as dayoff_date
+		FROM tb_dayoff d
+	</select>
 
-<!-- 강의관리 수업만족도 : 수업만족도 질문 조회 -->
-<select id="sSatisfactionQuestion" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
-	SELECT c.course_no,
-		   c.course_name,
-	       s.survey_no,
-	       s.survey_name,
-	       sq.survey_question_no,
-	       sq.survey_question_text,
-	       sq.question_choiced,
-	       sq.survey_question_type
-	FROM tb_course c
-	LEFT OUTER JOIN 
-	     tb_survey s ON s.survey_no = c.survey_no
-	LEFT OUTER JOIN 
-	     tb_survey_question sq ON sq.survey_no = c.survey_no
-	WHERE c.course_no = #{courseNo}
-</select>
+	<!-- 강의관리 수업만족도 : 수업만족도 질문 조회 -->
+	<select id="sSatisfactionQuestion" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
+		SELECT
+		c.course_no,
+		c.course_name,
+		s.survey_no,
+		s.survey_name,
+		sq.survey_question_no,
+		sq.survey_question_text,
+		sq.question_choiced,
+		sq.survey_question_type
+		FROM tb_course c
+		LEFT OUTER JOIN
+		tb_survey s ON
+		s.survey_no = c.survey_no
+		LEFT OUTER JOIN
+		tb_survey_question sq ON
+		sq.survey_no = c.survey_no
+		WHERE c.course_no = #{courseNo}
+	</select>
 
-<!-- 강의관리 수업만족도 : 수업만족도 보기 조회 -->
-<select id="sSatisfactionAnswer" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
-	SELECT c.course_no,
-	       s.survey_no,
-	       s.survey_name,
-	       sq.survey_question_no,
-	       sq.survey_question_text,
-	       sq.question_choiced,
-	       sq.survey_question_type,
-	       scc.question_choiced,
-	       scc.choice_no,
-	       scc.choice_result
-	FROM tb_course c
-	LEFT OUTER JOIN 
-	     tb_survey s ON s.survey_no = c.survey_no
-	LEFT OUTER JOIN 
-	     tb_survey_question sq ON sq.survey_no = c.survey_no
-	LEFT OUTER JOIN 
-	     tb_survey_choice_content scc ON scc.question_choiced = sq.question_choiced
-	WHERE c.course_no = #{courseNo}
-</select>
+	<!-- 강의관리 수업만족도 : 수업만족도 보기 조회 -->
+	<select id="sSatisfactionAnswer" resultType="kr.happyjob.study.classroom.dto.SCourseDto">
+		SELECT c.course_no,
+		s.survey_no,
+		s.survey_name,
+		sq.survey_question_no,
+		sq.survey_question_text,
+		sq.question_choiced,
+		sq.survey_question_type,
+		scc.question_choiced,
+		scc.choice_no,
+		scc.choice_result
+		FROM tb_course c
+		LEFT OUTER JOIN
+		tb_survey s ON s.survey_no = c.survey_no
+		LEFT OUTER JOIN
+		tb_survey_question sq ON sq.survey_no = c.survey_no
+		LEFT OUTER JOIN
+		tb_survey_choice_content scc ON scc.question_choiced =
+		sq.question_choiced
+		WHERE c.course_no = #{courseNo}
+	</select>
 
-<!-- 강의관리 수업만족도 : 수업만족도 응답 -->
-<insert id="sInsertSurvey">
-	INSERT INTO tb_survey_answer
-			(
-			course_no, 
-			loginID, 
-			survey_no, 
-			survey_question_no, 
-			question_choiced, 
-			choice_no, 
-			written_answer
-			)
-			VALUES
-			(
-			#{courseNo}
-			, #{loginID}
-			, #{surveyNo}
-			, #{surveyQuestionNo}
-			, #{questionChoiced}
-			, #{choiceNo}
-			, #{writtenAnswer}
-			)
-</insert>
+	<!-- 강의관리 수업만족도 : 수업만족도 응답 -->
+	<insert id="sInsertSurvey">
+		INSERT INTO tb_survey_answer
+		(
+		course_no,
+		loginID,
+		survey_no,
+		survey_question_no,
+		question_choiced,
+		choice_no,
+		written_answer
+		)
+		VALUES
+		(
+		#{courseNo}
+		, #{loginID}
+		, #{surveyNo}
+		,
+		#{surveyQuestionNo}
+		, #{questionChoiced}
+		, #{choiceNo}
+		, #{writtenAnswer}
+		)
+	</insert>
 
-<!-- 강의관리 수업만족도 : 수업만족도 응답 유무 -->
-<select id="sSurveyComplete" resultType="int">
-	SELECT count(*)
-	FROM tb_survey_answer sa
-	WHERE sa.course_no = #{pCourseNo}
-	AND sa.loginID = #{loginID}
-</select>
+	<!-- 강의관리 수업만족도 : 수업만족도 응답 유무 -->
+	<select id="sSurveyComplete" resultType="int">
+		SELECT count(*)
+		FROM
+		tb_survey_answer sa
+		WHERE sa.course_no = #{pCourseNo}
+		AND sa.loginID =
+		#{loginID}
+	</select>
 </mapper>
