@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.happyjob.study.information.dao.SurveyDao">
+
+
+	<!-- 설문 목록 리스트  -->
+	<select id="surveyList" resultType="kr.happyjob.study.information.model.SurveyModel">
+	SELECT 
+		survey_no,
+		survey_name,
+		total_questions,
+		choice_questions,
+		written_questions 
+	FROM 
+		tb_survey
+	<if test="(stitle != null) and (!stitle.equals(''))">
+      WHERE survey_name LIKE concat('%', #{stitle}, '%')
+    </if>
+	ORDER BY 
+		survey_no ASC
+	<if test="(startPoint != null) and (pageSize != null)">		
+	LIMIT #{startPoint}, #{pageSize}
+	 </if>	
+	</select>
+	
+	<!-- 설문목록 총 갯수 -->
+	<select id="totalcntSurvey" resultType="int">
+	
+	SELECT 
+		COUNT(*)
+	FROM 
+	 	tb_survey
+     <if test="(stitle != null) and (!stitle.equals(''))">
+     WHERE 
+     	survey_name LIKE concat('%',#{stitle},'%')
+     </if>
+	                    
+	</select>
+	
+	<!-- 설문지 등록 -->
+	<insert id="surveyInsert" parameterType="String">
+	INSERT INTO 
+		tb_survey(
+		survey_name
+		)
+	VALUES(
+		#{survey_name}
+		)
+	</insert>
+	
+	<!-- 다음 설문코드 추출 -->
+	<select id="nextSurveyCode" resultType="int">
+	SELECT 
+		MAX(survey_no)+1 as nextsurvey_no
+	FROM 
+		tb_survey
+	</select>
+	
+	<!-- 선택한 설문지 상세 질문들 목록  -->
+	<select id="questionList" parameterType="map" resultType="kr.happyjob.study.information.model.SurveyQuestionModel">
+	SELECT 
+		survey_no,
+			(SELECT 
+				survey_name 
+			FROM 
+				tb_survey ts 
+			WHERE 
+				ts.survey_no=tq.survey_no) survey_name,
+		survey_question_no,
+		survey_question_text,
+		question_choiced,
+		survey_question_type
+	FROM
+		tb_survey_question tq
+	WHERE 
+		survey_no = #{survey_no}
+ 	<if test="(stitle != null) and (!stitle.equals(''))">
+    AND
+    	survey_question_text LIKE concat('%', #{stitle}, '%')
+   </if>
+	</select>
+	
+	<!-- 설문지 삭제 -->
+	<delete id="surveyDelete" parameterType="int">
+	DELETE 
+	FROM 
+		tb_survey
+	WHERE 
+		survey_no=#{survey_no}
+	</delete>
+	
+	<!-- 설문지 수정 -->
+	<update id="surveyUpdate" parameterType="Map">
+   	UPDATE 
+   		tb_survey 
+	SET 
+		survey_name = #{survey_name} 
+	WHERE 
+		survey_no = #{survey_no}
+   </update>
+	
+	<!-- 설문지 문항수 반영 -->
+	<update id="surveyUpdateCount">
+	UPDATE tb_survey AS s
+	SET s.choice_questions = (
+	    SELECT COUNT(*) 
+	    FROM tb_survey_question AS q
+	    WHERE q.survey_no = s.survey_no 
+	    AND q.survey_question_type = 'choice'
+	),
+	s.written_questions = (
+	    SELECT COUNT(*) 
+	    FROM tb_survey_question AS q
+	    WHERE q.survey_no = s.survey_no 
+	    AND q.survey_question_type = 'written'
+	),
+	s.total_questions = (s.written_questions + s.choice_questions)
+	</update>
+	
+	<!-- 질문등록  -->
+	<insert id="questionInsert" parameterType="Map">
+	INSERT INTO 
+		tb_survey_question
+			(survey_no, survey_question_no, survey_question_text, question_choiced, survey_question_type)
+	SELECT 
+		#{survey_no},
+		 IFNULL(MAX(survey_question_no), 0) + 1,
+		 #{survey_question_text}, 
+		 #{question_choiced},
+		 #{survey_question_type}
+	FROM 
+		tb_survey_question
+	WHERE 
+		survey_no = #{survey_no}
+	</insert>
+	
+
+	
+	
+	<!-- 질문 선택문항 출력 -->
+	<select id="choiceList" resultType="kr.happyjob.study.information.model.SurveyChoiceContentModel">
+		SELECT 
+			question_choiced, choice_no, choice_result, category_name
+		FROM 
+			tb_survey_choice_content
+	</select>
+	
+	<!-- 카테고리 출력 -->
+	<select id="categoryList" resultType="kr.happyjob.study.information.model.SurveyChoiceContentModel">
+	SELECT 
+		DISTINCT(category_name) ,question_choiced
+	FROM 
+		tb_survey_choice_content
+	</select>
+	
+	<!-- 질문삭제하기 -->
+	<delete id="questionDelete" parameterType="map">
+	DELETE 
+	FROM 
+		tb_survey_question
+	WHERE 
+		survey_no=#{survey_no} 
+	AND 
+		survey_question_no=#{survey_question_no}
+	</delete>
+	
+	<!-- 질문업데이트하기 -->
+	<update id="questionUpdate" parameterType="map">
+	UPDATE 
+		tb_survey_question
+	SET 
+		survey_question_text=#{survey_question_text},
+		question_choiced=#{question_choiced},
+		survey_question_type=#{survey_question_type}
+	WHERE 
+		survey_no=#{survey_no} 
+	AND 
+		survey_question_no=#{survey_question_no}
+	</update>
+	
+	<!-- 강의에 설문등록하기  -->
+	<update id="surveyIntoCourse" parameterType="map">
+	UPDATE 
+		tb_course
+	SET 
+		survey_no=#{survey_no}
+	WHERE 
+		course_no=#{course_no}
+	</update>
+	
+</mapper>
+
+

@@ -6,27 +6,27 @@
 
 <!-- 설문조사 조회+검색 
  <select id="searchClassSurvey" resultType="kr.happyjob.study.support.model.tClassSurveyVO">
- 		
+       
     SELECT 
-	 
-	   c.course_no 
-	 , c.loginID
-	 , c.course_name
-	 , c.course_quota
-	 , DATE_FORMAT(c.course_start_date, '%y-%m-%d') as course_start_date
-	 , DATE_FORMAT(c.course_end_date, '%y-%m-%d') as course_end_date
-	
-	 
-	 
-	from tb_course c
+    
+      c.course_no 
+    , c.loginID
+    , c.course_name
+    , c.course_quota
+    , DATE_FORMAT(c.course_start_date, '%y-%m-%d') as course_start_date
+    , DATE_FORMAT(c.course_end_date, '%y-%m-%d') as course_end_date
+   
+    
+    
+   from tb_course c
     where
             c.loginID = #{loginID}
             <if test="(stitle != null) and (!stitle.equals(''))">
                  and c.course_name like concat('%',#{stitle},'%')
             </if>
      
-			ORDER BY c.course_no DESC
-			LIMIT #{startpoint}, #{pageSize}
+         ORDER BY c.course_no DESC
+         LIMIT #{startpoint}, #{pageSize}
 </select>-->
 
    <!-- 설문조사 조회+검색 -->
@@ -70,7 +70,7 @@
 
 <!-- 설문조사 총 갯수 조회 -->
 <select id="totalcntClassSurvey" resultType="int">
-	
+   
   SELECT COUNT(*)
    FROM tb_course c
           
@@ -81,8 +81,8 @@
             </if>
                       
 </select>
-	
-	<select id="fetchSurveyResults" resultType="kr.happyjob.study.support.model.tClassSurveyResultDTO">
+   
+   <select id="fetchSurveyResults" resultType="kr.happyjob.study.support.model.tClassSurveyResultDTO">
         SELECT
             sa.question_choiced,
             sa.survey_question_no,

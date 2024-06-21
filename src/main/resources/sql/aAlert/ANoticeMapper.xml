@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.happyjob.study.aAlert.dao.ANoticeDAO">
+
+	<select id="searchNotice" resultType="kr.happyjob.study.aAlert.model.ANoticeDTO">
+		SELECT
+		n.notice_no
+		, n.loginID
+		, n.notice_title
+		,
+		DATE_FORMAT(n.notice_created_at, '%y-%m-%d') as notice_created_at
+		,
+		ui.user_type
+		FROM tb_notice as n
+		LEFT JOIN tb_userinfo ui
+		ON n.loginID =
+		ui.loginID
+		<where>
+			<if test="(stitle != null) and (!stitle.equals(''))">
+				and n.notice_title like concat('%',#{stitle},'%')
+			</if>
+		</where>
+		ORDER BY notice_no DESC;
+	</select>
+
+	<select id="selectNotice" resultType="map">
+		SELECT
+		n.notice_no
+		,n.notice_title
+		, DATE_FORMAT(n.notice_created_at, '%y-%m-%d') as notice_created_at
+		, n.loginID
+		, n.notice_content
+		, f.file_no
+		, f.file_server_path
+		, f.file_local_path
+		, f.file_origin
+		, f.file_rename
+		, f.file_extension
+		, f.file_size
+		FROM tb_notice as n
+		LEFT JOIN tb_file f
+		ON
+		n.file_no = f.file_no
+		WHERE n.notice_no = #{notice_no}
+	</select>
+
+	<insert id="insertNotice" useGeneratedKeys="true" keyProperty="notice_no">
+		INSERT INTO tb_notice
+		(
+		notice_title
+		, notice_content
+		, loginID
+		, notice_created_at
+		<if test="fileExits eq 'Y'.toString()">
+			, file_no
+		</if>
+		)
+		VALUES
+		(
+		#{notice_title}
+		, #{notice_content}
+		, #{loginID}
+		, now()
+		<if test="fileExits eq 'Y'.toString()">
+			, #{file_no}
+		</if>
+		)
+	</insert>
+
+	<insert id="saveFile" parameterType="kr.happyjob.study.aAlert.model.AFileDTO" useGeneratedKeys="true" keyProperty="file_no">
+		INSERT INTO tb_file
+		(
+		file_origin
+		, file_local_path
+		, file_server_path
+		, file_size
+		, file_extension
+		)
+		VALUES
+		(
+		#{file_origin}
+		, #{file_local_path}
+		, #{file_server_path}
+		, #{file_size}
+		, #{file_extension}
+		)
+	</insert>
+	
+	<delete id="deleteNotice">
+		DELETE FROM tb_notice
+		WHERE notice_no = #{notice_no}	
+	</delete>
+	
+	<update id="updateNotice" >
+		UPDATE tb_notice
+		SET
+		notice_title = #{notice_title}
+		, notice_content = #{notice_content}
+		<choose>
+   			<when test="fileExits eq 'Y'.toString()">
+  		    	, file_no = #{file_no}
+ 			</when>
+   		 <when test="removeFile eq 'Y'.toString()">
+   		 		, file_no = null
+   		 </when>
+  		</choose>
+		WHERE 
+		notice_no = #{notice_no}
+	</update>
+
+</mapper>

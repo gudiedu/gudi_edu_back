@@ -24,6 +24,4 @@ public class tClassSurveyVO {
 		private int survey_no;
 		private int respondent_count;
 		private int confirmed_count;
-		
-		
 	}

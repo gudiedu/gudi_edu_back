@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.happyjob.study.information.dao.AStudentAttendanceDAO">
+	<select id="searchLecture" resultType="map">
+		SELECT 
+		em.enrollment_no
+		, em.course_no
+		, cs.loginID
+		, cs.course_subject
+		, cs.course_name
+		, DATE_FORMAT(cs.course_start_date, '%y-%m-%d') as course_start_date 
+		, DATE_FORMAT(cs.course_end_date, '%y-%m-%d') as course_end_date
+		, cs.course_loc
+		, cs.course_quota
+		, ui.name
+		FROM 
+		tb_enrollment em
+		LEFT JOIN tb_course cs 
+		ON cs.course_no = em.course_no
+		LEFT JOIN tb_userinfo ui 
+		ON ui.loginID = cs.loginID
+		where em.loginID like #{studentId} and em.enrollment_confirmed like "Y";
+	</select>
+	
+	<select id="searchAttendance" resultType="map">
+		SELECT 
+		at.attendance_no
+		, at.course_no
+		, DATE_FORMAT(at.attendance_date, '%y-%m-%d') as attendance_date
+		, at.attendance_status
+		, f.file_no
+		, f.file_origin
+		, f.file_local_path
+		, f.file_server_path
+		, f.file_size
+		, f.file_extension
+		FROM
+		tb_attendance at
+		LEFT JOIN tb_file f
+		ON f.file_no = at.file_no
+		WHERE 
+		course_no = #{courseNo} and loginID = #{studentId}
+		ORDER BY attendance_no DESC;
+	</select>
+	
+	<select id="findStudentName" resultType="map">
+		SELECT 
+		name
+		FROM
+		tb_userinfo
+		WHERE
+		loginID = #{studentId}
+	</select>
+	
+	<update id="updateAttendanceStatus">
+		UPDATE tb_attendance
+		SET attendance_status = #{attendance_status}
+		<if test="fileExits eq 'Y'.toString()">
+			, file_no = #{file_no}
+		</if>
+		<if test="fileDelete">
+			, file_no = null
+		</if>
+		WHERE attendance_no = #{attendance_no}
+	</update>
+	
+	<insert id="saveFile" parameterType="kr.happyjob.study.aAlert.model.AFileDTO" useGeneratedKeys="true" keyProperty="file_no">
+		INSERT INTO tb_file
+		(
+		file_origin
+		, file_local_path
+		, file_server_path
+		, file_size
+		, file_extension
+		)
+		VALUES
+		(
+		#{file_origin}
+		, #{file_local_path}
+		, #{file_server_path}
+		, #{file_size}
+		, #{file_extension}
+		)
+	</insert>
+	
+ 	<select id="downloadFile" resultType="kr.happyjob.study.aAlert.model.AFileDTO">
+ 		SELECT
+ 		file_no 
+ 		, file_origin
+		, file_local_path
+		, file_server_path
+		, file_size
+		, file_extension
+		FROM
+		tb_file
+		WHERE
+		file_no = #{file_no}
+	</select>
+	
+</mapper>
