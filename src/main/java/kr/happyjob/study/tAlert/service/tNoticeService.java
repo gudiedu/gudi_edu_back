@@ -28,7 +28,12 @@ public interface tNoticeService {
 	/** 공지사항 수정 */
 	public int updateNotice(Map<String, Object> paramMap, HttpServletRequest request) throws Exception; 
 
+	public void deleteNoticeFile(Map<String, Object> paramMap) throws Exception;
+	
+	
+	
+
+	}
 	
 
 
-}

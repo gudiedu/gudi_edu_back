@@ -84,12 +84,20 @@ public class tNoticeServiceImpl implements tNoticeService {
     	
         return tNoticeDao.deleteNotice(paramMap) + tNoticeDao.deleteFileByNoticeNo(paramMap);
     }
-    	//공지 수정 
+    // 공지 수정
     public int updateNotice(Map<String, Object> paramMap, HttpServletRequest request) throws Exception {
         logger.info("Starting updateNotice");
 
         if (request instanceof MultipartHttpServletRequest) {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+
+            // 새 파일이 업로드된 경우 기존 파일 삭제
+            if (multipartRequest.getFile("file") != null && !multipartRequest.getFile("file").isEmpty()) {
+                // 기존 파일을 삭제하기 전에 관련 공지의 file_no를 null로 설정
+                paramMap.put("file_no", null);
+                tNoticeDao.updateNotice(paramMap);
+                deleteExistingFile(paramMap);
+            }
 
             // 파일 업로드는 한 번만 수행
             Map<String, Object> fileInfo = fileUpload(multipartRequest);
@@ -107,13 +115,32 @@ public class tNoticeServiceImpl implements tNoticeService {
             }
         }
 
-        logger.info("Updateing notice");
+        logger.info("Updating notice");
         int result = tNoticeDao.updateNotice(paramMap);
         logger.info("Notice updated with result: " + result);
 
         return result;
     }
-    
+
+    // 기존 파일 삭제
+    private void deleteExistingFile(Map<String, Object> paramMap) throws Exception {
+        String url = tNoticeDao.selectFilePath(paramMap);
+        logger.info("Existing file URL: " + url);
+        if (url != null && !url.isEmpty()) {
+            File file = new File(url);
+            if (file.exists()) {
+                file.delete();
+                logger.info("Existing file deleted");
+            }
+            tNoticeDao.deleteFileByNoticeNo(paramMap);
+        }
+    }
+
+    // 공지 파일 삭제
+    public void deleteNoticeFile(Map<String, Object> paramMap) throws Exception {
+        deleteExistingFile(paramMap);
+    }
+
     
     
     

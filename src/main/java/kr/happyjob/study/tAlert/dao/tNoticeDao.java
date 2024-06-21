@@ -28,6 +28,10 @@ public interface tNoticeDao {
 	public String selectFilePath(Map<String, Object> paramMap);
 
 	public int deleteFileByNoticeNo(Map<String, Object> paramMap);
+	
+	public void deleteNoticeFile(Map<String, Object> paramMap) throws Exception;
+}
+
 
 	
-}
+

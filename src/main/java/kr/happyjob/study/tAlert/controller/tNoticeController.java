@@ -240,6 +240,29 @@ public class tNoticeController {
 		      
 		      return;
 		   }
-		
-		
+	    // 공지 파일 삭제
+	    @RequestMapping("deleteNoticeFile.do")
+	    @ResponseBody
+	    public Map<String, Object> deleteNoticeFile(@RequestParam Map<String, Object> paramMap, HttpSession session) throws Exception {
+	        logger.info("+ Start " + className + ".deleteNoticeFile");
+	        logger.info("   - paramMap : " + paramMap);
+
+	        Map<String, Object> returnMap = new HashMap<String, Object>();
+
+	        try {
+	            tNoticeService.deleteNoticeFile(paramMap);
+	            returnMap.put("result", 1);
+	            returnMap.put("resultMsg", "파일이 성공적으로 삭제되었습니다.");
+	        } catch (Exception e) {
+	            logger.error("Error deleting file", e);
+	            returnMap.put("result", 0);
+	            returnMap.put("resultMsg", "파일 삭제 중 오류가 발생했습니다.");
+	        }
+
+	        logger.info("+ End " + className + ".deleteNoticeFile");
+
+	        return returnMap;
+	    }
 	}
+		
+	

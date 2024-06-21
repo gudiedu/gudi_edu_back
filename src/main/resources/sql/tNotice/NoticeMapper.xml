@@ -147,6 +147,7 @@
 		     loginID = #{loginID}
 		   , notice_title = #{noticeTitle}
 		   , notice_content = #{noticeContent}
+		   , file_no = #{file_no}
 		   <choose>
 		     <when test="fileExits eq 'Y'.toString()">
 		       , file_no = #{file_no}
@@ -157,6 +158,8 @@
 		   </choose>
 		  WHERE notice_no = #{pNoticeNo}
 		</update>
+	
+	
 	
 	<select id="selectFilePath" resultType="String">
 	 
