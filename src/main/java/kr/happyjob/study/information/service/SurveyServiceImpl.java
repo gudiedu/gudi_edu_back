@@ -19,9 +19,9 @@ public class SurveyServiceImpl implements SurveyService{
 	
 	//설문지 목록 리스트
 	@Override
-	public List<SurveyModel> surveyList() throws Exception {
+	public List<SurveyModel> surveyList(Map<String, Object> paramMap) throws Exception {
 		// TODO Auto-generated method stub
-		return surveyDao.surveyList();
+		return surveyDao.surveyList(paramMap);
 	}
 	
 	//선택한 설문지 상세 질문들 목록
@@ -89,6 +89,11 @@ public class SurveyServiceImpl implements SurveyService{
 	//강의에 설문등록하기
 	public int surveyIntoCourse(Map<String, Object> paramMap) throws Exception{
 		return surveyDao.surveyIntoCourse(paramMap);
+	}
+	
+	//설문 총 갯수 가져오기
+	public int totalcntSurvey(Map<String, Object> paramMap) throws Exception{
+		return surveyDao.totalcntSurvey(paramMap);
 	}
 	
 }

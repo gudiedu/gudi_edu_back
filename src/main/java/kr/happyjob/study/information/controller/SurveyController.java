@@ -42,12 +42,22 @@ public class SurveyController {
 			HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
 		logger.info("+ Start " + className + ".surveyList");
 		logger.info("   - paramMap : " + paramMap);
-
-		List<SurveyModel> surveyListModel = surveyService.surveyList();
+		// 페이지 네비게이터 변수 선언하기
+		int currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
+	    int pageSize  = Integer.parseInt((String) paramMap.get("pageSize"));
+	    int startPoint = (currentPage - 1) * pageSize;  
+	      
+		paramMap.put("pageSize", pageSize);
+		paramMap.put("startPoint", startPoint);  
+		
+		int totalCnt = surveyService.totalcntSurvey(paramMap);
+		System.out.println(totalCnt);
+		List<SurveyModel> surveyListModel = surveyService.surveyList(paramMap);
 
 		Map<String, Object> resultMap = new HashMap<>();
 
 		resultMap.put("listdate", surveyListModel);
+		resultMap.put("totalCnt", totalCnt);
 
 		logger.info("+ End " + className + ".surveyList");
 		return resultMap;
@@ -63,6 +73,8 @@ public class SurveyController {
 
 		// survey_no 파라미터가 있는지 확인
 		String surveyNo = (String) paramMap.get("survey_no");
+		String stitle = (String) paramMap.get("stitle");
+		System.out.println(stitle);
 		if (surveyNo == null) {
 			// survey_no 파라미터가 없으면 에러 처리
 			throw new IllegalArgumentException("survey_no parameter is required");

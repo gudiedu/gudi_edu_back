@@ -14,8 +14,27 @@
 		written_questions 
 	FROM 
 		tb_survey
+	<if test="(stitle != null) and (!stitle.equals(''))">
+      WHERE survey_name LIKE concat('%', #{stitle}, '%')
+    </if>
 	ORDER BY 
-		survey_no ASC;	
+		survey_no ASC	
+	LIMIT #{startPoint}, #{pageSize}
+		
+	</select>
+	
+	<!-- 설문목록 총 갯수 -->
+	<select id="totalcntSurvey" resultType="int">
+	
+	SELECT 
+		COUNT(*)
+	FROM 
+	 	tb_survey
+     <if test="(stitle != null) and (!stitle.equals(''))">
+     WHERE 
+     	survey_name LIKE concat('%',#{stitle},'%')
+     </if>
+	                    
 	</select>
 	
 	<!-- 설문지 등록 -->
@@ -54,7 +73,11 @@
 	FROM
 		tb_survey_question tq
 	WHERE 
-		survey_no = #{survey_no} 
+		survey_no = #{survey_no}
+ 	<if test="(stitle != null) and (!stitle.equals(''))">
+    AND
+    	survey_question_text LIKE concat('%', #{stitle}, '%')
+   </if>
 	</select>
 	
 	<!-- 설문지 삭제 -->
@@ -148,7 +171,7 @@
 	SET 
 		survey_question_text=#{survey_question_text},
 		question_choiced=#{question_choiced},
-		survey_question_type=#{survey_question_type},
+		survey_question_type=#{survey_question_type}
 	WHERE 
 		survey_no=#{survey_no} 
 	AND 

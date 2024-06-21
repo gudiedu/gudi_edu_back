@@ -10,6 +10,10 @@
         	,	detail_name
         FROM	tb_detail_code
         WHERE	group_code = 'S1000'
+        <if test="(stitle != null) and (!stitle.equals(''))">
+	    AND 
+	   	detail_name LIKE concat('%', #{stitle}, '%')
+	  </if>
         ORDER BY detail_code ASC
         LIMIT #{startPoint}, #{pageSize};
 	</select>
@@ -20,6 +24,10 @@
 			count(*)
 		FROM
   			tb_detail_code
+		<if test="(stitle != null) and (!stitle.equals(''))">
+	    WHERE 
+	   	detail_name LIKE concat('%', #{stitle}, '%')
+	  </if>
 	</select>
 	
    <!-- 공통코드에 있는 강의코드 추가 -->

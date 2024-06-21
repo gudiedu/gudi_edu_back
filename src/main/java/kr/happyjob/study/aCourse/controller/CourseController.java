@@ -41,13 +41,23 @@ public class CourseController {
 			logger.info("+ Start " + className + ".CourseList");
 			logger.info("   - paramMap : " + paramMap);
 			
+			// 페이지 네비게이터 변수 선언하기
+			int currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
+		    int pageSize  = Integer.parseInt((String) paramMap.get("pageSize"));
+		    int startPoint = (currentPage - 1) * pageSize;  
 		      
-		      
+			paramMap.put("pageSize", pageSize);
+			paramMap.put("startPoint", startPoint);
+			
 			List<CourseModel> CourseListModel = courseService.courseList(paramMap);
 			
 			Map<String, Object> resultMap = new HashMap<>();
 			
+			int totalCnt = courseService.totalcntClassSurvey(paramMap);
+			
 			resultMap.put("listdate", CourseListModel);
+			resultMap.put("totalCnt", totalCnt);
+			
 			logger.info("+ End " + className + ".CourseList");
 	
 			return resultMap;
@@ -61,13 +71,23 @@ public class CourseController {
 				logger.info("+ Start " + className + ".CourseList");
 				logger.info("   - paramMap : " + paramMap);
 				
+				// 페이지 네비게이터 변수 선언하기
+				int currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
+			    int pageSize  = Integer.parseInt((String) paramMap.get("pageSize"));
+			    int startPoint = (currentPage - 1) * pageSize;  
 			      
+				paramMap.put("pageSize", pageSize);
+				paramMap.put("startPoint", startPoint);  
+				
+				int totalCnt = courseService.totalcntClassSurvey(paramMap);
 			      
 				List<CourseModel> CourseListModel = courseService.searchClassSurvey(paramMap);
 				
 				Map<String, Object> resultMap = new HashMap<>();
 				
 				resultMap.put("listdate", CourseListModel);
+				resultMap.put("totalCnt", totalCnt);
+				
 				logger.info("+ End " + className + ".CourseList");
 		
 				return resultMap;
