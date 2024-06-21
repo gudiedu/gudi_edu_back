@@ -6,7 +6,7 @@
 	<!-- Qna 목록 조회 -->
 	<select id="sQnaList" resultType="kr.happyjob.study.sAlert.dto.SQnaDto">
 	    SELECT
-	        DISTINCT q.question_no,
+	        q.question_no,
 	        c.course_name,
 	        q.question_title,
 	        q.question_content,
@@ -23,21 +23,49 @@
 	            MAX(reply_no) AS reply_no, 
 	            MAX(reply_created_at) AS reply_created_at
 	        FROM 
-	            tb_question_reply
+	            tb_question_reply r
 	        GROUP BY 
 	            question_no
 	    ) r ON q.question_no = r.question_no
 	    INNER JOIN tb_course c ON c.course_no = q.course_no
+	    <where>
+	        <if test="status != null and status != ''">
+	            <if test="status == 'replied'">
+	                AND r.reply_created_at IS NOT NULL
+	            </if>
+	        </if>
+	        <if test="searchKeyword != null and searchKeyword != ''">
+	            AND (
+		            q.name LIKE CONCAT('%', #{searchKeyword}, '%')
+		            OR q.question_title LIKE CONCAT('%', #{searchKeyword}, '%')
+		            OR q.question_content LIKE CONCAT('%', #{searchKeyword}, '%')
+		            OR c.course_name LIKE CONCAT('%', #{searchKeyword}, '%')
+	            )
+	        </if>
+	    </where>
 	    ORDER BY q.question_no DESC
 	    LIMIT #{startPoint}, #{pageSize}
 	</select>
+
 	
 	<!-- Qna 총 갯수 조회 -->
 	<select id="totalCountQna" resultType="int">
-		SELECT
-			count(*)
-		FROM
-  			tb_question
+	    SELECT
+	        count(*)
+	    FROM
+	        tb_question q
+	    LEFT JOIN
+	        tb_question_reply r ON r.question_no = q.question_no
+	    <where>
+	        <if test="status != null and status != ''">
+	            <if test="status == 'replied'">
+	                AND r.reply_created_at IS NOT NULL
+	            </if>
+	        </if>
+	        <if test="searchKeyword != null and searchKeyword != ''">
+	            AND q.question_title LIKE CONCAT('%', #{searchKeyword}, '%')
+	        </if>
+	    </where>
 	</select>
 	
 	<!-- 특정 Qna 조회 -->
@@ -104,6 +132,7 @@
 	<delete id="sQnaDelete">
 		DELETE FROM tb_question
 			WHERE question_no = #{SelectedQuestionNo}
+				AND loginID = #{studentSignedID}
 	</delete>
 	
 	<!-- 학생의 강의 신청한 목록 조회하기 -->
@@ -117,8 +146,7 @@
 	  	LEFT OUTER JOIN 
 	  		tb_course c ON c.course_no = e.course_no
 	  	WHERE
-	  		u.loginID = #{loginID}
-  		
+	  		u.loginID = #{studentSignedID} AND e.enrollment_confirmed = 'Y'
 	</select>
 
 </mapper>

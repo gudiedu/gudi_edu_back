@@ -229,6 +229,9 @@ public class SCourseController {
 		    
 		    List<SCourseDto> sEnrollList = sCourseService.sEnrollList(paramMap);
 		    
+		    //int currentEnrolled = sCourseService.currentEnrolled(paramMap);
+		    //returnMap.put("currentEnrolled", currentEnrolled);
+		    
 		    returnMap.put("enrollList", sEnrollList);
 		    returnMap.put("studentSignedID",(String)session.getAttribute("loginId"));
 		    

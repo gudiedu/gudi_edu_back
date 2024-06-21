@@ -73,4 +73,8 @@ public interface SCourseDao {
 	/** 시험응시: 시험 제출 결과 불러오기*/
 	public List<SCourseDto> sShowingTestResult(Map<String, Object> paramMap) throws Exception;
 
+//	/** 수강신청: 현재 수강신청 할 강의의 수강신청 인원 조회*/
+//	public int sCurrentEnrolled(Map<String, Object> paramMap) throws Exception;
+
+
 }

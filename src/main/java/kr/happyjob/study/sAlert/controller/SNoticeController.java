@@ -76,7 +76,7 @@ public class SNoticeController {
 	      Map<String, Object> returnMap = new HashMap<String, Object>();
 	      
 	      SNoticeDto sqlReturn = sNoticeService.sSelectNotice(paramMap);
-	    	  
+	    	 
 	      returnMap.put("result", sqlReturn);
 	      
 	      logger.info("+ End " + className + ".sSelectNotice");

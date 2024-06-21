@@ -167,7 +167,7 @@ public class SQnaController {
 		    int sqlreturn = 0;
 			
 		    Map<String, Object> returnmap = new HashMap<String, Object>();
-			paramMap.put("loginID", (String)session.getAttribute("loginID"));
+			paramMap.put("studentSignedID", (String)session.getAttribute("loginID"));
 			
 			int sqlReturn = 0;
 			String resultMsg = "";

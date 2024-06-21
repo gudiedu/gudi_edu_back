@@ -73,6 +73,9 @@ public interface SCourseService {
 	/** 시험응시: 시험 제출 결과 불러오기*/
 	public List<SCourseDto> sShowingTestResult(Map<String, Object> paramMap) throws Exception;
 
+//	/** 수강신청: 현재 강좌의 수강신청한 학생 명수*/
+//	public int currentEnrolled(Map<String, Object> paramMap) throws Exception;
+
 
 	
 }

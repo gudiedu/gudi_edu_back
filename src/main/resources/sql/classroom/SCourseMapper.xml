@@ -81,8 +81,16 @@
 		FROM
 		  tb_course c
 		LEFT OUTER JOIN tb_userinfo ui ON ui.loginID = c.loginID
-		WHERE
-		  course_start_date > now()
+		<where>
+			course_start_date > now()
+	        <if test="searchKeyword != null and searchKeyword != ''">
+	            AND(
+		            ui.name LIKE CONCAT('%', #{searchKeyword}, '%')
+		            OR c.course_subject LIKE CONCAT('%', #{searchKeyword}, '%')
+		            OR c.course_name LIKE CONCAT('%', #{searchKeyword}, '%')
+	            )
+	        </if>
+	    </where> 
 		ORDER BY
 		  course_start_date ASC
 	</select>
@@ -129,7 +137,21 @@
 		LEFT OUTER JOIN tb_test t ON t.course_no = c.course_no
 		LEFT OUTER JOIN tb_test_result r ON r.loginID = e.loginID AND r.course_no = e.course_no
 		LEFT OUTER JOIN tb_userinfo ui ON c.loginID = ui.loginID
-		WHERE e.loginID = #{studentSignedID} AND e.enrollment_confirmed = 'Y'
+	<where>
+		e.loginID = #{studentSignedID} AND e.enrollment_confirmed = 'Y'
+		<if test="status != null and status != ''">
+			<if test="status == 'notTaken'">
+				AND (r.result_no IS NULL OR r.result_no = 0)
+			</if>
+		</if>
+		<if test="searchKeyword != null and searchKeyword !=''">
+			AND(
+	            ui.name LIKE CONCAT('%', #{searchKeyword}, '%')
+	            OR c.course_subject LIKE CONCAT('%', #{searchKeyword}, '%')
+	            OR c.course_name LIKE CONCAT('%', #{searchKeyword}, '%')
+	            )
+		</if>
+	</where>
 		GROUP BY e.course_no
 	</select>
 
@@ -388,4 +410,5 @@
 	WHERE sa.course_no = #{pCourseNo}
 	AND sa.loginID = #{loginID}
 </select>
+
 </mapper>
