@@ -123,5 +123,10 @@ public class SCourseServiceImpl implements SCourseService {
 		return sCourseDao.sShowingTestResult(paramMap);
 	}
 
+//	/** 수강신청: 현재 수강신청 할 강의의 수강신청 인원 조회*/
+//	public int currentEnrolled(Map<String, Object> paramMap) throws Exception {
+//		return sCourseDao.sCurrentEnrolled(paramMap);
+//	}
+
 
 }
