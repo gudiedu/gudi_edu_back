@@ -18,9 +18,10 @@
       WHERE survey_name LIKE concat('%', #{stitle}, '%')
     </if>
 	ORDER BY 
-		survey_no ASC	
+		survey_no ASC
+	<if test="(startPoint != null) and (pageSize != null)">		
 	LIMIT #{startPoint}, #{pageSize}
-		
+	 </if>	
 	</select>
 	
 	<!-- 설문목록 총 갯수 -->

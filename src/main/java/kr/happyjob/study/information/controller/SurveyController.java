@@ -62,6 +62,26 @@ public class SurveyController {
 		logger.info("+ End " + className + ".surveyList");
 		return resultMap;
 	}
+	
+	// 설문지 리스트 출력
+		@RequestMapping("modalSurveyList.do")
+		@ResponseBody
+		public Map<String, Object> modalSurveyList(Model model, @RequestParam Map<String, Object> paramMap,
+				HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+			logger.info("+ Start " + className + ".surveyList");
+			logger.info("   - paramMap : " + paramMap);
+			
+			
+			
+			List<SurveyModel> surveyListModel = surveyService.surveyList(paramMap);
+
+			Map<String, Object> resultMap = new HashMap<>();
+
+			resultMap.put("listdate", surveyListModel);
+
+			logger.info("+ End " + className + ".surveyList");
+			return resultMap;
+		}
 
 	// 설문지 상세질문 목록 출력
 	@RequestMapping("QuestionList.do")
