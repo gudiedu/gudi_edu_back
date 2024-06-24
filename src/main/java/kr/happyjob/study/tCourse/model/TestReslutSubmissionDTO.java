@@ -18,10 +18,14 @@ public class TestReslutSubmissionDTO {
 	private String name;
 	private int result_no; // 시험결과번호
 	private int enrollment_no; // 수강번호
+	private String enrollment_confirmed; //승인여부
 	private int result_score; // 총 점수
 	
 	
 	private int course_no; // 강의번호
+	private String course_name; // 강의명
+	private String course_start_date; // 개강일
+	private String course_end_date; // 종강일
 	private int test_no; // 문제번호
 	private String test_question; // 문제
 	private String test_choice1; // 선택지1

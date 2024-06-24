@@ -76,6 +76,8 @@ public class TestResultController {
 	}
 	
 	
+	
+	
 	@RequestMapping("testResults")
 	@ResponseBody
 	public Map<String, Object> getTestResults(Model model, @RequestParam Map<String, Object> paramMap,
@@ -84,17 +86,20 @@ public class TestResultController {
 	    logger.info("+ Start " + className + ".testResults");
 	    logger.info("   - paramMap : " + paramMap);
 
+	    // 기본값 설정
+	    String category = paramMap.getOrDefault("test_category", "1차").toString();
+	    paramMap.put("test_category", category);
+
 	    Map<String, Object> returnMap = new HashMap<>();
-	    List<TestReslutSubmissionDTO> testResults = testResultService.getTestResults(paramMap);
+	    List<TestReslutSubmissionDTO> testResults = testResultService.getTestResultsByCategory(paramMap, category);
 
 	    returnMap.put("testResults", testResults);
 
-	    logger.info("End TestResultController.getTestResults");
+	    logger.info("End " + className + ".testResults");
 	    logger.info("Return data: " + returnMap);
 
 	    return returnMap;
 	}
-	
 	
 	
 
@@ -132,7 +137,8 @@ public class TestResultController {
 	    logger.info("   - paramMap : " + paramMap);
 
 	    Map<String, Object> returnMap = new HashMap<>();
-	    TestReslutSubmissionDTO statistics = testResultService.getTestStatistics(paramMap);
+	    String category = paramMap.get("test_category").toString();
+	    TestReslutSubmissionDTO statistics = testResultService.getTestStatistics(paramMap, category);
 
 	    returnMap.put("statistics", statistics);
 

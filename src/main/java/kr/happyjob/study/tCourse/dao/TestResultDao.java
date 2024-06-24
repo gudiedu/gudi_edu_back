@@ -13,15 +13,15 @@ public interface TestResultDao {
 
 	public int countCourseList(Map<String, Object> paramMap);
 
-	// 시험 결과 조회 메서드
 	public List<TestReslutSubmissionDTO> selectTestResults(Map<String, Object> paramMap);
 
 	// 시험 결과 조회 메서드
 	public List<TestReslutSubmissionDTO> selectStudentTestDetails(Map<String, Object> paramMap);
-	
-	
-	
+
 	// 통계 정보를 가져오는 메서드 추가
 	public TestReslutSubmissionDTO selectTestStatistics(Map<String, Object> paramMap);
-	
+
+	// 카테고리에 따른 시험 결과 조회 메서드 추가
+	public List<TestReslutSubmissionDTO> selectTestResultsByCategory(Map<String, Object> paramMap);
+
 }

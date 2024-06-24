@@ -16,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.happyjob.study.tCourse.model.LearningMaterialsDTO;
 import kr.happyjob.study.tCourse.service.ResourceService;
@@ -73,35 +72,36 @@ public class ResourceController {
 
 		return returnMap;
 	}
-	
 
-    @RequestMapping("addResource")
-    @ResponseBody
-    public Map<String, Object> addResource(@RequestParam Map<String, Object> paramMap, HttpSession session, HttpServletRequest request)
-            throws Exception {
-        logger.info("+ Start " + className + ".addResource");
-        logger.info("   - paramMap : " + paramMap);
+	@RequestMapping("addResource")
+	@ResponseBody
+	public Map<String, Object> addResource(@RequestParam Map<String, Object> paramMap, HttpSession session,
+			HttpServletRequest request) throws Exception {
+		logger.info("+ Start " + className + ".addResource");
+		logger.info("   - paramMap : " + paramMap);
 
-        String loginID = (String) session.getAttribute("loginId");
-        if (loginID == null) {
-            throw new Exception("로그인이 필요합니다.");
-        }
+		String loginID = (String) session.getAttribute("loginId");
+		if (loginID == null) {
+			throw new Exception("로그인이 필요합니다.");
+		}
 
-        paramMap.put("loginID", loginID);
-        paramMap.put("resource_created_at", new java.util.Date());
-        paramMap.put("resource_writer", loginID);
+		paramMap.put("loginID", loginID);
+		paramMap.put("resource_created_at", new java.util.Date());
+		paramMap.put("resource_writer", loginID);
 
-        int result = resourceService.addResource(paramMap, request);
+		if (paramMap.get("course_no") == null || paramMap.get("course_no").toString().trim().isEmpty()) {
+			throw new Exception("course_no가 필요합니다.");
+		}
 
-        Map<String, Object> returnMap = new HashMap<>();
-        returnMap.put("result", result > 0 ? "success" : "fail");
+		int result = resourceService.addResource(paramMap, request);
 
-        logger.info("+ End " + className + ".addResource");
-        return returnMap;
-    }
-	
-	
-	
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("result", result > 0 ? "success" : "fail");
+
+		logger.info("+ End " + className + ".addResource");
+		return returnMap;
+	}
+
 	@RequestMapping("reCourseList")
 	@ResponseBody
 	public Map<String, Object> getCourseList(HttpSession session) throws Exception {
@@ -120,76 +120,69 @@ public class ResourceController {
 		logger.info("+ End ResourceController.getCourseList");
 		return returnMap;
 	}
-	
-	
-	
+
 	// 학습자료 조회
 	@RequestMapping("getResource")
 	@ResponseBody
 	public Map<String, Object> getResource(@RequestParam int resourceNo) throws Exception {
-	    logger.info("+ Start " + className + ".getResource");
+		logger.info("+ Start " + className + ".getResource");
 
-	    LearningMaterialsDTO resource = resourceService.getResourceById(resourceNo);
-	    Map<String, Object> returnMap = new HashMap<>();
-	    returnMap.put("resource", resource);
+		LearningMaterialsDTO resource = resourceService.getResourceById(resourceNo);
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("resource", resource);
 
-	    logger.info("+ End " + className + ".getResource");
-	    return returnMap;
+		logger.info("+ End " + className + ".getResource");
+		return returnMap;
 	}
-	
-	
-	
+
 	// 학습자료 수정
 	@RequestMapping("updateResource")
 	@ResponseBody
-	public Map<String, Object> updateResource(@RequestParam Map<String, Object> paramMap, HttpSession session, HttpServletRequest request) throws Exception {
-	    logger.info("+ Start " + className + ".updateResource");
-	    logger.info("   - paramMap : " + paramMap);
+	public Map<String, Object> updateResource(@RequestParam Map<String, Object> paramMap, HttpSession session,
+			HttpServletRequest request) throws Exception {
+		logger.info("+ Start " + className + ".updateResource");
+		logger.info("   - paramMap : " + paramMap);
 
-	    String loginID = (String) session.getAttribute("loginId");
-	    if (loginID == null) {
-	        throw new Exception("로그인이 필요합니다.");
-	    }
+		String loginID = (String) session.getAttribute("loginId");
+		if (loginID == null) {
+			throw new Exception("로그인이 필요합니다.");
+		}
 
-	    paramMap.put("loginID", loginID);
-	    paramMap.put("resource_edited_at", new java.util.Date());
-	    paramMap.put("resource_editor", loginID);
+		paramMap.put("loginID", loginID);
+		paramMap.put("resource_edited_at", new java.util.Date());
+		paramMap.put("resource_editor", loginID);
 
-	    int result = resourceService.updateResource(paramMap, request);
+		LearningMaterialsDTO existingResource = resourceService
+				.getResourceById(Integer.parseInt(paramMap.get("resource_no").toString()));
+		if (paramMap.get("fileExits").equals("N") && existingResource != null) {
+			paramMap.put("file_no", existingResource.getFile_no());
+		}
 
-	    Map<String, Object> returnMap = new HashMap<>();
-	    returnMap.put("result", result > 0 ? "success" : "fail");
+		int result = resourceService.updateResource(paramMap, request);
 
-	    logger.info("+ End " + className + ".updateResource");
-	    return returnMap;
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("result", result > 0 ? "success" : "fail");
+
+		logger.info("+ End " + className + ".updateResource");
+		return returnMap;
 	}
-	
-	
-	
+
 	// 학습자료 삭제
 	@RequestMapping("deleteResource")
 	@ResponseBody
 	public Map<String, Object> deleteResource(@RequestParam int resourceNo) throws Exception {
-	    logger.info("+ Start " + className + ".deleteResource");
-	    logger.info("   - resourceNo : " + resourceNo);
+		logger.info("+ Start " + className + ".deleteResource");
+		logger.info("   - resourceNo : " + resourceNo);
 
-	    int result = resourceService.deleteResource(resourceNo);
+		int result = resourceService.deleteResource(resourceNo);
 
-	    Map<String, Object> returnMap = new HashMap<>();
-	    returnMap.put("result", result > 0 ? "success" : "fail");
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("result", result > 0 ? "success" : "fail");
 
-	    logger.info("+ End " + className + ".deleteResource");
-	    return returnMap;
+		logger.info("+ End " + className + ".deleteResource");
+		return returnMap;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 
 }

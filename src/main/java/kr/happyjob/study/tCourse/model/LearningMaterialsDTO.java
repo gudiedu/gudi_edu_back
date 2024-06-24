@@ -25,11 +25,11 @@ public class LearningMaterialsDTO {
 	private String resource_editor; // 수정자
 	private int file_no; // 파일번호
 	
-	private String file_server_path;
-	private String file_local_path; 
-	private String file_origin;
-	private String file_rename;
-	private String file_extension;
-	private int file_size;
+    private String file_server_path; // 서버 경로
+    private String file_local_path; // 로컬 경로
+    private String file_origin; // 원본 파일 이름
+    private String file_rename; // 변경된 파일 이름
+    private String file_extension; // 파일 확장자
+    private int file_size; // 파일 크기
 
 }

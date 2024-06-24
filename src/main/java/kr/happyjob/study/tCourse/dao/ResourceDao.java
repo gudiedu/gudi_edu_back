@@ -24,4 +24,11 @@ public interface ResourceDao {
     public int updateResource(Map<String, Object> paramMap) throws Exception;
     
     public int deleteResource(int resourceNo) throws Exception;
+    
+    
+    public String selectFilePath(Map<String, Object> paramMap); // 파일 경로 조회 메서드
+        
+
+    
+
 }
