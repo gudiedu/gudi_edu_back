@@ -20,5 +20,8 @@ public interface TestResultService {
    public List<TestReslutSubmissionDTO> getStudentTestDetails(Map<String, Object> paramMap);
    
    // 통계 정보를 가져오는 메서드 추가
-   public TestReslutSubmissionDTO getTestStatistics(Map<String, Object> paramMap);
+   public TestReslutSubmissionDTO getTestStatistics(Map<String, Object> paramMap, String category);
+   
+   // 카테고리에 따른 시험 결과 조회 메서드 추가
+   public List<TestReslutSubmissionDTO> getTestResultsByCategory(Map<String, Object> paramMap, String category);
 }

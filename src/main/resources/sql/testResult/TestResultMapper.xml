@@ -4,36 +4,36 @@
 <mapper namespace="kr.happyjob.study.tCourse.dao.TestResultDao">
 
  <!-- 강의 정보 조회 쿼리 -->
-<select id="selectCourseList" parameterType="map" resultType="kr.happyjob.study.tCourse.model.CourseVO">
-        SELECT
-            course_no,
-            course_name,
-            course_start_date,
-            course_end_date,
-            course_quota
-        FROM
-            tb_course
-        WHERE
-         	loginID = #{loginID}
-        AND
-            course_name LIKE CONCAT('%', #{stitle}, '%')
-        ORDER BY
-            course_start_date DESC
-        LIMIT #{startPoint}, #{pageSize}
-    </select>
+<select id="selectCourseList" parameterType="map" resultType="kr.happyjob.study.tCourse.model.TestReslutSubmissionDTO">
+    SELECT
+        c.course_no,
+        c.course_name,
+        c.course_start_date,
+        c.course_end_date,
+        (SELECT COUNT(*) 
+         FROM tb_enrollment e 
+         WHERE e.course_no = c.course_no 
+           AND e.enrollment_confirmed = 'Y') AS enrollment_confirmed
+    FROM
+        tb_course c
+    WHERE
+        c.loginID = #{loginID}
+        AND c.course_name LIKE CONCAT('%', #{stitle}, '%')
+    ORDER BY
+        c.course_start_date DESC
+    LIMIT #{startPoint}, #{pageSize}
+</select>
     
-
-    <select id="countCourseList" parameterType="map" resultType="int">
-        SELECT
-            COUNT(*)
-        FROM
-            tb_course
-        WHERE
-         loginID = #{loginID}
-        AND
-         course_name LIKE CONCAT('%', #{stitle}, '%')
-    </select>
-    
+ <!-- 강의 수 카운트 쿼리 -->
+<select id="countCourseList" parameterType="map" resultType="int">
+    SELECT
+        COUNT(*)
+    FROM
+        tb_course
+    WHERE
+        loginID = #{loginID}
+        AND course_name LIKE CONCAT('%', #{stitle}, '%')
+</select>  
     
 
 
@@ -44,8 +44,8 @@
     SELECT 
         e.loginID, 
         u.name, 
-        COALESCE(SUM(ts.question_score), 0) as question_score,
-        MAX(tr.result_no) as result_no 
+        tr.result_score,
+        MAX(tr.result_no) as result_no
     FROM 
         tb_enrollment e 
     JOIN 
@@ -55,11 +55,37 @@
     LEFT JOIN 
         tb_test_submission ts ON e.loginID = ts.loginID AND e.course_no = ts.course_no
     WHERE 
-        e.course_no = #{course_no} AND e.enrollment_confirmed = 'Y' 
+        e.course_no = #{course_no} 
+        AND tr.test_category = #{test_category}  <!-- test_category 필터 추가 -->
+        AND e.enrollment_confirmed = 'Y' 
     GROUP BY 
         e.loginID, u.name;
 </select>
 
+
+
+  <!-- 카테고리에 따른 시험 결과 조회 쿼리 추가 -->
+  <select id="selectTestResultsByCategory" parameterType="map" resultType="kr.happyjob.study.tCourse.model.TestReslutSubmissionDTO">
+    SELECT 
+      e.loginID, 
+      u.name, 
+      tr.result_score,
+      MAX(tr.result_no) as result_no
+    FROM 
+      tb_enrollment e 
+    JOIN 
+      tb_userinfo u ON e.loginID = u.loginID 
+    LEFT JOIN 
+      tb_test_result tr ON e.loginID = tr.loginID AND e.course_no = tr.course_no 
+    LEFT JOIN 
+      tb_test_submission ts ON e.loginID = ts.loginID AND e.course_no = ts.course_no
+    WHERE 
+      e.course_no = #{course_no} 
+      AND tr.test_category = #{test_category}
+      AND e.enrollment_confirmed = 'Y' 
+    GROUP BY 
+      e.loginID, u.name;
+  </select>
 
 
 
@@ -91,12 +117,15 @@
     LEFT JOIN 
         tb_test_result tr ON e.loginID = tr.loginID AND e.course_no = tr.course_no AND tr.test_category = t.test_category
     WHERE 
-        e.course_no = #{course_no} AND e.loginID = #{loginID}
+        e.course_no = #{course_no} 
+        AND e.loginID = #{loginID}
+        AND t.test_category = #{test_category}  <!-- test_category 필터 추가 -->
     GROUP BY 
         e.loginID, u.name, t.test_question, t.test_choice1, t.test_choice2, t.test_choice3, t.test_choice4, t.test_answer, ts.answer_selected, tr.result_no, t.test_category;
 </select>
 
 
+  <!-- 통계 정보를 가져오는 쿼리 추가 -->
 <select id="selectTestStatistics" parameterType="map" resultType="kr.happyjob.study.tCourse.model.TestReslutSubmissionDTO">
     SELECT 
         AVG(subquery.total_score) as average_score,
@@ -109,12 +138,12 @@
         FROM 
             tb_test_result tr
         WHERE 
-            tr.course_no = #{course_no}
+            tr.course_no = #{course_no} 
+            AND tr.test_category = #{test_category} <!-- test_category 필터 추가 -->
         GROUP BY 
             tr.loginID
     ) subquery
 </select>
- 
  
  
 </mapper>

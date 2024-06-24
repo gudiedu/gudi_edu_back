@@ -22,12 +22,14 @@
 		u.name
 		FROM tb_resource r
 		LEFT JOIN tb_course c ON r.course_no = c.course_no
-		LEFT JOIN tb_userinfo u ON r.loginID = u.loginID
+		LEFT JOIN
+		tb_userinfo u ON r.loginID = u.loginID
 		<where>
 			r.loginID = #{loginID}
 			<if test="stitle != null and stitle != ''">
 				AND (r.resource_title LIKE CONCAT('%', #{stitle}, '%')
-				OR c.course_name LIKE CONCAT('%', #{stitle}, '%'))
+				OR
+				c.course_name LIKE CONCAT('%', #{stitle}, '%'))
 			</if>
 		</where>
 		ORDER BY r.resource_created_at DESC
@@ -139,22 +141,61 @@
 
 
 
-	<update id="updateResource" parameterType="map">
-		UPDATE tb_resource
-		SET
-		resource_title = #{resource_title},
-		resource_content =
-		#{resource_content},
-		resource_edited_at = NOW(),
-		resource_editor =
-		#{resource_editor},
-		file_no = #{file_no}
-		WHERE resource_no =
-		#{resource_no}
-	</update>
+	<!-- 학습자료 업데이트 -->
+	<update id="updateResource">
+    UPDATE tb_resource
+    SET
+        resource_title = #{resource_title},
+        resource_content = #{resource_content},
+        resource_edited_at = NOW(),
+        resource_editor = #{resource_editor},
+        <choose>
+            <when test="file_no != null">
+                file_no = #{file_no}
+            </when>
+            <otherwise>
+                file_no = (SELECT file_no FROM tb_resource WHERE resource_no = #{resource_no})
+            </otherwise>
+        </choose>
+    WHERE resource_no = #{resource_no}
+</update>
+	
+	
+	
+	
+	
+<!-- <update id="updateResource">
+    UPDATE tb_resource
+    SET
+        resource_title = #{resource_title},
+        resource_content = #{resource_content},
+        resource_edited_at = NOW(),
+        resource_editor = #{resource_editor},
+        <choose>
+            <when test="fileExits == true">
+                file_no = #{file_no}
+            </when>
+            <otherwise>
+                file_no = null
+            </otherwise>
+        </choose>
+    WHERE resource_no = #{resource_no}
+</update>
+ -->
+
+
+	<!-- 파일 경로 조회 -->
+	<select id="selectFilePath" resultType="String">
+		SELECT file_server_path
+		FROM tb_file
+		WHERE file_no = (SELECT file_no FROM tb_resource WHERE
+		resource_no =
+		#{resourceNo})
+	</select>
 
 
 
+	<!-- 학습자료 삭제 -->
 	<delete id="deleteResource" parameterType="int">
 		DELETE FROM
 		tb_resource WHERE resource_no = #{resourceNo}
