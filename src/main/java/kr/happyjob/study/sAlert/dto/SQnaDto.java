@@ -45,7 +45,7 @@ public class SQnaDto extends SQuestionModel {
 	}
 
 	public void setQuestion_no(int question_no) {
-		sQuestionReply.setQuestion_no(question_no);;
+		sQuestionReply.setQuestion_no(question_no);
 	}
 
 	public int getCategory_no() {

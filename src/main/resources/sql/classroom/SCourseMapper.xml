@@ -129,7 +129,7 @@
 		SELECT COUNT(course_no)
 		FROM tb_enrollment
 		WHERE loginID =
-		#{studentSignedID} AND course_no = #{openedNo}
+		#{studentSignedInID} AND course_no = #{openedNo}
 	</select>
 
 	<!-- 수강신청하기 -->
@@ -174,7 +174,7 @@
 		e.course_no
 		LEFT OUTER JOIN tb_userinfo ui ON c.loginID = ui.loginID
 	<where>
-		e.loginID = #{studentSignedID} AND e.enrollment_confirmed = 'Y'
+		e.loginID = #{studentSignedInID} AND e.enrollment_confirmed = 'Y'
 		<if test="status != null and status != ''">
 			<if test="status == 'notTaken'">
 				AND (r.result_no IS NULL OR r.result_no = 0)
@@ -228,7 +228,7 @@
 			#{selectedCourseNo},
 			#{testQuestionNo[${idx}]},
 			#{selectedAnswer},
-			#{studentSignedID},
+			#{studentSignedInID},
 			#{selectedTestCategory},
 			CASE WHEN ll.test_answer
 			!= #{selectedAnswer} THEN 0
@@ -260,7 +260,7 @@
 			#{selectedCourseNo}
 			AND test_no = #{testQuestionNo[${idx}]}
 			AND loginID
-			= #{studentSignedID}
+			= #{studentSignedInID}
 			);
 		</foreach>
 	</insert>
@@ -277,11 +277,11 @@
 		VALUES
 		(
 		#{selectedCourseNo},
-		#{studentSignedID},
+		#{studentSignedInID},
 		(SELECT SUM(question_score)
 		FROM tb_test_submission
 		WHERE course_no = #{selectedCourseNo}
-		AND loginID = #{studentSignedID}
+		AND loginID = #{studentSignedInID}
 		AND test_category = #{selectedTestCategory}),
 		#{selectedTestCategory}
 		)
@@ -310,7 +310,7 @@
 		s.test_no =
 		t.test_no
 		WHERE
-		loginID = #{studentSignedID}
+		loginID = #{studentSignedInID}
 	</select>
 
 	<!-- 강의관리 출결 : 학생이 수강하는 특정 강의 내용 조회 -->

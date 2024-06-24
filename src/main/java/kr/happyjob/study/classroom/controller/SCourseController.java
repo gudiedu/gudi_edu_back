@@ -194,7 +194,7 @@ public class SCourseController {
 		logger.info("+ Start " + className + ".sCourseInfo");
 		logger.info("   - paramMap : " + paramMap);
 
-		paramMap.put("currentLoginID", (String) session.getAttribute("loginId"));
+		paramMap.put("studentSignedInID", (String) session.getAttribute("loginId"));
 
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 
@@ -217,7 +217,7 @@ public class SCourseController {
 		logger.info("+ Start " + className + ".sCourseDetail");
 		logger.info("   - paramMap : " + paramMap);
 
-		paramMap.put("loginID", (String) session.getAttribute("loginId"));
+		paramMap.put("studentSignedInID", (String) session.getAttribute("loginId"));
 
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 
@@ -240,14 +240,14 @@ public class SCourseController {
 		logger.info("+ Start " + className + ".sEnrollList");
 		logger.info("   - paramMap : " + paramMap);
 
-		paramMap.put("studentSignedID", (String) session.getAttribute("loginId"));
+		paramMap.put("studentSignedInID", (String) session.getAttribute("loginId"));
 
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 
 		List<SCourseDto> sEnrollList = sCourseService.sEnrollList(paramMap);
 
 		returnMap.put("enrollList", sEnrollList);
-		returnMap.put("studentSignedID", (String) session.getAttribute("loginId"));
+		returnMap.put("studentSignedInID", (String) session.getAttribute("loginId"));
 
 		logger.info("+ End " + className + ".sEnrollList");
 
@@ -267,8 +267,8 @@ public class SCourseController {
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 
 		String resultMsg = "";
-		String studentSignedID = (String) session.getAttribute("loginId");
-		paramMap.put("studentSignedID", studentSignedID);
+		String studentSignedInID = (String) session.getAttribute("loginId");
+		paramMap.put("studentSignedInID", studentSignedInID);
 
 		// 수강신청 중복 여부 확인
 		int alreadyEnrolled = sCourseService.checkEnrollment(paramMap);
@@ -305,14 +305,14 @@ public class SCourseController {
 		logger.info("+ Start " + className + ".sTestList");
 		logger.info("   - paramMap : " + paramMap);
 
-		paramMap.put("studentSignedID", (String) session.getAttribute("loginId"));
+		paramMap.put("studentSignedInID", (String) session.getAttribute("loginId"));
 
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 
 		List<SCourseDto> sTestList = sCourseService.sTestList(paramMap);
 
 		returnMap.put("testList", sTestList);
-		returnMap.put("studentSignedID", (String) session.getAttribute("loginId"));
+		returnMap.put("studentSignedInID", (String) session.getAttribute("loginId"));
 
 		logger.info("+ End " + className + ".sTestList");
 
@@ -328,14 +328,14 @@ public class SCourseController {
 		logger.info("+ Start " + className + ".sCreateTest");
 		logger.info("   - paramMap : " + paramMap);
 
-		paramMap.put("studentSignedID", (String) session.getAttribute("loginId"));
+		paramMap.put("studentSignedInID", (String) session.getAttribute("loginId"));
 
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 
 		List<SCourseDto> sCreateTest = sCourseService.sCreateTest(paramMap);
 
 		returnMap.put("createTest", sCreateTest);
-		returnMap.put("studentSignedID", (String) session.getAttribute("loginId"));
+		returnMap.put("studentSignedInID", (String) session.getAttribute("loginId"));
 
 		logger.info("+ End " + className + ".sCreateTest");
 
@@ -371,8 +371,8 @@ public class SCourseController {
 		paramMap.put("answerSelected", answerSelected);
 		paramMap.put("testQuestionNo", testQuestionNo);
 
-		String studentSignedID = (String) session.getAttribute("loginId");
-		paramMap.put("studentSignedID", studentSignedID);
+		String studentSignedInID = (String) session.getAttribute("loginId");
+		paramMap.put("studentSignedInID", studentSignedInID);
 
 		sqlReturn = sCourseService.sTestSubmit(paramMap, request);
 
@@ -407,10 +407,11 @@ public class SCourseController {
 
 		List<SCourseDto> sCreateTest = sCourseService.sCreateTest(paramMap);
 
-		String studentSignedID = (String) session.getAttribute("loginId");
-		paramMap.put("studentSignedID", studentSignedID);
+		String studentSignedInID = (String) session.getAttribute("loginId");
+		paramMap.put("studentSignedInID", studentSignedInID);
 
 		sqlReturn = sCourseService.sTestCalculate(paramMap, request);
+		System.out.println("sqlReturn : " + sqlReturn);
 
 		if (sqlReturn >= 0) {
 			resultMsg = "시험 채점이 완료되었습니다. 시험결과를 확인해주세요.";
@@ -422,7 +423,7 @@ public class SCourseController {
 
 		returnMap.put("calculateResult", sqlReturn);
 		returnMap.put("calculateResultMsg", resultMsg);
-		returnMap.put("studentSignedID", (String) session.getAttribute("loginId"));
+		returnMap.put("studentSignedInID", (String) session.getAttribute("loginId"));
 
 		logger.info("+ End " + className + ".sTestCalculate");
 
@@ -439,14 +440,14 @@ public class SCourseController {
 		logger.info("+ Start " + className + ".sShowingTestResult");
 		logger.info("   - paramMap : " + paramMap);
 
-		paramMap.put("studentSignedID", (String) session.getAttribute("loginId"));
+		paramMap.put("studentSignedInID", (String) session.getAttribute("loginId"));
 
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 
 		List<SCourseDto> sShowingTestResult = sCourseService.sShowingTestResult(paramMap);
 
 		returnMap.put("showingResult", sShowingTestResult);
-		returnMap.put("studentSignedID", (String) session.getAttribute("loginId"));
+		returnMap.put("studentSignedInID", (String) session.getAttribute("loginId"));
 
 		logger.info("+ End " + className + ".sShowingTestResult");
 

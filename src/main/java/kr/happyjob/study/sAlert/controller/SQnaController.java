@@ -86,7 +86,7 @@ public class SQnaController {
 			int sqlReturn = 0;
 		    String resultMsg = "";
 			
-			paramMap.put("loginID", (String)session.getAttribute("loginId"));
+			paramMap.put("studentSignedInID", (String)session.getAttribute("loginId"));
 			//paramMap.put("studentName", (String)session.getAttribute("name"));
 			sqlReturn = sQnaService.sQnaInsert(paramMap, request);
 			
@@ -117,7 +117,7 @@ public class SQnaController {
 			logger.info("   - paramMap : " + paramMap);
 			
 			// 해당 작성자가 게시글을 삭제할 수 있도록 현재 로그인한 ID값 가져가기
-			paramMap.put("currentLoginID",(String)session.getAttribute("loginId"));
+			paramMap.put("studentSignedInID",(String)session.getAttribute("loginId"));
 
 			Map<String, Object> returnMap = new HashMap<String, Object>();
 			
@@ -145,7 +145,7 @@ public class SQnaController {
 		
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		
-		paramMap.put("loginID", (String)session.getAttribute("loginId"));
+		paramMap.put("studentSignedInID", (String)session.getAttribute("loginId"));
 		
 		List<SQnaDto> sQnaGetCourseName = sQnaService.sQnaGetCourseName(paramMap);
 		returnMap.put("sQnaGetCourseName", sQnaGetCourseName);
@@ -164,23 +164,24 @@ public class SQnaController {
 			logger.info("+ Start " + className + ".sDeleteQna");
 			logger.info("   - paramMap : " + paramMap);
 			
-		    int sqlreturn = 0;
-			
 		    Map<String, Object> returnmap = new HashMap<String, Object>();
-			paramMap.put("studentSignedID", (String)session.getAttribute("loginID"));
+			paramMap.put("studentSignedInID", (String)session.getAttribute("loginId"));
+			returnmap.put("studentSignedInID", (String)session.getAttribute("loginId"));
 			
 			int sqlReturn = 0;
 			String resultMsg = "";
 			
-			sqlreturn = sQnaService.sQnaDelete(paramMap);
+			sqlReturn = sQnaService.sQnaDelete(paramMap);
+			System.out.println("sqlReturn: " + sqlReturn);
 			
-			if(sqlReturn >= 0){
+			if(sqlReturn > 0){
 				resultMsg = "삭제 되었습니다.";
 			} else {
 				resultMsg = "삭제되지 않았습니다. 다시 확인해주세요.";
 			}
 			
-		      returnmap.put("result",sqlreturn);
+			
+		      returnmap.put("result",sqlReturn);
 		      returnmap.put("resultMsg",resultMsg);
 		      
 		      logger.info("+ End " + className + ".sDeleteQna");

@@ -120,7 +120,7 @@
 						question_created_at						
 					) VALUES (
 						#{selectedCourseNo}, 
-						#{loginID},
+						#{studentSignedInID},
 						#{questionTitle},
 						#{questionContent},
 						#{studentName},
@@ -132,7 +132,7 @@
 	<delete id="sQnaDelete">
 		DELETE FROM tb_question
 			WHERE question_no = #{SelectedQuestionNo}
-				AND loginID = #{studentSignedID}
+				AND loginID = #{studentSignedInID}
 	</delete>
 	
 	<!-- 학생의 강의 신청한 목록 조회하기 -->
@@ -146,7 +146,7 @@
 	  	LEFT OUTER JOIN 
 	  		tb_course c ON c.course_no = e.course_no
 	  	WHERE
-	  		u.loginID = #{studentSignedID} AND e.enrollment_confirmed = 'Y'
+	  		u.loginID = #{studentSignedInID} AND e.enrollment_confirmed = 'Y'
 	</select>
 
 </mapper>
