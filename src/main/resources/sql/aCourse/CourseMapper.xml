@@ -20,12 +20,27 @@
 	    tb_course tc
 	JOIN
     	tb_userinfo tu ON tc.loginID = tu.loginID
+	WHERE 1=1
    <if test="(stitle != null) and (!stitle.equals(''))">
-	WHERE 
-	    tc.course_name LIKE concat('%', #{stitle}, '%')
-	    OR tu.name LIKE concat('%', #{stitle}, '%')
+	     AND (tc.course_name LIKE concat('%', #{stitle}, '%')
+	    OR tu.name LIKE concat('%', #{stitle}, '%'))
     	
    </if>
+   <if test="filter != null and !filter.equals('')">
+        
+        <choose>
+            <when test="filter == 'admin'">
+                AND NOW() BETWEEN tc.course_start_date AND tc.course_end_date
+            </when>
+            <when test="filter == 'teacher'">
+                AND NOW() <![CDATA[ > ]]> tc.course_end_date
+            </when>
+            <when test="filter == 'scheduled'">
+                AND NOW()<![CDATA[ < ]]> tc.course_start_date
+            </when>
+        </choose>
+        
+    </if>
 	ORDER BY 
 		course_no ASC
 	LIMIT #{startPoint}, #{pageSize}
@@ -99,10 +114,29 @@
 		COUNT(*)
 	FROM 
 	 	tb_course c
-     <if test="(stitle != null) and (!stitle.equals(''))">
-     WHERE 
-     	c.course_name LIKE concat('%',#{stitle},'%')
-     </if>
+     JOIN
+	    tb_userinfo tu ON c.loginID = tu.loginID
+	WHERE 1=1
+    <if test="stitle != null and !stitle.equals('')">
+    	AND (c.course_name LIKE concat('%', #{stitle}, '%')
+        OR tu.name LIKE concat('%', #{stitle}, '%'))
+    </if>
+    <if test="filter != null and !filter.equals('')">
+        
+        <choose>
+            <when test="filter == 'admin'">
+                AND NOW() BETWEEN c.course_start_date AND c.course_end_date
+            </when>
+            <when test="filter == 'teacher'">
+                AND NOW()<![CDATA[ > ]]> c.course_end_date
+            </when>
+            <when test="filter == 'scheduled'">
+                AND NOW()<![CDATA[ < ]]> c.course_start_date
+            </when>
+        </choose>
+       
+    </if>
+     
 	                    
 	</select>
 	
