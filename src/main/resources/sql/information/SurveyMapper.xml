@@ -16,6 +16,9 @@
 		tb_survey
 	<if test="(stitle != null) and (!stitle.equals(''))">
       WHERE survey_name LIKE concat('%', #{stitle}, '%')
+      OR 
+	   		survey_no LIKE concat('%', #{stitle}, '%')
+      
     </if>
 	ORDER BY 
 		survey_no ASC
@@ -34,6 +37,8 @@
      <if test="(stitle != null) and (!stitle.equals(''))">
      WHERE 
      	survey_name LIKE concat('%',#{stitle},'%')
+     	OR 
+	   		survey_no LIKE concat('%', #{stitle}, '%')
      </if>
 	                    
 	</select>

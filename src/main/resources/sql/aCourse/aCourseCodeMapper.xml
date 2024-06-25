@@ -12,10 +12,12 @@
         WHERE	group_code = 'S1000'
         <if test="(stitle != null) and (!stitle.equals(''))">
 	    AND 
-	   	detail_name LIKE concat('%', #{stitle}, '%')
+	   		(detail_name LIKE concat('%', #{stitle}, '%')
+	   	OR 
+	   		detail_code LIKE concat('%', #{stitle}, '%'))
 	  </if>
         ORDER BY detail_code ASC
-        LIMIT #{startPoint}, #{pageSize};
+        LIMIT #{startPoint}, #{pageSize}
 	</select>
 	
 	<!-- 코드목록 총 갯수 조회 -->
@@ -26,7 +28,9 @@
   			tb_detail_code
 		<if test="(stitle != null) and (!stitle.equals(''))">
 	    WHERE 
-	   	detail_name LIKE concat('%', #{stitle}, '%')
+	   		detail_name LIKE concat('%', #{stitle}, '%')
+	   		OR 
+	   			detail_code LIKE concat('%', #{stitle}, '%')
 	  </if>
 	</select>
 	
@@ -38,14 +42,14 @@
       ,#{detail_name}
       ,'Y'
   	FROM tb_detail_code
- 	WHERE group_code = 'S1000';
+ 	WHERE group_code = 'S1000'
  	</insert>
  
 	<!-- 다음 강의코드 추출 -->
  <select id="nextCodeSelect" resultType="String" >
 	  SELECT CONCAT('A',CAST(ifnull(max(cast(SUBSTRING(detail_code,2)as unsigned)),99) + 1 as CHAR(3))) 
 	  from tb_detail_code 
-	  WHERE group_code = 'S1000';
+	  WHERE group_code = 'S1000'
 	</select>
 	
 	<!-- 선택한 강의코드 추출 -->
@@ -57,13 +61,17 @@
    <update id="codeUpdate" parameterType="Map">
    	UPDATE tb_detail_code 
 	SET detail_name = #{detail_name} 
-	WHERE detail_code = #{detail_code};
+	WHERE detail_code = #{detail_code}
    </update>
    
    
    <!-- 공통코드에 있는 강의코드 삭제 -->
      <delete id="codeDelete" parameterType="String">
-    DELETE FROM tb_detail_code WHERE detail_code = #{detail_code};
+    DELETE 
+    FROM 
+    	tb_detail_code 
+    WHERE 
+    	detail_code = #{detail_code}
      </delete>
      
      
@@ -72,8 +80,7 @@
     SELECT detail_code, detail_name
 	FROM tb_detail_code
 	WHERE detail_name LIKE CONCAT('%', #{word}, '%')
-	;
-     </select>
+	 </select>
 
 
 </mapper>

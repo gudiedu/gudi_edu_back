@@ -7,6 +7,7 @@ import lombok.*;
 public class CourseModel {
 	private int course_no;
 	private int survey_no;//설문번호
+	private int survey_reg_no;//설문번호
 	private String user_name; //강사명
 	private String course_subject; // 강의코드명
 	private String course_name; // 강의명
