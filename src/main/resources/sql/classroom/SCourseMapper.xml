@@ -17,9 +17,11 @@
 		e.enrollment_confirmed
 		FROM
 		tb_enrollment e
-		LEFT OUTER JOIN tb_userinfo ui ON ui.loginID = e.loginID
+		LEFT OUTER JOIN tb_userinfo ui ON ui.loginID =
+		e.loginID
 		LEFT OUTER JOIN tb_course c ON c.course_no = e.course_no
-		LEFT OUTER JOIN tb_userinfo ui2 ON ui2.loginID = c.loginID
+		LEFT
+		OUTER JOIN tb_userinfo ui2 ON ui2.loginID = c.loginID
 		WHERE e.loginID =
 		#{loginID}
 		AND e.enrollment_confirmed = 'Y'
@@ -32,6 +34,13 @@
 			LIKE CONCAT('%', #{stitle}, '%')
 			)
 		</if>
+		ORDER BY
+		CASE
+		WHEN c.course_start_date &lt;= CURRENT_DATE() AND c.course_end_date &gt;= CURRENT_DATE() THEN 1
+		WHEN c.course_start_date &gt; CURRENT_DATE() THEN 2
+		WHEN c.course_end_date &lt; CURRENT_DATE() THEN 3
+		END,
+		c.course_start_date
 		limit #{startPoint}, #{pageSize}
 	</select>
 
@@ -39,8 +48,10 @@
 	<select id="totalCntCourse" resultType="int">
 		SELECT count(*)
 		FROM tb_enrollment e
-		LEFT OUTER JOIN tb_userinfo ui ON ui.loginID = e.loginID
-		LEFT OUTER JOIN tb_course c ON c.course_no = e.course_no
+		LEFT OUTER JOIN tb_userinfo ui ON
+		ui.loginID = e.loginID
+		LEFT OUTER JOIN tb_course c ON c.course_no =
+		e.course_no
 		LEFT OUTER JOIN tb_userinfo ui2 ON ui2.loginID = c.loginID
 		WHERE e.loginID = #{loginID}
 		AND
@@ -104,22 +115,24 @@
 		c.course_subject,
 		c.course_name,
 		c.course_quota,
-		DATE_FORMAT(c.course_start_date, '%Y-%m-%d') AS course_start_date,
-		DATE_FORMAT(c.course_end_date, '%Y-%m-%d') AS course_end_date,
+		DATE_FORMAT(c.course_start_date, '%Y-%m-%d') AS
+		course_start_date,
+		DATE_FORMAT(c.course_end_date, '%Y-%m-%d') AS
+		course_end_date,
 		c.course_loc
 		FROM
-		  tb_course c
+		tb_course c
 		LEFT OUTER JOIN tb_userinfo ui ON ui.loginID = c.loginID
 		<where>
 			course_start_date > now()
-	        <if test="searchKeyword != null and searchKeyword != ''">
-	            AND(
-		            ui.name LIKE CONCAT('%', #{searchKeyword}, '%')
-		            OR c.course_subject LIKE CONCAT('%', #{searchKeyword}, '%')
-		            OR c.course_name LIKE CONCAT('%', #{searchKeyword}, '%')
-	            )
-	        </if>
-	    </where> 
+			<if test="searchKeyword != null and searchKeyword != ''">
+				AND(
+				ui.name LIKE CONCAT('%', #{searchKeyword}, '%')
+				OR c.course_subject LIKE CONCAT('%', #{searchKeyword}, '%')
+				OR c.course_name LIKE CONCAT('%', #{searchKeyword}, '%')
+				)
+			</if>
+		</where>
 		ORDER BY
 		course_start_date ASC
 	</select>
@@ -164,30 +177,34 @@
 		r.result_score
 		FROM
 		tb_enrollment e
-		LEFT OUTER JOIN tb_course c ON e.course_no =
+		LEFT OUTER JOIN tb_course c
+		ON e.course_no =
 		c.course_no
 		LEFT OUTER
-		JOIN tb_test t ON t.course_no = c.course_no
+		JOIN tb_test t ON t.course_no =
+		c.course_no
 		LEFT
 		OUTER JOIN
-		tb_test_result r ON r.loginID = e.loginID AND r.course_no =
+		tb_test_result r ON r.loginID = e.loginID AND
+		r.course_no =
 		e.course_no
-		LEFT OUTER JOIN tb_userinfo ui ON c.loginID = ui.loginID
-	<where>
-		e.loginID = #{studentSignedInID} AND e.enrollment_confirmed = 'Y'
-		<if test="status != null and status != ''">
-			<if test="status == 'notTaken'">
-				AND (r.result_no IS NULL OR r.result_no = 0)
+		LEFT OUTER JOIN tb_userinfo ui ON c.loginID =
+		ui.loginID
+		<where>
+			e.loginID = #{studentSignedInID} AND e.enrollment_confirmed = 'Y'
+			<if test="status != null and status != ''">
+				<if test="status == 'notTaken'">
+					AND (r.result_no IS NULL OR r.result_no = 0)
+				</if>
 			</if>
-		</if>
-		<if test="searchKeyword != null and searchKeyword !=''">
-			AND(
-	            ui.name LIKE CONCAT('%', #{searchKeyword}, '%')
-	            OR c.course_subject LIKE CONCAT('%', #{searchKeyword}, '%')
-	            OR c.course_name LIKE CONCAT('%', #{searchKeyword}, '%')
-	            )
-		</if>
-	</where>
+			<if test="searchKeyword != null and searchKeyword !=''">
+				AND(
+				ui.name LIKE CONCAT('%', #{searchKeyword}, '%')
+				OR c.course_subject LIKE CONCAT('%', #{searchKeyword}, '%')
+				OR c.course_name LIKE CONCAT('%', #{searchKeyword}, '%')
+				)
+			</if>
+		</where>
 		GROUP BY e.course_no
 	</select>
 
@@ -279,9 +296,11 @@
 		#{selectedCourseNo},
 		#{studentSignedInID},
 		(SELECT SUM(question_score)
-		FROM tb_test_submission
+		FROM
+		tb_test_submission
 		WHERE course_no = #{selectedCourseNo}
-		AND loginID = #{studentSignedInID}
+		AND loginID =
+		#{studentSignedInID}
 		AND test_category = #{selectedTestCategory}),
 		#{selectedTestCategory}
 		)
