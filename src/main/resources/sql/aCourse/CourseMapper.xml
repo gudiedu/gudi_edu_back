@@ -5,23 +5,42 @@
 
 <select id="courseList" resultType="kr.happyjob.study.aCourse.model.CourseModel">
 	SELECT 
-		course_no
-		,(SELECT name FROM tb_userinfo tu WHERE tu.loginID = tc.loginID) user_name
-		, course_subject
-		, course_name
-		, course_quota
-		, course_description
-		,(SELECT DATEDIFF(course_end_date, course_start_date) )AS course_period
-		, course_start_date
-		, course_end_date
-		, course_loc 
-		, survey_no
+	    tc.course_no,
+	    tu.name AS user_name,
+	    tc.course_subject,
+	    tc.course_name,
+	    tc.course_quota,
+	    tc.course_description,
+	    DATEDIFF(tc.course_end_date, tc.course_start_date) AS course_period,
+	    tc.course_start_date,
+	    tc.course_end_date,
+	    tc.course_loc,
+	    tc.survey_no
 	FROM 
-		tb_course tc
+	    tb_course tc
+	JOIN
+    	tb_userinfo tu ON tc.loginID = tu.loginID
+	WHERE 1=1
    <if test="(stitle != null) and (!stitle.equals(''))">
-    WHERE 
-    	course_name LIKE concat('%', #{stitle}, '%')
+	     AND (tc.course_name LIKE concat('%', #{stitle}, '%')
+	    OR tu.name LIKE concat('%', #{stitle}, '%'))
+    	
    </if>
+   <if test="filter != null and !filter.equals('')">
+        
+        <choose>
+            <when test="filter == 'admin'">
+                AND NOW() BETWEEN tc.course_start_date AND tc.course_end_date
+            </when>
+            <when test="filter == 'teacher'">
+                AND NOW() <![CDATA[ > ]]> tc.course_end_date
+            </when>
+            <when test="filter == 'scheduled'">
+                AND NOW()<![CDATA[ < ]]> tc.course_start_date
+            </when>
+        </choose>
+        
+    </if>
 	ORDER BY 
 		course_no ASC
 	LIMIT #{startPoint}, #{pageSize}
@@ -32,8 +51,10 @@
     SELECT 
 		course_no
 		,(SELECT name FROM tb_userinfo tu WHERE tu.loginID = tc.loginID) user_name
-		, course_subject, course_name
-		, course_quota, course_description
+		, course_subject
+		, course_name
+		, course_quota
+		, course_description
 		,(SELECT DATEDIFF(course_end_date, course_start_date) )AS course_period
 		, course_start_date
 		, course_end_date
@@ -42,6 +63,7 @@
 		tb_course tc
 	WHERE 
 		course_name LIKE CONCAT('%', #{word}, '%')
+		
      </select>
      
      
@@ -55,6 +77,7 @@
 		    DATE_FORMAT(c.course_start_date, '%y-%m-%d') as course_start_date,
 		    DATE_FORMAT(c.course_end_date, '%y-%m-%d') as course_end_date,
 		    COALESCE(sa.survey_no, 0) as survey_no,
+		    c.survey_no as survey_reg_no,
 		    COALESCE(sa.respondent_count, 0) as respondent_count,
 		    COALESCE(ec.confirmed_count, 0) as confirmed_count
 		 FROM tb_course c
@@ -76,6 +99,8 @@
 		 ) ec ON c.course_no = ec.course_no
   	<if test="(stitle != null) and (!stitle.equals(''))">
       WHERE c.course_name LIKE concat('%', #{stitle}, '%')
+      OR 
+	   		c.survey_no LIKE concat('%', #{stitle}, '%')
     </if>
 		 ORDER BY c.course_no asc
 		 LIMIT #{startPoint}, #{pageSize}
@@ -89,10 +114,29 @@
 		COUNT(*)
 	FROM 
 	 	tb_course c
-     <if test="(stitle != null) and (!stitle.equals(''))">
-     WHERE 
-     	c.course_name LIKE concat('%',#{stitle},'%')
-     </if>
+     JOIN
+	    tb_userinfo tu ON c.loginID = tu.loginID
+	WHERE 1=1
+    <if test="stitle != null and !stitle.equals('')">
+    	AND (c.course_name LIKE concat('%', #{stitle}, '%')
+        OR tu.name LIKE concat('%', #{stitle}, '%'))
+    </if>
+    <if test="filter != null and !filter.equals('')">
+        
+        <choose>
+            <when test="filter == 'admin'">
+                AND NOW() BETWEEN c.course_start_date AND c.course_end_date
+            </when>
+            <when test="filter == 'teacher'">
+                AND NOW()<![CDATA[ > ]]> c.course_end_date
+            </when>
+            <when test="filter == 'scheduled'">
+                AND NOW()<![CDATA[ < ]]> c.course_start_date
+            </when>
+        </choose>
+       
+    </if>
+     
 	                    
 	</select>
 	

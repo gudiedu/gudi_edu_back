@@ -63,7 +63,7 @@ public class CourseController {
 			return resultMap;
 	}
 	
-	// 강의 목록 리스트 출력2
+	// 만족도 관리에서 강의 목록 리스트 출력
 		@RequestMapping("searchClassSurvey.do")
 		@ResponseBody
 		public Map<String, Object> searchClassSurvey(Model model, @RequestParam Map<String, Object> paramMap, HttpServletRequest request,
@@ -92,24 +92,24 @@ public class CourseController {
 		
 				return resultMap;
 		}
-	
-	@RequestMapping("courseSearch.do")
-	@ResponseBody
-	public Map<String, Object> courseSearch(Model model, @RequestParam String word, HttpServletRequest request,
-            HttpServletResponse response, HttpSession session) throws Exception {
-				logger.info("+ Start " + className + ".courseSearch");
-				logger.info("   - 검색단어 : " + word);
-				
-				List<CourseModel> courseListModel = courseService.courseSearch(word);
-				
-				Map<String, Object> resultMap = new HashMap<>();
-				
-				resultMap.put("listdate", courseListModel);
-				
-	
-				logger.info("+ End " + className + ".courseSearch");
-				return resultMap;
-			}
+	// 메소드 하나로 합침
+//	@RequestMapping("courseSearch.do")
+//	@ResponseBody
+//	public Map<String, Object> courseSearch(Model model, @RequestParam String word, HttpServletRequest request,
+//            HttpServletResponse response, HttpSession session) throws Exception {
+//				logger.info("+ Start " + className + ".courseSearch");
+//				logger.info("   - 검색단어 : " + word);
+//				
+//				List<CourseModel> courseListModel = courseService.courseSearch(word);
+//				
+//				Map<String, Object> resultMap = new HashMap<>();
+//				
+//				resultMap.put("listdate", courseListModel);
+//				
+//	
+//				logger.info("+ End " + className + ".courseSearch");
+//				return resultMap;
+//			}
 	
 	
 	
